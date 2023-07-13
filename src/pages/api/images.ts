@@ -10,62 +10,62 @@ export default async function handler(
   const auth = { Authorization: `Basic ${credentials}` };
   let channelToken = "";
   let resultImages: ImagesHome[] = [];
-  const data = await fetch(
-    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
-    { headers: auth }
-  ).then((channelResponse) => channelResponse.json())
-
-  const channel = data.items.find(
-    (x: any) => x.createdBy === "cms-site@mills.com.br"
-  );
-
-  const data2 = await fetch(
-    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
-    { headers: auth }
-  ).then((channelDataResponse) => channelDataResponse.json())
-
-  channelToken = data2.channelTokens[0].token;
-
-  const data3 = await fetch(
-    `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`,
-    { headers: auth }
-  ).then((channelTokenResponse) => channelTokenResponse.json())
-
   // const data = await fetch(
   //   `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
   //   { headers: auth }
-  // )
-  //   .then((channelResponse) => channelResponse.json())
-  //   .then((channelData) => {
-  //     const channel = channelData.items.find(
-  //       (x: any) => x.createdBy === "cms-site@mills.com.br"
-  //     );
-  //     return fetch(
-  //       `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
-  //       { headers: auth }
-  //     )
-  //       .then((channelDataResponse) => channelDataResponse.json())
-  //       .then((channelTokenData) => {
-  //         channelToken = channelTokenData.channelTokens[0].token;
-  //         return fetch(
-  //           `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`
-  //         )
-  //           .then((channelTokenResponse) => channelTokenResponse.json())
-  //           .catch((err) => {
-  //             console.error("Erro ao conectar" + err.message);
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.error("Erro ao conectar" + err.message);
-  //       });
-  //   })
-  //   .catch((err) => {
-  //     console.error("Erro ao conectar" + err.message);
-  //   });
+  // ).then((channelResponse) => channelResponse.json())
 
-  for (let i = 0; i < data3?.items.length; i++) {
+  // const channel = data.items.find(
+  //   (x: any) => x.createdBy === "cms-site@mills.com.br"
+  // );
+
+  // const data2 = await fetch(
+  //   `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
+  //   { headers: auth }
+  // ).then((channelDataResponse) => channelDataResponse.json())
+
+  // channelToken = data2.channelTokens[0].token;
+
+  // const data3 = await fetch(
+  //   `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`,
+  //   { headers: auth }
+  // ).then((channelTokenResponse) => channelTokenResponse.json())
+
+  const data = await fetch(
+    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
+    { headers: auth }
+  )
+    .then((channelResponse) => channelResponse.json())
+    .then(async (channelData) => {
+      const channel = channelData.items.find(
+        (x: any) => x.createdBy === "cms-site@mills.com.br"
+      );
+      return await fetch(
+        `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
+        { headers: auth }
+      )
+        .then((channelDataResponse) => channelDataResponse.json())
+        .then(async (channelTokenData) => {
+          channelToken = channelTokenData.channelTokens[0].token;
+          return await fetch(
+            `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`
+          )
+            .then((channelTokenResponse) => channelTokenResponse.json())
+            .catch((err) => {
+              console.error("Erro ao conectar" + err.message);
+            });
+        })
+        .catch((err) => {
+          console.error("Erro ao conectar" + err.message);
+        });
+    })
+    .catch((err) => {
+      console.error("Erro ao conectar" + err.message);
+    });
+
+  for (let i = 0; i < data?.items.length; i++) {
     const obj = await fetch(
-      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data3.items[i].id}?channelToken=${channelToken}`,
+      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data.items[i].id}?channelToken=${channelToken}`,
       { headers: auth }
     ).then((res) => res.json());
     resultImages.push(obj);
