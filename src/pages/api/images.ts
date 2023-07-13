@@ -3,7 +3,7 @@ import ImagesHome from "@/dtos/ImagesHome";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Array<ImagesHome>>
+  res: NextApiResponse
 ) {
   const { description } = req.query;
   const credentials = btoa(`${process.env.USER}:${process.env.SECRET}`);
@@ -16,7 +16,7 @@ export default async function handler(
   ).then((channelResponse) => channelResponse.json())
   
   resultImages[0].name = data[0].id
-  res.status(200).json(resultImages)
+  res.status(200).json(data)
     // .then((channelData) => {
     //   const channel = channelData.items.find(
     //     (x: any) => x.createdBy === "cms-site@mills.com.br"
