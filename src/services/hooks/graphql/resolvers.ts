@@ -13,7 +13,7 @@ const resolvers = {
   Query: {
     imagesHome: async (parent: any, args: ParamsSearch) => {
       const result = await fetch(
-        `${environment}/api/images?description=${args.description}`
+        `/api/images?description=${args.description}`
       ).then((res) => res.json());
       return result;
     },
