@@ -7,14 +7,15 @@ const environment =
     ? "https://mills.vercel.app"
     : "https://mills.vercel.app";
 
-  console.log(environment)
 
 const resolvers = {
   Query: {
     imagesHome: async (parent: any, args: ParamsSearch) => {
+      console.log(args.description)
       const result = await fetch(
         `${environment}/api/images?description=${args.description}`
       ).then((res) => res.json());
+      console.log(result)
       return result;
     },
   },
