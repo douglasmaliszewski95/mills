@@ -7,8 +7,7 @@ const environment =
     ? "https://mills.vercel.app"
     : "https://mills.vercel.app";
 
-
-console.log(environment)    
+ 
 const client = new ApolloClient({
   uri: `${environment}/api/graphql`,
   cache: new InMemoryCache(),

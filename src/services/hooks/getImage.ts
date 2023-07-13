@@ -10,7 +10,7 @@ export const getImage = async (text: String) => {
       description: text,
     },
   });
-  console.log(data.imagesHome)
+  console.log(data)
   const result: ImagesHome[] = data.imagesHome;
   return result;
 };
