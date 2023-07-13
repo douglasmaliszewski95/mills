@@ -1,0 +1,9 @@
+export { default as accessToBuilding } from "./access-to-buildings.svg";
+export { default as bottomLines } from "./bottom-lines.svg";
+export { default as topLines } from "./top-lines.svg";
+export { default as construction } from "./construction.svg";
+export { default as highCleaning } from "./high-cleaning.svg";
+export { default as highPainting } from "./high-painting.svg";
+export { default as industrialInstallation } from "./industrial-installation.svg";
+export { default as inventary } from "./inventary.svg";
+export { default as propertyInstallation } from "./property-installation.svg";
