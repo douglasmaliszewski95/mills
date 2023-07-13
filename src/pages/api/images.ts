@@ -10,11 +10,27 @@ export default async function handler(
   const auth = { Authorization: `Basic ${credentials}` };
   let channelToken = "";
   let resultImages: ImagesHome[] = [];
-  const obj = await fetch(
-    `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/CONT9CB563D111134915AF82B76997FDA455?channelToken=9dc59eee7bb24f2795312a783c7b1743`,
+  const data = await fetch(
+    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
     { headers: auth }
-  ).then((res) => res.json());
-  resultImages.push(obj);
+  ).then((channelResponse) => channelResponse.json())
+
+  const channel = data.items.find(
+    (x: any) => x.createdBy === "cms-site@mills.com.br"
+  );
+
+  const data2 = await fetch(
+    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
+    { headers: auth }
+  ).then((channelDataResponse) => channelDataResponse.json())
+
+  channelToken = data2.channelTokens[0].token;
+
+  const data3 = await fetch(
+    `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`,
+    { headers: auth }
+  ).then((channelTokenResponse) => channelTokenResponse.json())
+
   // const data = await fetch(
   //   `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
   //   { headers: auth }
@@ -47,13 +63,13 @@ export default async function handler(
   //     console.error("Erro ao conectar" + err.message);
   //   });
 
-  // for (let i = 0; i < data?.items.length; i++) {
-  //   const obj = await fetch(
-  //     `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data.items[i].id}?channelToken=${channelToken}`,
-  //     { headers: auth }
-  //   ).then((res) => res.json());
-  //   resultImages.push(obj);
-  // }
+  for (let i = 0; i < data?.items.length; i++) {
+    const obj = await fetch(
+      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data.items[i].id}?channelToken=${channelToken}`,
+      { headers: auth }
+    ).then((res) => res.json());
+    resultImages.push(obj);
+  }
 
   res.status(200).json(resultImages);
 }
