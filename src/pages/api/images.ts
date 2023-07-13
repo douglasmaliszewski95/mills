@@ -28,7 +28,7 @@ export default async function handler(
         .then((channelTokenData) => {
           channelToken = channelTokenData.channelTokens[0].token;
           return fetch(
-            `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`
+            `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=type+eq+"custom_image"+AND+fields.content_page+co+"${description}"&channelToken=${channelToken}&fields=all`
           )
             .then((channelTokenResponse) => channelTokenResponse.json())
             .catch((err) => {
