@@ -7,6 +7,8 @@ const environment =
     ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
     : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
 
+  console.log(environment)
+
 const resolvers = {
   Query: {
     imagesHome: async (parent: any, args: ParamsSearch) => {

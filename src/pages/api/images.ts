@@ -5,6 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Array<ImagesHome>>
 ) {
+  console.log(process.env.ORACLE_CMS)
   const { description } = req.query;
   const credentials = btoa(`${process.env.USER}:${process.env.SECRET}`);
   const auth = { Authorization: `Basic ${credentials}` };
