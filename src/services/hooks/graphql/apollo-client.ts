@@ -10,7 +10,7 @@ const environment =
 
 console.log(environment)    
 const client = new ApolloClient({
-  uri: `${environment}/api/graphql`,
+  uri: `/api/graphql`,
   cache: new InMemoryCache(),
 });
 
