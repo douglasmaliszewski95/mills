@@ -1,0 +1,37 @@
+trigger:
+  - qa
+  
+#pool:
+#  vmImage: ubuntu-latest
+
+stages:
+- stage: BuildAndPublishArtifacts
+  displayName: "Build adn Publish Artifacts"
+  jobs:
+    - job: BuildAndPublishArtifacts
+      displayName: "Build and Publish Artifacts"
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+        - task: NodeTool@0
+          inputs:
+            versionSpec: '18.x'
+          displayName: 'Install Node.js'
+        - script: |
+            npm install
+            npm run build
+          displayName: 'npm install and build'
+        - task: ArchiveFiles@2
+          inputs:
+            rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).zip'
+            replaceExistingArchive: true
+          displayName: "Archive Files"
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+          displayName: "Publish Artifacts"
