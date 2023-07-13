@@ -63,9 +63,9 @@ export default async function handler(
   //     console.error("Erro ao conectar" + err.message);
   //   });
 
-  for (let i = 0; i < data?.items.length; i++) {
+  for (let i = 0; i < data3?.items.length; i++) {
     const obj = await fetch(
-      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data.items[i].id}?channelToken=${channelToken}`,
+      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data3.items[i].id}?channelToken=${channelToken}`,
       { headers: auth }
     ).then((res) => res.json());
     resultImages.push(obj);
