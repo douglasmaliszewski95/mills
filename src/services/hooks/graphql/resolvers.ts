@@ -5,7 +5,7 @@ const environment =
     ? process.env.NEXT_PUBLIC_API_GRAPHQL_DEV
     : process.env.NODE_ENV === "production"
     ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
-    : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
+    : "https://mills.vercel.app";
 
   console.log(environment)
 
@@ -13,7 +13,7 @@ const resolvers = {
   Query: {
     imagesHome: async (parent: any, args: ParamsSearch) => {
       const result = await fetch(
-        `https://mills.vercel.app/api/images?description=${args.description}`
+        `${environment}/api/images?description=${args.description}`
       ).then((res) => res.json());
       return result;
     },
