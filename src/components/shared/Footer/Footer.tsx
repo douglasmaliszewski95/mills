@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="font-ibm-font">
       <div className="flex items-center flex-col text-green-800 py-14 bg-gray-75 px-24 w-full tablet:px-4 tablet:py-6">
-        <div className="max-w-7xl w-full">
+        <div className="container w-full">
           <div className="flex flex-wrap justify-between tablet:flex-col">
             <Image
               src={millsLogoOrange}
@@ -182,7 +182,7 @@ export const Footer: React.FC = () => {
                 return (
                   <li
                     key={index}
-                    className="flex items-center gap-2 cursor-pointer mr-2 mb-4"
+                    className="flex items-center gap-2 cursor-pointer mr-2 mb-3"
                   >
                     {item.title}
                     {item.showBorder ? (

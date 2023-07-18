@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Image from "next/image";
 import { search, millsLogo, carBag } from "@/assets";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
@@ -39,10 +39,12 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           </Menubar.SubTrigger>
           <Menubar.Portal>
             <Menubar.SubContent
+              key={index}
               className="bg-white h-fit pt-5 mt-[-18px] pl-14 pb-[68px] pr-9"
               alignOffset={calculateOffset(-3, index)}
             >
               <Image
+                key={index}
                 className="mb-4 rounded"
                 src={subItem.image}
                 width={394}
@@ -58,7 +60,9 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
       );
     } else {
       return (
-        <Menubar.Item className={menuItemClass}>{subItem.title}</Menubar.Item>
+        <Menubar.Item key={index} className={menuItemClass}>
+          {subItem.title}
+        </Menubar.Item>
       );
     }
   };
@@ -141,7 +145,11 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                           alignOffset={-25}
                         >
                           {item.subMenu.map((subItem: any, index) => {
-                            return <>{renderWithImage(subItem, index)}</>;
+                            return (
+                              <Fragment key={index}>
+                                {renderWithImage(subItem, index)}
+                              </Fragment>
+                            );
                           })}
                         </Menubar.Content>
                       </Menubar.Portal>

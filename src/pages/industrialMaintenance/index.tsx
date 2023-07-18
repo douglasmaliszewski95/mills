@@ -65,7 +65,7 @@ export default function Home() {
         )}
         <Banner
           breadcrumb="Geradores > Indústrias"
-          title="Aplicação de compressores e geradores na Indústria"
+          title="Instalação e Manutenção Industrial"
           backgroundImage={banner.src}
         />
         <div className="flex justify-center text-green-800">
@@ -123,21 +123,23 @@ export default function Home() {
               </Button>
             </div>
             <div
-              style={{ backgroundImage: `url(${bgElevating.src})` }}
-              className="flex justify-center bg-no-repeat bg-cover w-[564px] h-[505px] tablet:w-full tablet:h-[232px]"
+              style={{
+                backgroundImage: `url(${bgElevating.src})`,
+              }}
+              className="flex justify-center bg-no-repeat bg-cover w-[564px] h-[505px] tablet:w-full tablet:h-[232px] tablet:hidden"
             />
           </div>
         </div>
         {/* Second */}
         {/* Third */}
-        <div className="flex justify-center text-green-800">
+        <div className="flex  as justify-center text-green-800">
           <div className="flex justify-between container tablet:flex-col">
             <div className="flex flex-col py-16 tablet:pt-4 pb-8 tablet:px-4">
               <h3 className="font-semibold w-[610px] text-2xl tablet:text-base tablet:w-full">
                 Principais benefícios das plataformas elevatórias nos serviços
                 de manutenção e instalação industrial
               </h3>
-              <div className="flex flex-wrap gap-2 mt-16">
+              <div className="flex flex-wrap gap-2 mt-16 tablet:mt-5">
                 <div className="flex flex-col justify-center items-center w-[229px] rounded border border-green-800 py-8 px-3 tablet:w-full tablet:flex-row tablet:py-4">
                   <Image src={clock} alt="Relógio" className="mb-3" />
                   <div className="tablet:ml-6">
@@ -262,7 +264,7 @@ export default function Home() {
                 Conheça cada tipo de plataforma e descubra a ideal para o seu
                 projeto
               </h3>
-              <div className="flex flex-wrap gap-5 mt-16 tablet:mt-6">
+              <div className="flex flex-wrap gap-5 mt-16 tablet:mt-6 tablet:gap-2">
                 <div
                   style={{ backgroundImage: `url(${bgElevating.src})` }}
                   className="flex flex-col text-white justify-center items-center w-[377px] h-[345px] rounded-lg tablet:w-full tablet:h-[264px]"
@@ -327,7 +329,7 @@ export default function Home() {
                 isMobile ? bgOperatorMobile.src : bgOperator.src
               })`,
             }}
-            className="flex bg-no-repeat w-full tablet:flex-col tablet:py-0"
+            className="flex bg-no-repeat bg-cover w-full tablet:flex-col tablet:py-0"
           >
             <div className="flex justify-center items-center flex-col bg-gray-25 w-full h-full py-16 tablet:pt-28 tablet:pb-6">
               <div className="container justify-start tablet:flex-col tablet:pb-11 tablet:px-4">

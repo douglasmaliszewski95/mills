@@ -4,10 +4,9 @@ const environment =
   process.env.NODE_ENV === "development"
     ? process.env.NEXT_PUBLIC_API_GRAPHQL_DEV
     : process.env.NODE_ENV === "production"
-    ? "https://mills.vercel.app"
-    : "https://mills.vercel.app";
-
- 
+    ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
+    : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
+    
 const client = new ApolloClient({
   uri: `${environment}/api/graphql`,
   cache: new InMemoryCache(),

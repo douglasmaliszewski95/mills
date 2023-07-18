@@ -24,6 +24,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
       {menuInfo.map((info) => (
         <>
           <h3
+            key={info.title}
             className={`font-medium text-green-800 text-base border-b-[1px] border-green-800 mb-4 ${
               info?.subGroups?.length > 0 ? "pb-2" : "pb-4"
             }`}
