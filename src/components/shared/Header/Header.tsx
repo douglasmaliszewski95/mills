@@ -6,9 +6,13 @@ import { mobileMenuInfo } from "@/components/shared/Navbar/utils";
 import { RequestQuoteFormType } from "@/types";
 import { FormModal } from "./FormModal/FormModal";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
+import { HeaderProps } from "./types";
 
-export const Header: React.FC = () => {
+export const Header: React.FC<HeaderProps> = (props) => {
+  const { onSearch } = props;
+
   const [openModal, setOpenModal] = useState("");
+  const [searchMode, setSearchMode] = useState(false);
 
   const sendAlert = () => {
     window.scrollTo(0, 0);
@@ -42,7 +46,12 @@ export const Header: React.FC = () => {
     />
   ) : (
     <header>
-      <Navbar openMenu={openMenu} />
+      <Navbar
+        onSearch={onSearch}
+        openMenu={openMenu}
+        searchMode={searchMode}
+        setSearchMode={setSearchMode}
+      />
       {openModal === "confirm" && (
         <ConfirmModal
           title="Sua solicitação foi enviada com sucesso! Em breve um especialista

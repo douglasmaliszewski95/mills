@@ -11,12 +11,12 @@ import brazil from "@/assets/brazil.svg";
 import { ChevronDown } from "@/assets/ChevronDown";
 import Link from "next/link";
 import { menu } from "./utils";
-import { useRouter } from "next/router";
+import { SearchInput } from "./SearchInput/SearchInput";
+import { SearchModal } from "./SearchModal/SearchModal";
 
 export const Navbar: React.FC<NavbarProps> = (props) => {
-  const { openMenu } = props;
+  const { openMenu, searchMode, setSearchMode, onSearch } = props;
 
-  const router = useRouter();
   const { isMobile } = useScreenWidth();
   const [menuView, setMenuView] = useState("rentalLight");
   const backgroundColor =
@@ -83,7 +83,9 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
       link.click();
     }
   };
-
+  const handleSearchMode = (action: boolean) => {
+    return action ?? undefined;
+  };
   return (
     <nav>
       <div className="flex w-full tablet:pl-0 justify-center items-center bg-brown-100 tablet:px-4">
@@ -120,50 +122,71 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
       </div>
       <div className={`${backgroundColor} flex justify-center`}>
         <div
-          className={`flex w-full gap-4 container py-6 tablet:py-3 justify-between items-center tablet:px-4 ${backgroundColor}`}
+          className={`flex w-full ${
+            !searchMode && "gap-4"
+          } container py-6 tablet:py-3 justify-between items-center tablet:px-4 ${backgroundColor}`}
         >
-          <div className="flex w-full mr-6">
+          <div className={`flex w-full ${!searchMode && "mr-6"}`}>
             <Link href="/">
               <Image src={millsLogo} width={76} height={32} alt="logo" />
             </Link>
-            <Menubar.Root className="flex tablet:hidden justify-between w-full pl-9">
-              {menu.map((item) => {
-                return (
-                  <Menubar.Menu key={item.title}>
-                    <Menubar.Trigger
-                      className={triggerClass}
-                      onClick={() => goToPage(item.link ?? "")}
-                    >
-                      {item.title}
-                    </Menubar.Trigger>
-                    {item.subMenu && (
-                      <Menubar.Portal>
-                        <Menubar.Content
-                          className="font-medium text-sm mt-[20px] text-white bg-white py-5 w-80 will-change-[transform,opacity]"
-                          align="start"
-                          sideOffset={5}
-                          alignOffset={-25}
-                        >
-                          {item.subMenu.map((subItem: any, index) => {
-                            return (
-                              <Fragment key={index}>
-                                {renderWithImage(subItem, index)}
-                              </Fragment>
-                            );
-                          })}
-                        </Menubar.Content>
-                      </Menubar.Portal>
-                    )}
-                  </Menubar.Menu>
-                );
-              })}
-            </Menubar.Root>
+            {searchMode ? (
+              isMobile ? (
+                <SearchModal
+                  onSearch={onSearch}
+                  onClose={() => handleSearchMode(false)}
+                />
+              ) : (
+                <SearchInput
+                  onSearch={onSearch}
+                  closeInput={() => handleSearchMode(false)}
+                />
+              )
+            ) : (
+              <Menubar.Root className="flex tablet:hidden justify-between w-full pl-9">
+                {menu.map((item) => {
+                  return (
+                    <Menubar.Menu key={item.title}>
+                      <Menubar.Trigger
+                        className={triggerClass}
+                        onClick={() => goToPage(item.link ?? "")}
+                      >
+                        {item.title}
+                      </Menubar.Trigger>
+                      {item.subMenu && (
+                        <Menubar.Portal>
+                          <Menubar.Content
+                            className="font-medium text-sm mt-[20px] text-white bg-white py-5 w-80 will-change-[transform,opacity]"
+                            align="start"
+                            sideOffset={5}
+                            alignOffset={-25}
+                          >
+                            {item.subMenu.map((subItem: any, index) => {
+                              return (
+                                <Fragment key={index}>
+                                  {renderWithImage(subItem, index)}
+                                </Fragment>
+                              );
+                            })}
+                          </Menubar.Content>
+                        </Menubar.Portal>
+                      )}
+                    </Menubar.Menu>
+                  );
+                })}
+              </Menubar.Root>
+            )}
           </div>
           <div className="flex items-center">
             <div className="flex items-center gap-4">
-              <a className="cursor-pointer min-w-[16px]">
-                <Image src={search} alt="search" width={16} height={16} />
-              </a>
+              {(isMobile || !searchMode) && (
+                <button
+                  onClick={() => handleSearchMode(true)}
+                  className="cursor-pointer min-w-[16px]"
+                >
+                  <Image src={search} alt="search" width={16} height={16} />
+                </button>
+              )}
               {menuView === "rentalLight" && <LoginButton />}
 
               <a className="cursor-pointer min-w-[16px]">

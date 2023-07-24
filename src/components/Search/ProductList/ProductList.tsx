@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ProductListProps } from "./types";
 import closeIcon from "@/assets/close.svg";
-import { ProductCard } from "../ProductCard/ProductCard";
+import { ProductCard } from "../../shared/ProductCard/ProductCard";
 import chevronLeft from "@/assets/large-orange-chevron-left.svg";
 import chevronRight from "@/assets/large-orange-chevron-right.svg";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
@@ -30,7 +30,7 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
   const isMultipleProducts = resultsQuantity > 1;
   const totalPageQuantity = Math.ceil(resultsQuantity / quantityShowed);
 
-  const productsWithPagination = products.slice(
+  const productsWithPagination = products?.slice(
     (currentPage - 1) * quantityShowed,
     currentPage * quantityShowed
   );
@@ -59,7 +59,7 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
               </div>
             )}
       </div>
-      <h3 className="text-green-800 mb-6 tablet:mb-4">{`(${
+      <h3 className="text-green-800 tablet:text-xs mb-6 tablet:mb-4">{`(${
         resultsQuantity || "Nenhuma"
       } ${
         isMultipleProducts ? "plataformas encontradas" : "plataforma encontrada"
@@ -74,8 +74,11 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
         </button>
       )}
       <div className="grid grid-cols-3 gap-4 tablet:grid-cols-1">
-        {productsWithPagination.map((product, index) => (
-          <ProductCard key={`${product.model}${index}`} product={product} />
+        {productsWithPagination?.map((product, index) => (
+          <ProductCard
+            key={`${product.displayName}${index}`}
+            product={product}
+          />
         ))}
       </div>
       <div className="w-full flex justify-center mt-8">

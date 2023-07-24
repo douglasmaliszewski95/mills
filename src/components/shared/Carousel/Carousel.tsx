@@ -30,6 +30,7 @@ export const Carousel: React.FC<CarouselProps> = (props) => {
     prevArrow,
     slidesToScroll,
     slidesToShow,
+    adaptiveHeight: true,
     appendDots: (dots: ReactNode) =>
       !hasDots ? (
         <></>

@@ -16,7 +16,7 @@ export const RequestQuote: React.FC = () => {
   const onSubmit = (data: FormInputs) => null;
 
   return (
-    <div className="flex w-full justify-center absolute mb-[-60px] tablet:mt-0 tablet:mr-0">
+    <div className="flex w-full justify-center z-10 absolute mb-[-60px] tablet:mt-0 tablet:mr-0">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="container max-w-[1170px] bg-white rounded py-6 px-[52px] flex gap-10 items-center shadow-xl font-ibm-font ml-[-25px] tablet:flex-col tablet:ml-[0px] tablet:px-4"

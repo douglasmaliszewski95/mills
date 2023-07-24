@@ -75,8 +75,8 @@ export const Footer: React.FC = () => {
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
                   <Image
                     src={facebook}
-                    width={isMobile ? 6 : 20}
-                    height={isMobile ? 6 : 20}
+                    width={isMobile ? 6 : 12}
+                    height={isMobile ? 6 : 12}
                     alt="facebook"
                   />
                 </Avatar.Root>
@@ -86,6 +86,7 @@ export const Footer: React.FC = () => {
                   <Image
                     src={linkedin}
                     width={isMobile ? 12 : 20}
+                    height={isMobile ? 12 : 20}
                     alt="linkedin"
                   />
                 </Avatar.Root>
@@ -94,6 +95,7 @@ export const Footer: React.FC = () => {
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
                   <Image
                     src={youtube}
+                    width={isMobile ? 17 : 20}
                     height={isMobile ? 17 : 20}
                     alt="youtube"
                   />

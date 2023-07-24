@@ -16,8 +16,10 @@ export const ExpertRecommendation: React.FC = () => {
         Ainda tem dúvidas sobre qual é o <br />
         equipamento mais indicado para sua demanda?
       </h2>
-      <Button className="py-2" size={isMobile ? "responsive" : "large"}>
-        Fale com um especialista
+      <Button className="tablet:w-full">
+        <p className="text-sm font-semibold px-[40px]">
+          Fale com um especialista
+        </p>
       </Button>
     </Section>
   );

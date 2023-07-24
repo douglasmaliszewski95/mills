@@ -1,7 +1,7 @@
-import { Product } from "@/types";
+import { ProductOCC } from "@/types";
 
 export interface ProductListProps {
-  products: Product[];
+  products: ProductOCC[];
   selectedFilters: string[];
   onRemoveFilter: (filter: string) => void;
   setIsFiltersOpen?: (isOpen: boolean) => void;

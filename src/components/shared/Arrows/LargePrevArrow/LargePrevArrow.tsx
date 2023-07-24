@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const LargePrevArrow: React.FC<ArrowProps> = (props) => {
   const { onClick, width = 48, height = 48, customProps } = props;
-  const customClass = `absolute top-[50%] p-0 left-12 cursor-pointer ${customProps}`;
+  const customClass = `absolute z-50 top-[50%] p-0 left-12 cursor-pointer ${customProps}`;
 
   return (
     <Image
