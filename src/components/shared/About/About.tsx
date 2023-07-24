@@ -59,13 +59,13 @@ export const About: React.FC<AboutProps> = (props) => {
       </div>
       {(isDesktop || imageFirst) && (
         <div className={`basis-1/2 relative`}>
-          <Image
+          <img
             className={`block ${
               imageFirst
                 ? "object-top object-cover"
                 : "object-fill object-right"
             }`}
-            src={image}
+            src={image.src}
             alt={alt}
           />
         </div>

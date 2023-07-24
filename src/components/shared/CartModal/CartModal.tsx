@@ -16,10 +16,10 @@ export const CartModal: React.FC<CartModalProps> = (props) => {
         className="bg-orange-500 w-[50px] h-[50px] rounded-full relative"
         onClick={handleClickCart}
       >
-        <Image
+        <img
           width={30}
           height={30}
-          className="absolute bottom-[7px] left-[7px]"
+          className="absolute bottom-[7px] left-[7px] w-[30px] h-[30px]"
           src={cartModalIcon}
           alt="Carrinho de supermercado"
         />
@@ -31,7 +31,7 @@ export const CartModal: React.FC<CartModalProps> = (props) => {
         className="bg-green-300 w-[50px] h-[50px] rounded-full relative"
         onClick={handleWhatsappClick}
       >
-        <Image
+        <img
           src={whatsappIcon}
           alt="Logo do whatsapp"
           className="absolute top-[50%] left-[50%]  translate-x-[-50%] translate-y-[-50%]"

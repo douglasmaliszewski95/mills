@@ -36,7 +36,7 @@ export const Utilizations: React.FC<UtilizationsProps> = (props) => {
             key={id}
             className="px-6 py-[18px] bg-beige-200 rounded flex gap-4 items-center"
           >
-            <Image src={image} width={32} height={32} alt={alt} />
+            <img src={image.src} alt={alt} className="w-[32px] h-[32px]" />
             <p
               className={`text-green-800 tablet:text-sm ${
                 smallFont ? "text-sm font-normal" : "font-semibold"

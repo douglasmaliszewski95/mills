@@ -36,7 +36,7 @@ export const MachinesAndPlatforms: React.FC = () => {
                         </p>
                         <Collapsible.Trigger asChild>
                           <button>
-                            <Image src={chevronDown} alt="chevron" />
+                            <img src={chevronDown} alt="chevron" />
                           </button>
                         </Collapsible.Trigger>
                       </div>

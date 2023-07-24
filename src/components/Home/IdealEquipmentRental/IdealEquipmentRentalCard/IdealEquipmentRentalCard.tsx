@@ -9,7 +9,7 @@ export const IdealEquipmentRentalCard: React.FC<
   return (
     <div className="flex flex-col items-center max-w-[114px] gap-4">
       <div className="border-2 border-orange p-6 rounded-full">
-        <Image src={image} alt={alt} className="" />
+        <img src={image} alt={alt} />
       </div>
       <p className="text-orange">{label}</p>
     </div>

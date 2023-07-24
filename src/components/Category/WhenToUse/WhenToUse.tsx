@@ -17,12 +17,10 @@ export const WhenToUse: React.FC<WhenToUseProps> = (props) => {
             key={index}
             className="basis-1/3 rounded bg-beige-200 px-7 py-8 tablet:pb-6 flex flex-col items-center tablet:text-center"
           >
-            <Image
-              width={52}
-              height={52}
+            <img
               alt="Certo"
               src={checkBorder}
-              className="my-7 tablet:mt-0 tablet:mb-6"
+              className="my-7 tablet:mt-0 tablet:mb-6 w-[52px] h-[52px]"
             />
             <p className="text-green-800 tablet:text-xs">{text}</p>
           </div>

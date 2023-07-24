@@ -32,7 +32,7 @@ export const FormModal: React.FC<FormModalProps> = (props) => {
               entender qual a sua necessidade.
             </Dialog.Title>
             <Dialog.Close asChild className="mt-[-9px]">
-              <Image src={close} alt="Xis" width={14} height={14} />
+              <img className="w-[14px] h-[14px]" src={close} alt="Xis" />
             </Dialog.Close>
           </div>
           <form

@@ -141,7 +141,13 @@ export const Details: React.FC<DetailsProps> = (props) => {
           </div>
           {needEquipment && (
             <div className="mb-3 flex py-4 pr-4 pl-6 border-[2px] border-green-800/80 rounded gap-3">
-              <Image src={worker} alt="Operário" width={25} height={25} />
+              <img
+                className="w-[25px] h-[25px]"
+                src={worker}
+                alt="Operário"
+                width={25}
+                height={25}
+              />
               <p className="text-sm text-green-800 tablet:text-xs">
                 Equipamentos de proteção necessários para a operação do
                 equipamento: botas, capacetes e coletes.
@@ -150,7 +156,11 @@ export const Details: React.FC<DetailsProps> = (props) => {
           )}
           {needTraining && (
             <div className="mb-3 flex py-4 pr-4 pl-6 border-[2px] border-green-800/80 rounded gap-3">
-              <Image src={analytics} alt="Operário" width={25} height={25} />
+              <img
+                className="w-[25px] h-[25px]"
+                src={analytics}
+                alt="Operário"
+              />
               <p className="text-sm text-green-800 tablet:text-xs">
                 Este equipamento só pode ser operado após treinamento prévio.
               </p>
@@ -160,7 +170,13 @@ export const Details: React.FC<DetailsProps> = (props) => {
           <div className="flex justify-between w-full py-4">
             <p className="text-green-800 font-semibold tablet:text-sm">{`Manual ${brand}`}</p>
             <button>
-              <Image src={download} width={22} height={22} alt="Download" />
+              <img
+                className="w-[22px] h-[22px]"
+                src={download}
+                width={22}
+                height={22}
+                alt="Download"
+              />
             </button>
           </div>
           <div className="w-full h-[1px] bg-gray-200"></div>

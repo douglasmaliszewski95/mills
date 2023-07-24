@@ -35,9 +35,9 @@ export const InputSelector: React.FC<InputSelectorProps> = (props) => {
         <Select.Value placeholder={placeholder}>{value}</Select.Value>
         <Select.Icon asChild>
           {isOpen ? (
-            <Image src={chevronUp} alt="Seta apontando para cima" />
+            <img src={chevronUp} alt="Seta apontando para cima" />
           ) : (
-            <Image src={chevronDown} alt="Seta apontando para baixo" />
+            <img src={chevronDown} alt="Seta apontando para baixo" />
           )}
         </Select.Icon>
       </Select.Trigger>

@@ -6,7 +6,7 @@ export const Card: React.FC<CardProps> = (props) => {
   const { image, alt, title, article, url = "" } = props;
   return (
     <div className="flex tablet:flex-col">
-      <Image src={url} alt="img" />
+      <img src={url} alt="img" />
       <div className="flex flex-col gap-8 pl-[72px] rounded-b pr-9 pt-12 bg-white tablet:max-w-[100%] tablet:px-4 tablet:pt-4 tablet:gap-3">
         <h3 className="font-semibold text-lg text-green-800 max-w-[50%] tablet:max-w-full tablet:text-base ">
           {title}

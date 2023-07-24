@@ -75,7 +75,7 @@ export default function Home() {
               <Dialog.Overlay className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0" />
               <Dialog.Content className="py-9 px-3 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-lg bg-white focus:outline-none">
                 <div className="flex items-center gap-4 flex-col">
-                  <Image src={checkCircle} alt="green right check" />
+                  <img src={checkCircle} alt="green right check" />
                   <Dialog.Title className="text-green-800 text-sm font-semibold text-center">
                     Sua solicitação foi enviada com sucesso! Em breve um
                     especialista entrará em contato

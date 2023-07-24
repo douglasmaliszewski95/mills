@@ -13,12 +13,12 @@ export const AboutRental: React.FC<AboutRentalProps> = (props) => {
       {isDesktop && (
         <div className="flex ">
           <h5 className="text-white text-2xl font-semibold mt-12">{title}</h5>
-          <Image
-            src={linesUp}
+          <img
+            src={linesUp.src}
             width={683}
             height={123}
             alt="linesBg"
-            className="ml-auto"
+            className="ml-auto w-[683px] h-[123px]"
           />
         </div>
       )}
@@ -28,7 +28,11 @@ export const AboutRental: React.FC<AboutRentalProps> = (props) => {
       <div className="flex justify-between gap-[75px] tablet:flex-col tablet:px-8">
         {items.map((item) => (
           <div key={item.alt} className="flex flex-col items-center">
-            <Image src={item.image} alt={item.alt} width={52} height={48} />
+            <img
+              src={item.image}
+              alt={item.alt}
+              className="w-[52px] h-[48px]"
+            />
             <h6 className="mt-3 mb-6 tablet:mb-2 text-lg font-semibold text-white tablet:text-sm">
               {item.title}
             </h6>

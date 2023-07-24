@@ -32,7 +32,7 @@ export const Newsletter: React.FC = () => {
       {isModalOpen && (
         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none tablet:mt-7">
           <div className="relative w-auto bg-white flex flex-col items-center gap-4 p-10 rounded">
-            <Image src={checkCircle} alt="Ícone de certo" />
+            <img src={checkCircle} alt="Ícone de certo" />
             <p className="text-green-800 font-semibold text-lg text-center">
               Cadastro realizado com sucesso!
             </p>

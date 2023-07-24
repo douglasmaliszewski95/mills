@@ -5,14 +5,12 @@ import { ArrowProps } from "./types";
 
 export const NextArrow: React.FC<ArrowProps> = (props) => {
   const { onClick, width = 48, height = 48, customProps } = props;
-  const customClass = `absolute top-[50%] p-0 right-12 cursor-pointer ${customProps}`;
+  const customClass = `absolute top-[50%] p-0 right-12 cursor-pointer ${customProps} w-[${width}px] h-[${height}px]`;
 
   return (
-    <Image
+    <img
       className={customClass}
       onClick={onClick}
-      height={height}
-      width={width}
       src={chevronRight}
       alt="Seta apontando para direita"
     />
@@ -21,13 +19,11 @@ export const NextArrow: React.FC<ArrowProps> = (props) => {
 
 export const PrevArrow: React.FC<ArrowProps> = (props) => {
   const { onClick, width = 48, height = 48, customProps } = props;
-  const customClass = `absolute z-10 top-[50%] p-0 left-12 cursor-pointer ${customProps}`;
+  const customClass = `absolute z-10 top-[50%] p-0 left-12 cursor-pointer ${customProps} w-[${width}px] h-[${height}px]`;
   return (
-    <Image
+    <img
       className={customClass}
       onClick={onClick}
-      height={height}
-      width={width}
       src={chevronLeft}
       alt="Seta apontando para a esquerda"
     />

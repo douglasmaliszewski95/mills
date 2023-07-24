@@ -34,10 +34,11 @@ export const MillsNumbers: React.FC<MillsNumbersProps> = (props) => {
       <div className="relative container pb-14 pt-[72px] flex flex-col gap-11 tablet:pt-60  tablet:pl-4 tablet:pr-1">
         {infos.map(({ id, title, subTitle }) => (
           <div key={id} className="flex gap-2 tablet:gap-5">
-            <Image
+            <img
               src={plus}
               width={isMobile ? 38 : 48}
               alt="Sinal de adição"
+              className="w-[48px] tablet:w-[38px]"
             />
             <div>
               <p className="text-white font-bold text-2xl tablet:text-lg">
