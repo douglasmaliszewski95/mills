@@ -32,7 +32,7 @@ export const getCMSHomeImage = async () => {
     return {
       src: banner.banners[0].fields.native.links[0].href,
       srcMobile: banner.banners[1].fields.native.links[0].href,
-      title: banner.content[0].fields?.content_title,
+      title: banner.banners[0].fields?.content_title,
       buttonTitle: "Ver modelos",
       id: banner.id,
     };
