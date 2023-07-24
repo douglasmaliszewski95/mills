@@ -6,7 +6,7 @@ import ParamsSearch from "@/dtos/ParamsSearch";
 //     : process.env.NODE_ENV === "production"
 //       ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
 //       : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
-const environment = "http://qa-site-mills.us-east-2.elasticbeanstalk.com";
+const environment = "https://mills.vercel.app/'";
 const resolvers = {
   Query: {
     images: async (parent: any, args: ParamsSearch) => {
