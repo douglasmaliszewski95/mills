@@ -2,27 +2,16 @@ import { gql } from "graphql-tag";
 
 const typeDefs = gql`
   type Query {
-    # users: [User]
-    # user(nome: String): [User]
-    imagesHome(description: String): [Image]
+    images(description: String): ResultSearchCMS
+    texts: ResultSearchCMS
   }
 
-  type ResultImagesHome {
+  type ResultSearchCMS {
     count: String
-    items: [ImagesHome]
+    items: [SearchCMS]
   }
 
-  type ImagesHome {
-    description: String
-    type: String
-    fileExtension: String
-    name: String
-    id: String
-    fileGroup: String
-    slug: String
-  }
-
-  type Image {
+  type SearchCMS {
     id: String
     type: String
     name: String
@@ -30,13 +19,27 @@ const typeDefs = gql`
     fileExtension: String
     fields: Fields
     fileGroup: String
-    links: [Links]
+    description: String
   }
 
   type Fields {
     metadata: Metadata
     native: Native
     renditions: [Renditions]
+    alt_attribute: String
+    content_area: String
+    content_order: String
+    content_page: String
+    content_text: String
+    content_title: String
+    content_subtitle: String
+    content_text_json:[Json]
+    mobile: Boolean
+  }
+
+  type Json {
+    title: String
+    subtitle: String
   }
 
   type Native {

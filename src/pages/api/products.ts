@@ -1,46 +1,57 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { Product, Products, ProductsList } from '@/dtos/Products'
-import { getCredentialsOCC } from '@/services/hooks/getCredentialsOCC'
+import type { NextApiRequest, NextApiResponse } from "next";
+import { ProductOCC, Products, ProductsList } from "@/dtos/Products";
+import { getCredentialsOCC } from "@/services/hooks/getCredentialsOCC";
 
 type Collection = {
-  childProducts: ProductsList[]
-}
+  childProducts: ProductsList[];
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Products>
 ) {
-  let imagesList: Product[] = []
-  const token = await getCredentialsOCC()
+  let imagesList: ProductOCC[] = [];
+  const token = await getCredentialsOCC();
   if (token.access_token) {
     const { collection } = req.query;
-    const response: Collection = await fetch(`${process.env.OCC_URL}/collections/${collection}`, {
-      headers: {
-        "Authorization": `Bearer ${token.access_token}`
+    const response: Collection = await fetch(
+      `${process.env.OCC_URL}/collections/${collection}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
       }
-    }).then(collections => {
-      if (collections.status === 200)
-        return collections.json()
+    ).then((collections) => {
+      if (collections.status === 200) return collections.json();
       else {
-        const result: Collection = { childProducts: [] }
-        return result
+        const result: Collection = { childProducts: [] };
+        return result;
       }
-    })
+    });
 
     if (response.childProducts.length > 0) {
       for (let i = 0; i < response.childProducts.length; i++) {
-        const obj = await fetch(`${process.env.OCC_URL}/products/${response.childProducts[i].repositoryId}`, {
-          headers: {
-            "Authorization": `Bearer ${token.access_token}`
+        const obj = await fetch(
+          `${process.env.OCC_URL}/products/${response.childProducts[i].repositoryId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token.access_token}`,
+            },
           }
-        }).then(res => res.json())
-        imagesList.push(obj)
+        ).then((res) => res.json());
+        imagesList.push(obj);
       }
-      res.status(200).json({ erro: "", products: imagesList })
-    }
-    else
-      res.json({ erro: "Não foi localizado nenhum produto para collection informada", products: imagesList })
-  }
-  else
-    res.status(token.status).json({ erro: "Erro ao gerar token de autenticação", products: imagesList })
+      res.status(200).json({ erro: "", products: imagesList });
+    } else
+      res.json({
+        erro: "Não foi localizado nenhum produto para collection informada",
+        products: imagesList,
+      });
+  } else
+    res
+      .status(token.status)
+      .json({
+        erro: "Erro ao gerar token de autenticação",
+        products: imagesList,
+      });
 }

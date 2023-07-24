@@ -1,83 +1,88 @@
-import ImagesHome from "@/dtos/ImagesHome";
 import { getImage } from "@/services/hooks/getImage";
 import { getImageSrc, getMobileImageName } from "@/utils/images";
+import { mock } from "./utils";
 
-export const getCMSContent = async (homeType: string) => {
-  const content: ImagesHome[] = await getImage(homeType);
+export const getCMSHomeImage = async () => {
+  const content: any = await getImage("home_leves");
+  // const content: any = mock;
 
-  const desktopBanners = content.filter((image) =>
-    image.name.startsWith("d_banner_carousel")
-  );
-  const mobileBanners = content.filter((image) =>
-    image.name.startsWith("m_banner_carousel")
-  );
+  const groupedBanners = content?.banner_carousel.reduce(
+    (acc: any, banner: any) => {
+      const contentOrder = parseInt(banner.fields.content_order);
 
-  const desktopOurProducts = content.filter((image) =>
-    image.name.startsWith("d_ourproducts")
-  );
+      if (!acc[contentOrder]) {
+        acc[contentOrder] = [];
+      }
 
-  const ourServices = content.filter((image) =>
-    image.name.startsWith("d_ourservices")
-  );
+      acc[contentOrder].push(banner);
 
-  const numbersBanner = content.find((image) =>
-    image.name.startsWith("d_numbers_banner")
-  );
-
-  const numbersBannerMobile = content.find((image) =>
-    image.name.startsWith("m_numbers_banner")
-  );
-
-  const info = {
-    banners: desktopBanners.map((image, index) => {
-      const src = getImageSrc(image);
-
-      const respectiveMobileImage = mobileBanners.find(
-        (mobileImage) => mobileImage.name === getMobileImageName(image.name)
-      );
-      const srcMobile = respectiveMobileImage
-        ? getImageSrc(respectiveMobileImage)
-        : "";
-
-      const banner = {
-        id: String(index),
-        src,
-        srcMobile,
-        title:
-          "Conte com a eficiência e proximidade que você já conhece para alavancar a produtividade na gestão da sua frota.",
-        buttonTitle: "Ver modelos",
-      };
-
-      return banner;
-    }),
-    ourProducts: desktopOurProducts.map((image, index) => {
-      const src = getImageSrc(image);
-
-      return {
-        id: String(index),
-        image: src,
-        alt: "",
-        title: "Plataforma Elevatória",
-      };
-    }),
-    ourServices: ourServices.map((image, index) => {
-      const src = getImageSrc(image);
-
-      return {
-        id: String(index),
-        image: src,
-        alt: "",
-        title: "Treinamento para operadores e supervisores",
-        article:
-          "Nos últimos anos capacitamos cerca de 26 mil trabalhadores em mais de 2 mil treinamentos realizados nos últimos anos. Nossos treinamentos levam conhecimento especializado aos seus operadores para um uso seguro e eficaz.",
-        url: "https://google.com.br",
-      };
-    }),
-    numbers: {
-      bannerDesktop: numbersBanner ? getImageSrc(numbersBanner) : "",
-      bannerMobile: numbersBannerMobile ? getImageSrc(numbersBannerMobile) : "",
+      return acc;
     },
-  };
+    {}
+  );
 
-  return info;
+  const groupedBannersList = Object.keys(groupedBanners).map(
+    (contentOrder) => ({
+      contentOrder: parseInt(contentOrder),
+      banners: groupedBanners[contentOrder],
+    })
+  );
+
+  const bannersResult = groupedBannersList.map((banner: any) => {
+    return {
+      src: banner.banners[0].fields.native.links[0].href,
+      srcMobile: banner.banners[1].fields.native.links[0].href,
+      title: banner.content[0].fields?.content_title,
+      buttonTitle: "Ver modelos",
+      id: banner.id,
+    };
+  });
+
+  const groupedOurProducts = content?.ourproducts.reduce(
+    (acc: any, product: any) => {
+      const contentOrder = parseInt(product.fields.content_order);
+      if (!acc[contentOrder]) {
+        acc[contentOrder] = [];
+      }
+
+      acc[contentOrder].push(product);
+
+      return acc;
+    },
+    {}
+  );
+
+  const groupedOurProductsList = Object.keys(groupedOurProducts).map(
+    (contentOrder) => ({
+      contentOrder: parseInt(contentOrder),
+      content: groupedOurProducts[contentOrder],
+    })
+  );
+
+  const ourProducts = groupedOurProductsList.map((product: any) => {
+    return {
+      image: product.content[0].fields.native.links[0].href,
+      id: product.id,
+      mobileImage:
+        product.content[0].fields.native.links[0].href ??
+        product.content[1].fields.native.links[0].href,
+      title: product.content[0].fields.content_text,
+    };
+  });
+
+  const bannerNumbers = content?.banner_numbers.map((banner: any) => {
+    return {
+      image: banner.fields.native.links[0].href,
+    };
+  });
+  const ourServices = content?.ourservices.map((services: any) => {
+    return {
+      url: services.fields.native.links[0].href,
+      id: services.id,
+      title: services.fields.content_title,
+      article: services.fields.content_text,
+    };
+  });
+
+  return { bannersResult, ourProducts, bannerNumbers, ourServices };
 };

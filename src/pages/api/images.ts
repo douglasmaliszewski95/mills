@@ -1,75 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import ImagesHome from "@/dtos/ImagesHome";
+import type { NextApiRequest, NextApiResponse } from 'next'
+import SearchCMS from '@/dtos/SearchCMS';
+
+type ResultSearchCMS = {
+  count: number
+  items: SearchCMS[]
+}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Array<ImagesHome>>
+  res: NextApiResponse<ResultSearchCMS>
 ) {
   const { description } = req.query;
-  const credentials = btoa(`${process.env.USER}:${process.env.SECRET}`);
-  const auth = { Authorization: `Basic ${credentials}` };
-  let channelToken = "";
-  let resultImages: ImagesHome[] = [];
-  const data = await fetch(
-    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
-    { headers: auth }
-  ).then((channelResponse) => channelResponse.json());
+  const credentials = btoa(`${process.env.USER}:${process.env.SECRET}`)
+  const auth = { "Authorization": `Basic ${credentials}` }
+  let channelToken = ''
+  
+  const data: ResultSearchCMS = await fetch(`${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`, { headers: auth })
+    .then(channelResponse => channelResponse.json())
+    .then(async (channelData) => {
+      const channel = channelData.items.find((x: any) => x.createdBy === "cms-site@mills.com.br")
+      return await fetch(`${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`, { headers: auth })
+        .then(channelDataResponse => channelDataResponse.json())
+        .then(async (channelTokenData) => {
+          channelToken = channelTokenData.channelTokens[0].token
+          return await fetch(`${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=type+eq+"custom_image"+AND+fields.content_page+co+"${description}"&channelToken=${channelToken}&fields=all`)
+            .then(channelTokenResponse => channelTokenResponse.json())
+            .catch(err => { console.error('Erro ao conectar' + err.message) })
+        })
+        .catch(err => { console.error('Erro ao conectar' + err.message) })
+    })
+    .catch(err => { console.error('Erro ao conectar' + err.message) })
 
-  const channel = data.items.find(
-    (x: any) => x.createdBy === "cms-site@mills.com.br"
-  );
-
-  const data2 = await fetch(
-    `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
-    { headers: auth }
-  ).then((channelDataResponse) => channelDataResponse.json());
-
-  channelToken = data2.channelTokens[0].token;
-
-  const data3 = await fetch(
-    `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`,
-    { headers: auth }
-  ).then((channelTokenResponse) => channelTokenResponse.json());
-
-  // const data = await fetch(
-  //   `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels`,
-  //   { headers: auth }
-  // )
-  //   .then((channelResponse) => channelResponse.json())
-  //   .then((channelData) => {
-  //     const channel = channelData.items.find(
-  //       (x: any) => x.createdBy === "cms-site@mills.com.br"
-  //     );
-  //     return fetch(
-  //       `${process.env.ORACLE_CMS}/content/management/api/v1.1/channels/${channel.id}`,
-  //       { headers: auth }
-  //     )
-  //       .then((channelDataResponse) => channelDataResponse.json())
-  //       .then((channelTokenData) => {
-  //         channelToken = channelTokenData.channelTokens[0].token;
-  //         return fetch(
-  //           `${process.env.ORACLE_CMS}/content/published/api/v1.1/items?q=description+co+"${description}"&channelToken=${channelToken}&fields=all`
-  //         )
-  //           .then((channelTokenResponse) => channelTokenResponse.json())
-  //           .catch((err) => {
-  //             console.error("Erro ao conectar" + err.message);
-  //           });
-  //       })
-  //       .catch((err) => {
-  //         console.error("Erro ao conectar" + err.message);
-  //       });
-  //   })
-  //   .catch((err) => {
-  //     console.error("Erro ao conectar" + err.message);
-  //   });
-
-  for (let i = 0; i < data3?.items.length; i++) {
-    const obj = await fetch(
-      `${process.env.ORACLE_CMS}/content/published/api/v1.1/items/${data3.items[i].id}?channelToken=${channelToken}`,
-      { headers: auth }
-    ).then((res) => res.json());
-    resultImages.push(obj);
-  }
-
-  res.status(200).json(resultImages);
+  res.status(200).json(data)
 }

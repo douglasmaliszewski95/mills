@@ -79,7 +79,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
                       {description}
                     </h5>
                     <div className="flex flex-col gap-px mt-[18px]">
-                      {specs.map(({ name, value }) => (
+                      {specs?.map(({ name, value }) => (
                         <p
                           key={`${name}${value}`}
                           className="text-green-800 text-sm tablet:text-[10px]"

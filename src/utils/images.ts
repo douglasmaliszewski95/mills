@@ -1,6 +1,4 @@
-import ImagesHome from "@/dtos/ImagesHome";
-
-export const getImageSrc = (image: ImagesHome) => {
+export const getImageSrc = (image: any) => {
   return image?.fields.native.links[0].href || "";
 };
 

@@ -6,4 +6,5 @@ export interface SectionProps {
   sectionClass?: string;
   containerClass?: string;
   backgroundImage?: string;
+  divGradient?: string;
 }

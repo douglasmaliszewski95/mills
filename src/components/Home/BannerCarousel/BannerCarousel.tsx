@@ -1,14 +1,12 @@
 import { Carousel } from "@/components/shared/Carousel/Carousel";
 import Button from "@/components/shared/Button/Button";
 import { NextArrow, PrevArrow } from "./Arrows";
-import { banners } from "./utils";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { BannerCarouselProps } from "./types";
 
 export const BannerCarousel: React.FC<BannerCarouselProps> = (props) => {
   const { banners } = props;
   const { isMobile } = useScreenWidth();
-
   return (
     <div className="tablet:mt-[275px]">
       <Carousel

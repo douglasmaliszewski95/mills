@@ -15,18 +15,21 @@ import { BannerCarousel } from "@/components/Home/BannerCarousel/BannerCarousel"
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Header } from "@/components/shared/Header/Header";
 import { HomeSectionsProps } from "./types";
-import { getCMSContent } from "@/utils/content";
+import { getCMSHomeImage } from "@/utils/content";
+import { getSharedContent } from "@/utils/getSharedContent";
 
 export default function Home() {
-  const [content, setContent] = useState<HomeSectionsProps>();
+  const [content, setContent] = useState<any>();
 
   const getContent = useCallback(async () => {
-    const contentAux = await getCMSContent("home_leves");
-    setContent(contentAux);
+    const { bannersResult, ourProducts, bannerNumbers, ourServices } =
+      await getCMSHomeImage();
+    setContent({ bannersResult, ourProducts, bannerNumbers, ourServices });
   }, []);
 
   useEffect(() => {
-     getContent();
+    getContent();
+    // getSharedContent();
   }, []);
 
   return (
@@ -34,15 +37,15 @@ export default function Home() {
       <Header />
       <main className="h-full bg-white w-full">
         <div className="flex flex-col-reverse tablet:flex-col">
-          <BannerCarousel banners={content?.banners} />
+          <BannerCarousel banners={content?.bannersResult} />
           <RequestQuote />
         </div>
         <MeetOurProducts cards={content?.ourProducts} />
         <FindPlatform />
         <Segments />
         <MillsNumbers
-          bannerDesktop={content?.numbers.bannerDesktop || ""}
-          bannerMobile={content?.numbers.bannerMobile || ""}
+          bannerDesktop={content?.bannerNumbers[1]?.image || ""}
+          bannerMobile={content?.bannerNumbers[0]?.image || ""}
         />
         <Newsletter />
         <OurServices serviceCards={content?.ourServices} />

@@ -5,7 +5,18 @@ export interface SearchProducts {
   totalNumRecs?: number
   recsPerPage?: number
   products: Products[]
+  filters?: Filters[]
   erro?: string
+}
+
+interface Filters {
+  displayName: string
+  refinements: Refinements[]
+}
+
+interface Refinements {
+  link: string
+  label: string
 }
 
 export interface AttributesProduct {

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { CardProps } from "./types";
 
 export const Card: React.FC<CardProps> = (props) => {
