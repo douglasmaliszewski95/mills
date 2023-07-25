@@ -8,7 +8,7 @@ const environment =
     : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
 //const environment = "https://mills.vercel.app";
 const client = new ApolloClient({
-  uri: `${environment}/api/graphql`,
+  uri: `/api/graphql`,
   cache: new InMemoryCache(),
 });
 
