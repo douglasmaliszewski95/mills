@@ -1,7 +1,7 @@
 import ParamsSearch from "@/dtos/ParamsSearch";
 
 // const environment = "http://localhost:3000";
-const environment = "https://novo-site-qa.mills.com.br";
+const environment = "https://testedouglas.vercel.app";
 const resolvers = {
   Query: {
     images: async (parent: any, args: ParamsSearch) => {

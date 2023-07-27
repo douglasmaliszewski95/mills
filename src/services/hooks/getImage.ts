@@ -11,7 +11,7 @@ interface CMSReturn {
   [key: string]: SearchCMS[]
 }
 
-const environment = "https://novo-site-qa.mills.com.br";
+const environment = "https://testedouglas.vercel.app";
 
 export const getImage = async (text: String) => {
   try {
