@@ -15,7 +15,7 @@ export default async function handler(
   if (token.access_token) {
     const { collection } = req.query;
     const response: Collection = await fetch(
-      `${process.env.OCC_URL}/collections/${collection}`,
+      `https://p19894161c1prd-admin.occa.ocs.oraclecloud.com/ccadmin/v1/collections/${collection}`,
       {
         headers: {
           Authorization: `Bearer ${token.access_token}`,
@@ -32,7 +32,7 @@ export default async function handler(
     if (response.childProducts.length > 0) {
       for (let i = 0; i < response.childProducts.length; i++) {
         const obj = await fetch(
-          `${process.env.OCC_URL}/products/${response.childProducts[i].repositoryId}`,
+          `https://p19894161c1prd-admin.occa.ocs.oraclecloud.com/ccadmin/v1/products/${response.childProducts[i].repositoryId}`,
           {
             headers: {
               Authorization: `Bearer ${token.access_token}`,
@@ -48,10 +48,8 @@ export default async function handler(
         products: imagesList,
       });
   } else
-    res
-      .status(token.status)
-      .json({
-        erro: "Erro ao gerar token de autenticação",
-        products: imagesList,
-      });
+    res.status(token.status).json({
+      erro: "Erro ao gerar token de autenticação",
+      products: imagesList,
+    });
 }

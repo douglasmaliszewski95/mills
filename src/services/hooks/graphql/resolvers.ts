@@ -1,12 +1,7 @@
 import ParamsSearch from "@/dtos/ParamsSearch";
 
-const environment =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_GRAPHQL_DEV
-    : process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
-      : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
-//const environment = "https://mills.vercel.app";
+// const environment = "http://localhost:3000";
+const environment = "https://novo-site-qa.mills.com.br";
 const resolvers = {
   Query: {
     images: async (parent: any, args: ParamsSearch) => {

@@ -51,8 +51,8 @@ export const TrendingInformation: React.FC = () => {
         >
           Ver publicações
         </Button>
-        <img
-          src={bgUp.src}
+        <Image
+          src={bgUp}
           alt="background"
           className="absolute left-[151px] bottom-3 tablet:hidden"
         />

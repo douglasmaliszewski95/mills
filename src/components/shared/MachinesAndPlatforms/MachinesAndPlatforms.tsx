@@ -36,7 +36,7 @@ export const MachinesAndPlatforms: React.FC = () => {
                         </p>
                         <Collapsible.Trigger asChild>
                           <button>
-                            <img
+                            <Image
                               src={chevronDown}
                               className={`transform ${
                                 open ? "rotate-180 transition duration-500" : ""

@@ -45,7 +45,7 @@ export const Footer: React.FC = () => {
       <div className="flex items-center flex-col text-green-800 py-14 bg-gray-75 px-24 w-full tablet:px-4 tablet:py-6">
         <div className="container w-full">
           <div className="flex flex-wrap justify-between tablet:flex-col">
-            <img
+            <Image
               src={millsLogoOrange}
               alt="logo"
               className="w-32 h-14 tablet:w-14 tablet:h-6 tablet: mb-4"
@@ -53,45 +53,50 @@ export const Footer: React.FC = () => {
             <div className="flex gap-3">
               <a>
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
-                  <img
+                  <Image
                     src={whatsApp}
-                    className="w-[20px] h-[20px] tablet:w-[12px] tablet:h-[12px]"
+                    width={isMobile ? 12 : 20}
+                    height={isMobile ? 12 : 20}
                     alt="whatsapp"
                   />
                 </Avatar.Root>
               </a>
               <a>
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
-                  <img
+                  <Image
                     src={instagram}
-                    className="w-[20px] h-[20px] tablet:w-[12px] tablet:h-[12px]"
+                    width={isMobile ? 12 : 20}
+                    height={isMobile ? 12 : 20}
                     alt="instagram"
                   />
                 </Avatar.Root>
               </a>
               <a>
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
-                  <img
+                  <Image
                     src={facebook}
-                    className="w-[12px] tablet:w-[6px] h-[12px] tablet:h-[6px]"
+                    width={isMobile ? 6 : 12}
+                    height={isMobile ? 6 : 12}
                     alt="facebook"
                   />
                 </Avatar.Root>
               </a>
               <a>
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
-                  <img
+                  <Image
                     src={linkedin}
-                    className="w-[20px] h-[20px] tablet:w-[12px] tablet:h-[12px]"
+                    width={isMobile ? 12 : 20}
+                    height={isMobile ? 12 : 20}
                     alt="linkedin"
                   />
                 </Avatar.Root>
               </a>
               <a>
                 <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
-                  <img
+                  <Image
                     src={youtube}
-                    className="w-[20px] tablet:w-[17px] h-[20px] tablet:h-[17px]"
+                    width={isMobile ? 17 : 20}
+                    height={isMobile ? 17 : 20}
                     alt="youtube"
                   />
                 </Avatar.Root>
@@ -136,7 +141,7 @@ export const Footer: React.FC = () => {
                       className="flex items-center gap-2 cursor-pointer"
                     >
                       {item.title}
-                      <img
+                      <Image
                         src={chevronDown}
                         className={`w-[14px] transform ${
                           item.open ? "rotate-180 transition duration-500" : ""

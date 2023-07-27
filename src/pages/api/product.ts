@@ -11,7 +11,7 @@ export default async function handler(
     const { product } = req.query;
 
     const response: ProductOCC = await fetch(
-      `${process.env.OCC_URL}/products/${product}`,
+      `https://p19894161c1prd-admin.occa.ocs.oraclecloud.com/ccadmin/v1/products/${product}`,
       {
         headers: {
           Authorization: `Bearer ${token.access_token}`,

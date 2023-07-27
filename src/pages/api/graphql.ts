@@ -1,15 +1,31 @@
-import { ApolloServer } from "@apollo/server";
-import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import resolvers from "@/services/hooks/graphql/resolvers";
 import typeDefs from "@/services/hooks/graphql/schemas";
+import { NextApiRequest, NextApiResponse } from "next";
+import { createSchema, createYoga } from 'graphql-yoga'
 
-const apolloServer = new ApolloServer({
+export const config = {
+  api: {
+    // Disable body parsing (required for file uploads)
+    bodyParser: false
+  }
+}
+
+const schema = createSchema({
   typeDefs,
   resolvers
 })
 
-const handler = startServerAndCreateNextHandler(apolloServer, {
-  context: async (req, res) => ({ req, res })
+export default createYoga<{
+  cors?: {
+    origin: '*',
+    credentials: true,
+    allowedHeaders: ['X-Custom-Header'],
+    methods: ['POST']
+  }
+  req?: NextApiRequest
+  res?: NextApiResponse
+}>({
+  schema,
+  // Needed to be defined explicitly because our endpoint lives at a different path other than `/graphql`
+  graphqlEndpoint: '/api/graphql'
 })
-
-export default handler;

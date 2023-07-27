@@ -11,7 +11,7 @@ const MediaLink: React.FC<MediaLinkProps> = ({ href, src, alt, username }) => (
     rel="noopener noreferrer"
     className="flex gap-2 items-center"
   >
-    <img className="w-[40px] h-[40px]" src={src} alt={alt} />
+    <Image src={src} width={40} height={40} alt={alt} />
     {username}
   </a>
 );

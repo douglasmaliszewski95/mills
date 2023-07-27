@@ -8,7 +8,7 @@ export const BestSolutionsCard = (props: BestSolutionsCardProps) => {
   return (
     <li className="flex flex-col gap-2 max-h-[100px]">
       <div className="relative h-[64px]">
-        <img className="w-full h-full" src={imagePath} alt={alt} />
+        <Image fill src={imagePath} alt={alt} />
       </div>
       <p className="text-center text-orange leading-5">{title}</p>
     </li>

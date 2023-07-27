@@ -1,0 +1,11 @@
+**./ebextension/
+**/node_modules/
+**/dist
+.git
+npm-debug.log
+.coverage
+.coverage.*
+.env
+.aws
+azure-pipelines.yaml
+README.md

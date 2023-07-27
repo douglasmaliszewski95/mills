@@ -43,10 +43,12 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
               className="bg-white h-fit pt-5 mt-[-18px] pl-14 pb-[68px] pr-9"
               alignOffset={calculateOffset(-3, index)}
             >
-              <img
+              <Image
                 key={index}
-                className="mb-4 rounded w-[394px] h-[260px]"
+                className="mb-4 rounded"
                 src={subItem.image}
+                width={394}
+                height={260}
                 alt="Pa carregadeira"
               />
               <p className="text-green-800 font-normal text-xs w-[382px]">
@@ -103,10 +105,11 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
             </button>
           </div>
           <div className="flex items-center h-fit tablet:gap-1">
-            <img
-              className="w-[18px] h-[18px]"
+            <Image
               src={brazil}
               alt="Bandeira do brasil"
+              width={18}
+              height={18}
             />
             <p className="tablet:hidden text-xs text-green-800 ml-1 mr-2">
               Português
@@ -125,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
         >
           <div className={`flex w-full ${!searchMode && "mr-6"}`}>
             <Link href="/">
-              <img src={millsLogo} className="w-[76px] h-[32px]" alt="logo" />
+              <Image src={millsLogo} width={76} height={32} alt="logo" />
             </Link>
             {searchMode ? (
               isMobile ? (
@@ -181,19 +184,13 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                   onClick={() => handleSearchMode(true)}
                   className="cursor-pointer min-w-[16px]"
                 >
-                  <img
-                    className="w-[16px] h-[16px]"
-                    src={search}
-                    alt="search"
-                    width={16}
-                    height={16}
-                  />
+                  <Image src={search} alt="search" width={16} height={16} />
                 </button>
               )}
               {menuView === "rentalLight" && <LoginButton />}
 
               <a className="cursor-pointer min-w-[16px]">
-                <img className="w-[16px] h-[16px]" src={carBag} alt="carBag" />
+                <Image src={carBag} alt="carBag" width={16} height={16} />
               </a>
               <div className="cursor-pointer" onClick={openMenu}>
                 <HamburgerMenuIcon

@@ -6,7 +6,7 @@ export const FindPlatform: React.FC = () => {
   return (
     <section className="relative font-ibm-font">
       <div className="w-full flex justify-end">
-        <img
+        <Image
           src={verticalLines}
           alt="linhas verticais laranja e verdes"
           className="tablet:w-[75%]"

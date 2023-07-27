@@ -22,7 +22,7 @@ export const NumberInput: React.FC<NumberInputProps> = (props) => {
         onClick={decrement}
         className="rounde-sm bg-gray-200 flex justify-center items-center w-[16px] h-[19px] cursor-pointer"
       >
-        <img src={minusSign} alt="Sinal de subtração" />
+        <Image src={minusSign} alt="Sinal de subtração" />
       </div>
       <input
         className="text-xs text-green-800 text-opacity-40 max-w-[32px] text-center focus:outline-orange-500 focus:outline-1"
@@ -34,7 +34,7 @@ export const NumberInput: React.FC<NumberInputProps> = (props) => {
         onClick={increment}
         className="rounde-sm bg-gray-200 flex justify-center items-center w-[16px] h-[19px] cursor-pointer"
       >
-        <img src={plusSign} alt="Sinal de adição" />
+        <Image src={plusSign} alt="Sinal de adição" />
       </div>
     </div>
   );

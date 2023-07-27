@@ -1,12 +1,16 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  createHttpLink,
+} from "@apollo/client";
 
-const environment =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_API_GRAPHQL_DEV
-    : process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_API_GRAPHQL_PROD
-    : process.env.NEXT_PUBLIC_API_GRAPHQL_QA;
-//const environment = "https://mills.vercel.app";
+// const environment = createHttpLink({
+//   uri: process.env.URL_API,
+// });
+// const environment = process.env.URL_API;
+const environment = "https://novo-site-qa.mills.com.br";
+
 const client = new ApolloClient({
   uri: `/api/graphql`,
   cache: new InMemoryCache(),

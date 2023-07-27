@@ -49,13 +49,7 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
                   className="cursor-pointer"
                   onClick={() => onRemoveFilter(filter)}
                 >
-                  <img
-                    className="w-[6px] h-[6px]"
-                    width={6}
-                    height={6}
-                    src={closeIcon}
-                    alt="Xis"
-                  />
+                  <Image width={6} height={6} src={closeIcon} alt="Xis" />
                 </div>
               </div>
             ))
@@ -95,10 +89,11 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
                 onClick={() => window.scrollTo(0, 0)}
                 className="flex items-center"
               >
-                <img
+                <Image
                   src={chevronLeft}
+                  height={isMobile ? 17 : 10}
                   alt="Seta apontando para a esquerda"
-                  className="cursor-pointer h-[10px] tablet:h-[17px]"
+                  className="cursor-pointer"
                   onClick={() =>
                     currentPage > 1 && setCurrentPage((prev) => prev - 1)
                   }
@@ -111,10 +106,11 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
                 onClick={() => window.scrollTo(0, 0)}
                 className="flex items-center"
               >
-                <img
+                <Image
                   src={chevronRight}
+                  height={isMobile ? 17 : 10}
                   alt="Seta apontando para a direita"
-                  className="cursor-pointer h-[10px] tablet:h-[17px]"
+                  className="cursor-pointer"
                   onClick={() =>
                     currentPage < totalPageQuantity &&
                     setCurrentPage((prev) => prev + 1)

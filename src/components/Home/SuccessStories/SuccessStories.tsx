@@ -33,11 +33,11 @@ export const SuccessStories: React.FC = () => {
             {stories.map(({ image, alt, name, occupation, article }) => (
               <div key={name}>
                 <div className="flex gap-5 tablet:flex-col tablet:items-center">
-                  <img
+                  <Image
                     src={image}
                     alt={alt}
                     width={isMobile ? 91 : undefined}
-                    className="mt-3 tablet:w-[91px]"
+                    className="mt-3"
                   />
                   <div className="tablet:text-center">
                     <p className="text-green-800 font-semibold mb-2 ">{name}</p>

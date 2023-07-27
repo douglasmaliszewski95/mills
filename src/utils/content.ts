@@ -66,7 +66,7 @@ export const getCMSHomeImage = async () => {
       mobileImage:
         product.content[0].fields.native.links[0].href ??
         product.content[1].fields.native.links[0].href,
-      title: product.content[0].fields?.content_title,
+      title: product.content[0].fields.content_text,
     };
   });
 

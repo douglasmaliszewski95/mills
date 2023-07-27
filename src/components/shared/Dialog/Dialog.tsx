@@ -7,7 +7,7 @@ const MainDialog = () => (
   <Dialog.Root>
     <Dialog.Trigger asChild>
       <button className="flex flex-col justify-center items-center text-white gap-4 text-2xl">
-        <img className="w-[73px] h-[73px]" src={play} alt="logo" />
+        <Image src={play} width={73} height={73} alt="logo" />
         Conheça a nova Mills
       </button>
     </Dialog.Trigger>

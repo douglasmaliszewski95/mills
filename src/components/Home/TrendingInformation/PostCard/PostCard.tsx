@@ -7,7 +7,7 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
 
   return (
     <div className="flex flex-col max-w-[256px] mx-2 tablet:mx-4 tablet:max-w-[300px]">
-      <img src={image} alt={alt} className="w-full rounded-t-md" />
+      <Image src={image} alt={alt} className="w-full rounded-t-md" />
       <div className="min-h-[160px] flex flex-col justify-between bg-white px-2 pt-2 pb-3 gap-1 rounded-b-md">
         <div>
           <p className="text-orange-500 text-xs mb-1">{category}</p>

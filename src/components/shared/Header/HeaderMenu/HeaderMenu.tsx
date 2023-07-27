@@ -11,7 +11,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
   return (
     <section className="p-[18px] fixed top-0 right-0 w-full h-full z-50 bg-white overflow-auto">
       <div className="flex flex-col items-end w-full mb-6" onClick={onClose}>
-        <img src={close} alt="Xis" />
+        <Image src={close} alt="Xis" />
       </div>
       <Button
         variant="outlined"

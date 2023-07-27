@@ -12,7 +12,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
   return (
     <section className="p-[18px]">
       <div className="flex flex-col items-end w-full mb-6">
-        <img src={close} alt="Xis" onClick={() => setIsMenuOpen(false)} />
+        <Image src={close} alt="Xis" onClick={() => setIsMenuOpen(false)} />
       </div>
       <Button
         variant="outlined"
@@ -66,7 +66,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
                 entender qual a sua necessidade.
               </Dialog.Title>
               <Dialog.Close asChild className="mt-[-9px]">
-                <img className="w-[14px] h-[14px]" src={close} alt="Xis" />
+                <Image src={close} alt="Xis" width={14} height={14} />
               </Dialog.Close>
             </div>
             <Form onSubmit={onSubmit} />

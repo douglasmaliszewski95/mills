@@ -66,10 +66,10 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
             {products.map(({ id, image, model, description, specs }) => (
               <div key={id} className="h-full">
                 <div className="flex px-[80px] my-[116px] tablet:px-12 tablet:my-[18px] items-center h-full tablet:flex-col">
-                  <img
-                    src={image.src}
+                  <Image
+                    src={image}
                     alt={`Produto ${model}`}
-                    className="h-[318px] tablet:h-[128px]"
+                    height={!isDesktop ? 128 : 318}
                   />
                   <div className="tablet:mt-[18px]">
                     <h5 className="text-green-800 font-semibold tablet:text-sm">

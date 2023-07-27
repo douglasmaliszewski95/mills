@@ -25,7 +25,7 @@ export const WhatPeopleSay = () => (
         </Button>
       </div>
       <article>
-        <img className="w-[42px] h-[34px]" src={quotation} alt="quotation" />
+        <Image src={quotation} width={42} height={34} alt="quotation" />
         <p className="font-semibold text-green-800 italic mt-5">
           Com o crescimento das nossas operações em todo o Brasil,
           <br />
@@ -36,7 +36,7 @@ export const WhatPeopleSay = () => (
           continuamos a expandir.
         </p>
         <div className="flex mt-7">
-          <img className="w-[38px] h-[42px]" src={picture.src} alt="avatar" />
+          <Image src={picture} width={38} height={42} alt="avatar" />
           <div className="ml-3">
             <h5 className="text-orange font-bold">Arthur Lavieri</h5>
             <p className="text-orange">CEO da TÓPICO Locações e Equipamentos</p>

@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    URL_API: process.env.NEXT_PUBLIC_API_GRAPHQL_DEV,
+    URL_API: process.env.NEXT_PUBLIC_API_GRAPHQL_QA,
     OCC_URL_STORE: process.env.OCC_URL_STORE,
     OCC_BEARER_TOKEN: process.env.OCC_BEARER_TOKEN,
   },
@@ -45,6 +45,9 @@ const nextConfig = {
         destination: "/product",
       },
     ];
+  },
+  images: {
+    domains: ["contentinstance-fernandothome.cec.ocp.oraclecloud.com"],
   },
 };
 

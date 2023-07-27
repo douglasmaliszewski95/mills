@@ -7,7 +7,7 @@ import { questions } from "./utils";
 export const FrequentQuestions: React.FC = () => {
   return (
     <section className="flex justify-center relative bg-gray-50 font-ibm-font">
-      <img
+      <Image
         src={verticalLines}
         alt="Linhas verticais laranjas e verdes"
         className="absolute left-0 top-0"
@@ -35,9 +35,9 @@ export const FrequentQuestions: React.FC = () => {
                   className="pb-[3px] font-medium text-lg text-green-800 flex justify-between tablet:text-sm"
                 >
                   <p>{title}</p>
-                  <img
+                  <Image
                     src={chevronRight}
-                    className="h-[18px]"
+                    height={18}
                     alt="Seta apontada para a direita"
                   />
                 </a>

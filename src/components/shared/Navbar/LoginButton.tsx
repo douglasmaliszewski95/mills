@@ -21,7 +21,7 @@ export const LoginButton = () => {
             alignOffset={-100}
           >
             <Avatar.Root className="bg-green-800 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
-              <img className="w-[21px] h-[21px]" src={personIco} alt="person" />
+              <Image src={personIco} width={21} height={21} alt="person" />
             </Avatar.Root>
 
             <p className=" text-green-800 text-xs font-normal">

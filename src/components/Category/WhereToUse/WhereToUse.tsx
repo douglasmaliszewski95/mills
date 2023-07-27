@@ -15,8 +15,8 @@ export const WhereToUse: React.FC<WhereToUseProps> = (props) => {
       containerClass="py-[88px] tablet:px-4 tablet:py-6"
     >
       {isDesktop && (
-        <img
-          src={verticaLines.src}
+        <Image
+          src={verticaLines}
           alt="Linhas verticais laranja claro"
           className="absolute right-0 top-3"
         />

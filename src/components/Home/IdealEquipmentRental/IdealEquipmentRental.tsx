@@ -61,7 +61,7 @@ export const IdealEquipmentRental: React.FC = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-6">
       <div className="flex justify-end w-full">
-        <img src={topLines} alt="Linhas verticais" />
+        <Image src={topLines} alt="Linhas verticais" />
       </div>
       <div className="container text-center flex flex-col gap-10">
         <p className="text-3xl text-orange font-semibold">
@@ -78,7 +78,7 @@ export const IdealEquipmentRental: React.FC = () => {
         </div>
       </div>
       <div className="flex justify-start w-full">
-        <img src={bottomLines} alt="Linhas verticais" />
+        <Image src={bottomLines} alt="Linhas verticais" />
       </div>
     </section>
   );

@@ -16,7 +16,7 @@ export const Benefits: React.FC<BenefitsProps> = ({ headerText, cards }) => {
                   key={index}
                   className="flex flex-col justify-center items-center w-[229px] rounded border border-green-800 py-8 px-3 tablet:w-full tablet:flex-row tablet:py-4"
                 >
-                  <img
+                  <Image
                     src={cardItem.icon}
                     alt="Relógio"
                     className="mb-3 tablet:w-10 tablet:mb-0"

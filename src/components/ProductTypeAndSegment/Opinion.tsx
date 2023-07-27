@@ -19,7 +19,7 @@ export const Opinion: React.FC<OpinionProps> = ({
         className="flex justify-center py-11 bg-no-repeat w-full tablet:flex-col tablet:py-0"
       >
         <div className="flex justify-end desktop:hidden">
-          <img src={lineUp.src} alt="barUp" />
+          <Image src={lineUp} alt="barUp" width="212" />
         </div>
         <div className="flex container justify-between tablet:flex-col tablet:pb-11 tablet:pt-4 tablet:px-4">
           <div className="flex items-center">

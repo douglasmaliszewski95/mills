@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_IMAGE = gql`
+export const GET_IMAGE = `
   query Images($description: String) {
     images(description: $description) {
       count

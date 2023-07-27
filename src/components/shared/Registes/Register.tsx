@@ -9,13 +9,7 @@ export const Register: React.FC = () => (
     <div className="flex flex-col content-center tablet:justify-center tablet:mx-8">
       <div className="flex items-start flex-wrap tablet:flex-col">
         <div className="flex mr-16 gap-4 tablet:mb-5">
-          <img
-            className="w-[37px] h-[28px]"
-            src={mail}
-            width={37}
-            height={28}
-            alt="logo"
-          />
+          <Image src={mail} width={37} height={28} alt="logo" />
           <h2 className="text-xl font-semibold">
             Quer receber conteúdos exclusivos?
             <br /> Inscreva-se na nossa newsletter
