@@ -33,8 +33,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           </h3>
           {info?.subGroups?.length > 0 &&
             info.subGroups.map(({ title, href }) => (
-              <a key={title} href={href} className="w-full">
-                <p className="text-green-800 text-xs mb-4">{title}</p>
+              <a key={title ?? null} href={href} className="w-full">
+                <p className="text-green-800 text-xs mb-4">{title ?? null}</p>
               </a>
             ))}
         </>

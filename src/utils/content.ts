@@ -1,88 +1,185 @@
 import { getImage } from "@/services/hooks/getImage";
-import { getImageSrc, getMobileImageName } from "@/utils/images";
-import { mock } from "./utils";
+import { getText } from "@/services/hooks/getText";
+import { getBlogPosts } from "@/services/hooks/getBlogPosts";
+import { ImageCMS } from "@/types";
 
 export const getCMSHomeImage = async () => {
   const content: any = await getImage("home_leves");
-  // const content: any = mock;
+  const text: any = await getText("home_leves");
+  const historyContent: any = await getImage("shared");
+  const blogPosts: any = await getBlogPosts();
 
-  const groupedBanners = content?.banner_carousel.reduce(
-    (acc: any, banner: any) => {
-      const contentOrder = parseInt(banner.fields.content_order);
-
-      if (!acc[contentOrder]) {
-        acc[contentOrder] = [];
-      }
-
-      acc[contentOrder].push(banner);
-
-      return acc;
-    },
-    {}
-  );
-
-  const groupedBannersList = Object.keys(groupedBanners).map(
-    (contentOrder) => ({
-      contentOrder: parseInt(contentOrder),
-      banners: groupedBanners[contentOrder],
-    })
-  );
-
-  const bannersResult = groupedBannersList.map((banner: any) => {
+  const bannersResult = content?.banner_carousel?.map((banner: any) => {
     return {
-      src: banner.banners[0].fields.native.links[0].href,
-      srcMobile: banner.banners[1].fields.native.links[0].href,
-      title: banner.banners[0].fields?.content_title,
+      src: banner.fields.native.links[0].href,
+      srcMobile: banner.mobileObj.fields.native.links[0].href,
+      title: banner.fields?.content_title,
       buttonTitle: "Ver modelos",
       id: banner.id,
     };
   });
 
-  const groupedOurProducts = content?.ourproducts.reduce(
-    (acc: any, product: any) => {
-      const contentOrder = parseInt(product.fields.content_order);
-      if (!acc[contentOrder]) {
-        acc[contentOrder] = [];
-      }
-
-      acc[contentOrder].push(product);
-
-      return acc;
-    },
-    {}
-  );
-
-  const groupedOurProductsList = Object.keys(groupedOurProducts).map(
-    (contentOrder) => ({
-      contentOrder: parseInt(contentOrder),
-      content: groupedOurProducts[contentOrder],
+  const ourProducts = content?.ourproducts
+    ?.map((product: any) => {
+      return {
+        image: product.fields.native.links[0].href,
+        id: product.id,
+        mobileImage: product.mobileObj
+          ? product.mobileObj.fields.native.links[0].href
+          : product.fields.native.links[0].href,
+        title: product.fields.content_title,
+        href: product.fields.alt_attribute ?? "#",
+      };
     })
-  );
+    .sort((a: any, b: any) => a.order - b.order);
 
-  const ourProducts = groupedOurProductsList.map((product: any) => {
-    return {
-      image: product.content[0].fields.native.links[0].href,
-      id: product.id,
-      mobileImage:
-        product.content[0].fields.native.links[0].href ??
-        product.content[1].fields.native.links[0].href,
-      title: product.content[0].fields.content_text,
-    };
+  const groupedByContentOrder: any = {};
+
+  historyContent.icon_types_segments?.forEach((segment: any) => {
+    const contentOrder = segment.fields.content_order;
+
+    if (!groupedByContentOrder[contentOrder]) {
+      groupedByContentOrder[contentOrder] = [];
+    }
+
+    groupedByContentOrder[contentOrder].push(segment);
   });
 
-  const bannerNumbers = content?.banner_numbers.map((banner: any) => {
+  const uniqueDescriptions: any = {};
+  historyContent.icon_types_segments?.forEach((obj: any) => {
+    const description = obj.description;
+    if (!uniqueDescriptions[description]) {
+      uniqueDescriptions[description] = [];
+    }
+    uniqueDescriptions[description].push(obj);
+  });
+
+  const newArray = Object.values(uniqueDescriptions);
+  const segments = newArray.map((segmentGroup: any) => {
+    let image = "";
+    let hoverImage = "";
+    for (const segment of segmentGroup) {
+      if (segment.name.includes("laranja")) {
+        image = segment.fields.native.links[0].href;
+        break;
+      }
+    }
+
+    for (const segment of segmentGroup) {
+      if (segment.name.includes("cinza")) {
+        hoverImage = segment.fields.native.links[0].href;
+        break;
+      }
+    }
+
+    return {
+      id: segmentGroup[0]?.id,
+      alt: segmentGroup[0]?.fields.alt_attribute,
+      image: image,
+      hoverImage: hoverImage,
+      title: segmentGroup[0]?.fields.content_title,
+      content_order: segmentGroup[0]?.fields.content_order,
+      href: segmentGroup[0]?.fields.alt_attribute ?? "#",
+    };
+  });
+  segments.sort((a, b) => a.content_order - b.content_order);
+
+  const bannerNumbers = content?.banner_numbers?.map((banner: any) => {
     return {
       image: banner.fields.native.links[0].href,
+      mobileImage: banner.mobileObj.fields.native.links[0].href,
     };
   });
-  const ourServices = content?.ourservices.map((services: any) => {
+
+  const ourServices = content?.ourservices?.map((services: any) => {
     return {
       url: services.fields.native.links[0].href,
       id: services.id,
       title: services.fields.content_title,
       article: services.fields.content_text,
+      href: services.fields.alt_attribute ?? "#",
     };
   });
 
-  return { bannersResult, ourProducts, bannerNumbers, ourServices };
+  const successHistory = historyContent?.success_history?.map(
+    (history: any) => {
+      return {
+        id: history.id,
+        image: history.fields.native.links[0].href,
+        name: history.fields.content_title,
+        occupation: history.fields.content_subtitle,
+        article: history.fields.content_text,
+        alt: history.fields.alt_attribute,
+      };
+    }
+  );
+
+  let filterTextNumbers: any = [];
+  for (let i = 0; i < text?.text_numbers?.[0].fields?.subtitle.length; i++) {
+    filterTextNumbers.push({
+      title: text.text_numbers[0].fields?.subtitle[i],
+      text: text.text_numbers[0].fields?.text_field[i],
+    });
+  }
+
+  const textNumbers = filterTextNumbers;
+  const successHistoryTexts = {
+    title: text?.historias_de_sucesso?.[0].fields.title,
+    text: text?.historias_de_sucesso?.[0].fields.text_field[0],
+    buttonText: text?.historias_de_sucesso?.[0].fields.buttonText[0],
+    hrefButton: text?.historias_de_sucesso?.[0].fields.hrefButton[0],
+  };
+
+  let filterPosts: any = [];
+  for (let i = 0; i < blogPosts?.item?.length; i++) {
+    if (filterPosts.length === 9) break;
+    else {
+      filterPosts.push({
+        image: null,
+        alt: null,
+        category: blogPosts.item[i].category[0]._cdata,
+        title: blogPosts.item[i].title._text,
+        date: new Date(blogPosts.item[i].pubDate._text).toLocaleDateString(),
+        link: blogPosts.item[i].link._text,
+      });
+    }
+  }
+
+  const millsMagazine = {
+    title: text?.revista_mills?.[0].fields.title || "",
+    text: text?.revista_mills?.[0].fields.text_field[0] || "",
+    posts: filterPosts,
+  };
+
+  return {
+    bannersResult,
+    ourProducts,
+    segments,
+    bannerNumbers,
+    ourServices,
+    successHistory,
+    textNumbers,
+    successHistoryTexts,
+    millsMagazine,
+  };
+};
+
+export const transformContentToMobile = (content: any) => {
+  const transformedData: {
+    [key: string]: { mobileObj: ImageCMS }[];
+  } = {};
+
+  for (const key in content) {
+    if (content.hasOwnProperty(key)) {
+      transformedData[key] = content[key].map((image: ImageCMS) => {
+        if (image.mobileObj === undefined) {
+          return image;
+        } else {
+          return image.mobileObj;
+        }
+      });
+    }
+  }
+
+  return transformedData;
 };

@@ -7,4 +7,8 @@ export interface SectionProps {
   containerClass?: string;
   backgroundImage?: string;
   divGradient?: string;
+  backgroundLines?: {
+    src: string;
+    position: string;
+  };
 }

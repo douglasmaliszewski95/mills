@@ -2,80 +2,133 @@ import { About } from "@/components/shared/About/About";
 import { Banner } from "@/components/shared/Banner/Banner";
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Header } from "@/components/shared/Header/Header";
-import aboutLiftingPlatform from "@/assets/about-lifting-platform.jpg";
 import { Guide } from "@/components/Category/Guide/Guide";
-
 import { Utilizations } from "@/components/Category/Utilizations/Utilizations";
 import { FindSize } from "@/components/Category/FindSize/FindSize";
 import { OtherTypes } from "@/components/Category/OtherTypes/OtherTypes";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
-import banner from "@/assets/img/elevatingPlatforms.jpg";
-import {
-  guideCards,
-  otherTypesCards,
-  utilizationsCards,
-} from "@/components/Pantographic/utils";
+import { useCallback, useEffect, useState } from "react";
+import { getImage } from "@/services/hooks/getImage";
+import { getText } from "@/services/hooks/getText";
+import { getImageSrc } from "@/utils/images";
+import parse from "html-react-parser";
 
 const Pantographic: React.FC = () => {
+  const [banner, setBanner] = useState<any>();
+  const [section, setSection] = useState<any>();
+  const [segments, setSegments] = useState<any>();
+  const [price, setPrice] = useState<any>();
+  const [guideTexts, setGuideTexts] = useState<any>();
+  const [idealSize, setIdealSize] = useState<any>();
+  const [utilization, setUtilization] = useState<any>();
+
+  const getContent = useCallback(async () => {
+    const images = await getImage("pantografica_tesoura");
+    const texts = await getText("pantografica_tesoura");
+
+    let filterSection = [];
+    let filterSegments = [];
+    let filterGuides = [];
+    for (let i = 1; i <= images.pantographic_scissors.length; i++) {
+      const search = images.pantographic_scissors.find(
+        (x: any) => x.fields.content_order === i
+      );
+      if (search) filterSection.push(search);
+    }
+
+    for (let i = 1; i <= images.icon_uses_platform.length; i++) {
+      const search = images.icon_uses_platform.find(
+        (x: any) => x.fields.content_order === i
+      );
+      if (search)
+        filterSegments.push({
+          id: search.id,
+          title: search.fields.content_title,
+          image: search.fields.native.links[0].href,
+          alt: search.fields.alt_attribute,
+        });
+    }
+
+    for (let i = 0; i < texts.guide_cards?.[0].fields.subtitle.length; i++) {
+      filterGuides.push({
+        id: texts.guide_cards[0].id,
+        title: texts.guide_cards[0].fields.subtitle[i],
+        description: texts.guide_cards[0].fields.text_field[i],
+      });
+    }
+
+    setBanner(images.banner[0]);
+    setSection(filterSection);
+    setSegments(filterSegments);
+    setPrice(images.price[0]);
+    setGuideTexts(filterGuides);
+    setIdealSize(texts.ideal_size[0]);
+    setUtilization({
+      title: texts.platform_use[0].fields.title,
+      text: parse(texts.platform_use[0].fields.text_field[0]),
+    });
+  }, []);
+
+  useEffect(() => {
+    getContent();
+  }, []);
+
   return (
     <>
       <Header />
       <main>
         <Banner
-          breadcrumb="Plataformas Elevatórias > Pantográfica ou Tesoura"
-          title="Pantográfica"
-          backgroundImage={banner.src}
+          backgroundImage={banner && getImageSrc(banner?.fields)}
+          title={banner?.fields?.content_title ?? ""}
+          linkList={[
+            {
+              name: "Plataformas Elevatórias",
+              href: "/plataformas-elevatorias",
+            },
+            {
+              name: "Pantográfica ou Tesoura",
+              href: "/plataformas-elevatorias/pantografica-ou-tesoura",
+            },
+          ]}
         />
         <About
-          title="Plataforma Elevatória Tesoura"
-          description="Vista como um equipamento que facilita trabalhos em altura, além de proporcionar segurança, confiabilidade e produtividade, a plataforma elevatória tesoura é uma solução que atende perfeitamente às normas de segurança que envolvem atividades laborais na construção civil, entre outros ramos."
-          image={aboutLiftingPlatform}
+          title={section ? section[0]?.fields.content_title : ""}
+          description={section ? section[0]?.fields.content_text : ""}
+          image={section ? section[0]?.fields.native.links[0].href : ""}
+          link={section?.[0]?.fields?.href_attribute ?? "#"}
           alt="Imagem"
+          buttonTitle="Ver Modelos"
         />
         <About
-          title="Plataforma Elevatória Tesoura"
+          title={section ? section[1]?.fields.content_title : ""}
           theme="orange-500"
           color="white"
           orientation="inverted"
-          description="Vista como um equipamento que facilita trabalhos em altura, além de proporcionar segurança, confiabilidade e produtividade, a plataforma elevatória tesoura é uma solução que atende perfeitamente às normas de segurança que envolvem atividades laborais na construção civil, entre outros ramos."
-          image={aboutLiftingPlatform}
+          description={section ? section[1]?.fields.content_text : ""}
+          image={section ? section[1]?.fields.native.links[0].href : ""}
           alt="Imagem"
           hasButton={false}
         />
-        <Guide cards={guideCards} />
+        <Guide cards={guideTexts || []} />
         <Utilizations
-          cards={utilizationsCards}
-          title="Utilizações da plataforma elevatória tesoura"
-          description="Operações que requerem o alcance a áreas de difícil acesso podem ser feitas com <b>máxima segurança</b> por meio da plataforma tesoura. Outra característica que a difere das outras plataformas elevatórias é a possibilidade de transporte de pequenas cargas. Confira algumas das formas e dos locais de utilização:"
+          cards={segments ? segments : []}
+          title={utilization?.title || ""}
+          description={utilization?.text || ""}
         />
         <About
-          image={aboutLiftingPlatform}
-          alt="Imagem"
-          title="Preço: O que considerar?"
-          description={[
-            "Ao escolher uma <b>plataforma</b> tesoura para a necessidade da sua empresa, diversos pontos precisam ser considerados no momento de decisão.",
-            "No mercado, existem as modalidades de aluguel e compra, sendo que a primeira costuma ser mais interessante, pois torna o preço da plataforma elevatória tesoura mais acessível.",
-            "A <b>segurança que o equipamento</b> fornece precisa ser levada em consideração, junto à assistência técnica, confiabilidade, qualidade, frete e modernidade. Afinal, independentemente da modalidade de aquisição, é preciso <b>contar com suporte</b> e um fornecedor que resolva qualquer questão que possa aparecer.",
-          ]}
+          image={price ? price.fields.native.links[0].href : ""}
+          alt={price ? price.fields.alt_attribute : ""}
+          title={price ? price.fields.content_title : ""}
+          description={[price ? price?.fields.content_text : ""]}
           hasButton={false}
           orientation="inverted"
         />
         <FindSize
-          title="Como escolher o tamanho ideal"
-          slides={[
-            "Faça um planejamento prévio de todas as atividades que o equipamento precisará executar.",
-            "Analise a altura de trabalho, a característica do piso, a capacidade de carga que o equipamento precisa transportar, o espaço disponível no local de trabalho e tudo o que envolve a atividade. Esse levantamento ajudará você a descobrir o tamanho e o tipo ideal de plataforma elevatória.",
-          ]}
+          title={idealSize?.fields.title || ""}
+          slides={idealSize?.fields.text_field || []}
         />
-        <OtherTypes
-          title="Conheça outros tipos de plataforma elevatória"
-          description={[
-            "Aqui, na Mills, além da <b>plataforma elevatória tesoura</b> (ou plataforma pantográfica), estão disponíveis diversos outros modelos como a plataforma elevatória articulada e a plataforma elevatória telescópica, em motorização elétrica ou a diesel.",
-            "As plataformas elevatórias atendem diferentes demandas de trabalho em altura, portanto, o ideal é conhecer as especificações técnicas de cada uma e escolher a perfeita para o seu tipo de trabalho.",
-          ]}
-          cards={otherTypesCards}
-        />
+        <OtherTypes title="Plataforma Elevatória Tesoura" />
         <ExpertRecommendation />
         <MachinesAndPlatforms />
       </main>

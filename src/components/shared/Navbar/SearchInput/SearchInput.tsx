@@ -17,7 +17,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
 
   const getRecommendations = useCallback(
     _.debounce(async (term: string) => {
-      const response = await fetch(`/api/search?productName=${term}`);
+      const response = await fetch(`/api/search?productName=?Ntt=${term}`);
       const formattedResponse = await response.json();
       if (!!formattedResponse.error) return;
       setRecommendations(formattedResponse.products[0] || []);
@@ -34,7 +34,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
       event.preventDefault();
       if (inputValue === "") return;
 
-      router.push(`/buscar-equipamento?productName=${inputValue}`);
+      router.push(`/plataformas-elevatorias/busca?productName=${inputValue}`);
       onSearch(inputValue);
     },
     [inputValue]

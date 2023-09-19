@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
 import { ProductCardProps } from "./types";
 import Button from "@/components/shared/Button/Button";
 import Link from "next/link";
 import { ImageOCC } from "../ImageOCC/ImageOCC";
 import _ from "lodash";
+import { useRouter } from "next/router";
 
 export const ProductCard: React.FC<ProductCardProps> = (props) => {
+  const router = useRouter();
   const {
     product: {
       id,
@@ -20,6 +21,56 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
       x_peso,
     },
   } = props;
+
+  const addToCart = async (product: any) => {
+    const storedItems =
+      localStorage.getItem("items") ?? ""
+        ? JSON.parse(localStorage.getItem("items") ?? "")
+        : [];
+    const findPaymentFlow = storedItems.find(
+      (item: any) => item.paymentFlow === localStorage.getItem("paymentFlow")
+    );
+    if (findPaymentFlow) {
+      const itemExists = storedItems.some(
+        (storedItem: any) => storedItem.id === product.id
+      );
+
+      if (!itemExists) {
+        storedItems.push({
+          ...product,
+          localUtility: null,
+          timeToLocale: 0,
+          typeToLocale: "Dias",
+          quantity: 1,
+          paymentFlow: localStorage.getItem("paymentFlow"),
+        });
+        localStorage.setItem("items", JSON.stringify(storedItems));
+      }
+    } else {
+      localStorage.removeItem("customInfos");
+      localStorage.removeItem("customServices");
+      localStorage.removeItem("items");
+      setTimeout(() => {
+        const itemExists = storedItems.some(
+          (storedItem: any) => storedItem.id === product.id
+        );
+
+        if (!itemExists) {
+          storedItems.push({
+            ...product,
+            localUtility: null,
+            timeToLocale: 0,
+            typeToLocale: "Dias",
+            quantity: 1,
+            paymentFlow: localStorage.getItem("paymentFlow"),
+          });
+          localStorage.setItem("items", JSON.stringify(storedItems));
+        }
+      }, 1000);
+    }
+
+    router.push("/carrinho/passo-01");
+  };
 
   const specs = [
     {
@@ -60,11 +111,15 @@ export const ProductCard: React.FC<ProductCardProps> = (props) => {
       </h6>
       {specs?.map(({ label, value }, index) => (
         <p
-          key={`${label}${index}`}
+          key={label}
           className="w-full text-green-800 text-sm tablet:text-xs"
         >{`${label}: ${value}`}</p>
       ))}
-      <Button className="mt-6" size="full">
+      <Button
+        className="mt-6"
+        size="full"
+        onClick={() => addToCart(props.product)}
+      >
         Incluir no orçamento
       </Button>
       <Link

@@ -17,10 +17,10 @@ const useScreenWidth = () => {
     };
   }, []);
 
-  const isMobile = screenWidth <= 992;
-  const isDesktop = !isMobile;
+  const isMobile = screenWidth === 0 ? undefined : screenWidth <= 992;
+  const isDesktop = isMobile === undefined ? isMobile : !isMobile;
 
-  return { isMobile, isDesktop };
+  return { isMobile, isDesktop, screenWidth };
 };
 
 export default useScreenWidth;

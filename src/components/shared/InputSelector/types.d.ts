@@ -3,6 +3,13 @@ export interface InputSelectorProps {
   className?: string;
   options: string[];
   placeholder?: string;
-  watch: UseFormWatch<FormInputs>;
-  setValue: (name: example | exampleRequired, value: string) => void;
+  watch?: UseFormWatch<FormInputs>;
+  additionalProps?: any;
+  disabled?: boolean;
+  setValue: (
+    name: example | exampleRequired,
+    value: string,
+    additionalProps
+  ) => void;
+  theme?: string;
 }

@@ -14,7 +14,7 @@ export default async function handler(
     const token = await getCredentialsOCC();
     if (token.access_token) {
       const response = await fetch(
-        `https://p19894161c1prd-store.occa.ocs.oraclecloud.com/ccstore/v1/search?Ntt=${productName}`,
+        `${process.env.OCC_URL_STORE}/ccstore/v1/search${productName}`,
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
@@ -27,7 +27,7 @@ export default async function handler(
         });
 
         const search = await fetch(
-          `https://p19894161c1prd-store.occa.ocs.oraclecloud.com/ccstore/v1/products?productIds=${productIds}`,
+          `${process.env.OCC_URL_STORE}/ccstore/v1/products?productIds=${productIds}`,
           {
             headers: {
               Authorization: `Bearer ${token.access_token}`,
@@ -36,31 +36,26 @@ export default async function handler(
         ).then((res) => res.json());
         if (search.items.length > 0) {
           result.push(search.items);
-          res
-            .status(200)
-            .json({
-              erro: "",
-              products: result,
-              filters: response.navigation.navigation,
-            });
+          res.status(200).json({
+            erro: "",
+            products: result,
+            filters: response.navigation.navigation,
+            refinementCrumbs: response.breadcrumbs.refinementCrumbs,
+          });
         } else
           res
             .status(200)
             .json({ erro: "Erro na busca dos produtos", products: result });
       } else
-        res
-          .status(200)
-          .json({
-            erro: "Não foi localizado nenhum produto com este nome",
-            products: result,
-          });
-    } else
-      res
-        .status(token.status)
-        .json({
-          erro: "Erro ao gerar token de autenticação",
+        res.status(200).json({
+          erro: "Não foi localizado nenhum produto com este nome",
           products: result,
         });
+    } else
+      res.status(token.status).json({
+        erro: "Erro ao gerar token de autenticação",
+        products: result,
+      });
   } else {
     const { category, recordsPerPage, searchTerm } = req.body;
     let productIds: string = "";
@@ -68,7 +63,7 @@ export default async function handler(
     const token = await getCredentialsOCC();
     if (token.access_token) {
       const response = await fetch(
-        `https://p19894161c1prd-store.occa.ocs.oraclecloud.com/ccstore/v1/search?N=${category}&Nrpp=${recordsPerPage}&Ntt=${searchTerm}`,
+        `${process.env.OCC_URL_STORE}/ccstore/v1/search?N=${category}&Nrpp=${recordsPerPage}&Ntt=${searchTerm}`,
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
@@ -81,7 +76,7 @@ export default async function handler(
         });
 
         const search = await fetch(
-          `https://p19894161c1prd-store.occa.ocs.oraclecloud.com/ccstore/v1/products?productIds=${productIds}`,
+          `${process.env.OCC_URL_STORE}/ccstore/v1/products?productIds=${productIds}`,
           {
             headers: {
               Authorization: `Bearer ${token.access_token}`,
@@ -96,18 +91,14 @@ export default async function handler(
             .status(200)
             .json({ erro: "Erro na busca dos produtos", products: result });
       } else
-        res
-          .status(200)
-          .json({
-            erro: "Não foi localizado nenhum produto com este nome",
-            products: result,
-          });
-    } else
-      res
-        .status(token.status)
-        .json({
-          erro: "Erro ao gerar token de autenticação",
+        res.status(200).json({
+          erro: "Não foi localizado nenhum produto com este nome",
           products: result,
         });
+    } else
+      res.status(token.status).json({
+        erro: "Erro ao gerar token de autenticação",
+        products: result,
+      });
   }
 }

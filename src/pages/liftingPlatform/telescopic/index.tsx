@@ -1,45 +1,80 @@
 import { Banner } from "@/components/shared/Banner/Banner";
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Header } from "@/components/shared/Header/Header";
-import banner from "@/assets/img/elevatingPlatforms.jpg";
 import { About } from "@/components/shared/About/About";
-import aboutLiftingPlatform from "@/assets/about-lifting-platform.jpg";
 import { WhenToUse } from "@/components/Category/WhenToUse/WhenToUse";
 import { Information } from "@/components/Category/Information/Information";
-import tesoura from "@/assets/img/tesoura.jpg";
 import { OtherTypes } from "@/components/Category/OtherTypes/OtherTypes";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { useCallback, useEffect, useState } from "react";
+import { getImage } from "@/services/hooks/getImage";
+import { getText } from "@/services/hooks/getText";
+import { getImageSrc } from "@/utils/images";
+import SearchCMS from "@/dtos/SearchCMS";
 
 const Telescopic: React.FC = () => {
+  const [banner, setBanner] = useState<any>();
+  const [texts, setTexts] = useState<any>();
+  const [segments, setSegments] = useState<any>();
+  const [icons, setIcons] = useState<any>();
+
+  const getContent = useCallback(async () => {
+    const images = await getImage("plataformas_elevatorias_telescopica");
+    const texts = await getText("plataformas_elevatorias_telescopica");
+
+    const filterIcons = images.icon_when_to_use?.map((icon: any) => {
+      return {
+        text: icon.fields.content_text,
+        image: icon.fields.native.links[0].href,
+      };
+    });
+
+    const orderedSegments = images?.telescopic_platforms?.sort(
+      (a: SearchCMS, b: SearchCMS) =>
+        a?.description?.localeCompare(b?.description)
+    );
+
+    setBanner(images.banner_telescopica[0]);
+    setTexts(texts);
+    setSegments(orderedSegments);
+    setIcons(filterIcons);
+  }, []);
+
+  useEffect(() => {
+    getContent();
+  }, []);
+
   return (
     <>
       <Header />
       <main>
         <Banner
-          title="Lança Telescópica"
-          breadcrumb="Plataformas Elevatórias > Lança Telescópica"
-          backgroundImage={banner.src}
-          blur="bg-black/50"
+          backgroundImage={banner && getImageSrc(banner?.fields)}
+          title={banner?.fields?.content_title ?? ""}
+          linkList={[
+            {
+              name: "Plataformas Elevatórias",
+              href: "/plataformas-elevatorias",
+            },
+            {
+              name: "Lança Telescópica",
+              href: "/plataformas-elevatorias/telescopica",
+            },
+          ]}
         />
         <About
-          title="O que é uma plataforma telescópica?"
-          description={[
-            "A plataforma telescópica permite elevações de longo alcance, oferecendo a segurança e o conforto necessários para alcançar áreas de trabalho mais altas e de difícil acesso em diferentes terrenos.",
-            "A plataforma telescópica tem apenas um estágio de lança, o que torna possível alcançar rapidamente a altura desejada. Muito recomendada para trabalhos externos, esse equipamento necessita de bastante espaço para operar corretamente.",
-          ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
-          link={"/buscar-equipamento"}
+          title={segments ? segments?.[0].fields.content_title : ""}
+          description={segments ? segments?.[0].fields.content_text : ""}
+          image={segments?.[0].fields.native.links[0].href}
+          alt={segments ? segments?.[0].fields.alt_attribute : ""}
+          link={segments ? segments?.[0]?.fields?.href_attribute : ""}
         />
         <About
-          title="Como funciona a plataforma telescópica?"
-          description={[
-            "A plataforma telescópica tem como principal característica o seu longo alcance, com manobras mais certeiras e precisas. Esse equipamento permite realizar operações com maior agilidade, graças à sua estrutura que necessita de menos comandos do que outras versões, como a plataforma articulada, por exemplo.",
-            "No entanto, é necessário que a plataforma telescópica fique a uma longa distância e com maior espaço para que chegue até o local de trabalho determinado. Assim, ela se torna uma excelente alternativa para alcançar locais de grande altura e que tem obstáculos ao redor da superfície que se deseja alcançar.",
-          ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
+          title={segments ? segments?.[2].fields.content_title : ""}
+          description={segments ? segments?.[2].fields.content_text : ""}
+          image={segments?.[2].fields.native.links[0].href}
+          alt={segments ? segments?.[2].fields.alt_attribute : ""}
           hasButton={false}
           orientation="inverted"
           theme="green-800"
@@ -47,53 +82,28 @@ const Telescopic: React.FC = () => {
         />
         <WhenToUse
           title="Quando usar a <br>Plataforma Elevatória Telescópica?"
-          cards={[
-            "A plataforma telescópica <b>deve ser usada em ambientes externos, de maior altura e longa distância.</b> Existem opções desse equipamento que alcançam até 56,69 metros de altura, com alcance horizontal de até 24,40 metros.",
-            "O braço telescópico proporciona flexibilidade do envelope de trabalho e ainda mais alcance na elevação, sendo <b>ideal para empreiteiros em geral, serviços de vidraçarias e limpezas de janelas,</b> entre outros projetos.",
-            "Ela <b>não é uma alternativa para condições em que é necessário estar paralelo ao local de trabalho.</b> Para essa finalidade, prefira outros equipamentos, como a plataforma tesoura ou articulada (link para articulada), por exemplo.",
-          ]}
+          cards={icons || []}
         />
         <About
-          title="Plataforma telescópica:<br> como escolher o equipamento ideal?"
-          description={[
-            "As plataformas telescópicas podem atingir mais de 50 metros de altura. Para fazer a escolha mais adequada, considere as condições do local de trabalho, ou seja, o ambiente em que a máquina vai operar.",
-            "Um dos critérios mais importantes é avaliar a altura e a distância para a execução do trabalho. Verifique também a capacidade da carga do equipamento, analisando o peso do material que será transportado com a plataforma.",
-          ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
-          orientation="inverted"
+          title={segments ? segments?.[1].fields.content_title : ""}
+          description={segments ? segments?.[1].fields.content_text : ""}
+          image={segments?.[1].fields.native.links[0].href}
+          alt={segments ? segments?.[1].fields.alt_attribute : ""}
+          forceImageDisplayOnMobile
           theme="orange-500"
           color="white"
           hasButton={false}
         />
         <Information
-          title="Plataforma elevatória telescópica elétrica ou a diesel: qual é a melhor?"
-          description="As opções de plataformas elevatórias estão disponíveis somente a diesel. Essa não é uma alternativa de plataforma elevatória elétrica."
-          theme="white"
+          title={texts ? texts.question_01[0].fields.title : ""}
+          description={texts ? texts.question_01[0].fields.text_field[0] : ""}
+          theme="beige-200"
         />
         <Information
-          title="Plataforma telescópica para pisos irregulares ou planos?"
-          description="As versões de plataformas disponíveis são recomendadas tanto para pisos irregulares quanto para pisos planos. Porém, é essencial utilizar a plataforma em terrenos firmes."
+          title={texts ? texts.question_02[0].fields.title : ""}
+          description={texts ? texts.question_02[0].fields.text_field[0] : ""}
         />
-        <OtherTypes
-          title="Conheça outros tipos de plataforma elevatória"
-          description={[
-            "Aqui, na Mills, além da plataforma elevatória tesoura (ou plataforma pantográfica), estão disponíveis diversos outros modelos como a plataforma elevatória articulada e a plataforma elevatória telescópica, em motorização elétrica ou a diesel.",
-            "As plataformas elevatórias atendem diferentes demandas de trabalho em altura, portanto, o ideal é conhecer as especificações técnicas de cada uma e escolher a perfeita para o seu tipo de trabalho.",
-          ]}
-          cards={[
-            {
-              label: "Plataforma Elevatória Tesoura",
-              backgroundImage: tesoura.src,
-              href: "/plataformas-elevatorias/pantografica-ou-tesoura",
-            },
-            {
-              label: "Plataforma Elevatória Articulada",
-              backgroundImage: tesoura.src,
-              href: "/plataformas-elevatorias/articulada",
-            },
-          ]}
-        />
+        <OtherTypes title="Plataforma Elevatória Telescópica" />
         <ExpertRecommendation />
         <MachinesAndPlatforms />
       </main>

@@ -6,7 +6,8 @@ export default interface SearchCMS {
   fileExtension: String;
   fields: Fields;
   fileGroup: String;
-  description: string
+  description: string;
+  mobileObj: SearchCMS;
 }
 
 interface Fields {
@@ -21,12 +22,20 @@ interface Fields {
   content_title: string
   content_subtitle: string
   content_text_json: [Json]
+  text: string
+  title: string
+  subtitle: string[]
+  text_field: string[]
   mobile: boolean
+  buttonText: string[]
+  button_text: string[]
+  hrefButton: string[]
+  href_attribute: string
 }
 
 interface Json {
-  title: String
-  subtitle: String
+  title: String;
+  subtitle: String;
 }
 
 interface Native {

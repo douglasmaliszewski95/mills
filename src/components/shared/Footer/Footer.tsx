@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as Separator from "@radix-ui/react-separator";
 import {
@@ -10,20 +10,40 @@ import {
   linkedin,
   youtube,
   chevronDown,
+  whatsAppGreen,
 } from "@/assets";
 import { MenuProps } from "./types";
-import { footerMenu, secondMenu } from "./utils";
+import { secondMenu } from "./utils";
 import { MinimalistLogo } from "@/assets/MinimalistLogo";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import MobileMenu from "./MobileMenu";
+import { useGetCMSShared } from "@/services/hooks/useGetCMSShared";
+import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  theme?: string;
+}
+
+export const Footer = ({ theme }: FooterProps) => {
+  const { footerList } = useGetCMSShared();
+  const { currentSiteTheme, setCurrentSiteTheme } = useContext(
+    currentSiteThemeContext
+  );
   const { isMobile } = useScreenWidth();
   const [activeSubmenu, setActiveSubmenu] = useState<null | number>(null);
-  const [menu, setMenu] = useState(footerMenu);
+  const [menu, setMenu] = useState<any>([]);
+
+  useEffect(() => {
+    setCurrentSiteTheme(theme);
+  }, [theme]);
+
+  useEffect(() => {
+    setMenu(footerList);
+  }, [footerList]);
+
   const openSubmenu = (clickedItem: MenuProps, index: number) => {
-    setMenu((prevMenu) => {
-      return prevMenu.map((item) => {
+    setMenu((prevMenu: any) => {
+      return prevMenu.map((item: any) => {
         if (item === clickedItem) {
           return { ...item, open: !item.open };
         } else {
@@ -51,10 +71,20 @@ export const Footer: React.FC = () => {
               className="w-32 h-14 tablet:w-14 tablet:h-6 tablet: mb-4"
             />
             <div className="flex gap-3">
-              <a>
-                <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
+              <a href="https://api.whatsapp.com/send/?phone=5511943717548&text&type=phone_number&app_absent=0">
+                <Avatar.Root
+                  className={`${
+                    currentSiteTheme === "rentalLight"
+                      ? "bg-orange-500"
+                      : "bg-green-800"
+                  } inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]`}
+                >
                   <Image
-                    src={whatsApp}
+                    src={
+                      currentSiteTheme === "rentalLight"
+                        ? whatsApp
+                        : whatsAppGreen
+                    }
                     width={isMobile ? 12 : 20}
                     height={isMobile ? 12 : 20}
                     alt="whatsapp"
@@ -62,7 +92,13 @@ export const Footer: React.FC = () => {
                 </Avatar.Root>
               </a>
               <a>
-                <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
+                <Avatar.Root
+                  className={`${
+                    currentSiteTheme === "rentalLight"
+                      ? "bg-orange-500"
+                      : "bg-green-800"
+                  } inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]`}
+                >
                   <Image
                     src={instagram}
                     width={isMobile ? 12 : 20}
@@ -72,7 +108,13 @@ export const Footer: React.FC = () => {
                 </Avatar.Root>
               </a>
               <a>
-                <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
+                <Avatar.Root
+                  className={`${
+                    currentSiteTheme === "rentalLight"
+                      ? "bg-orange-500"
+                      : "bg-green-800"
+                  } inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]`}
+                >
                   <Image
                     src={facebook}
                     width={isMobile ? 6 : 12}
@@ -82,7 +124,13 @@ export const Footer: React.FC = () => {
                 </Avatar.Root>
               </a>
               <a>
-                <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
+                <Avatar.Root
+                  className={`${
+                    currentSiteTheme === "rentalLight"
+                      ? "bg-orange-500"
+                      : "bg-green-800"
+                  } inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]`}
+                >
                   <Image
                     src={linkedin}
                     width={isMobile ? 12 : 20}
@@ -92,7 +140,13 @@ export const Footer: React.FC = () => {
                 </Avatar.Root>
               </a>
               <a>
-                <Avatar.Root className="bg-orange-500 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]">
+                <Avatar.Root
+                  className={`${
+                    currentSiteTheme === "rentalLight"
+                      ? "bg-orange-500"
+                      : "bg-green-800"
+                  } inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle tablet:h-[32px] tablet:w-[32px]`}
+                >
                   <Image
                     src={youtube}
                     width={isMobile ? 17 : 20}
@@ -133,7 +187,7 @@ export const Footer: React.FC = () => {
           <div className="tablet:hidden">
             <div className="mt-12">
               <ul className="flex gap-8 flex-wrap font-medium text-sm tablet:flex-col">
-                {menu.map((item, index) => {
+                {menu?.map((item: any, index: number) => {
                   return (
                     <li
                       key={index}
@@ -162,9 +216,9 @@ export const Footer: React.FC = () => {
                       key={columnIndex}
                       className="flex flex-col font-medium font-ibm-font text-sm text-orange-500 leading-7"
                     >
-                      {footerMenu[activeSubmenu].submenu
+                      {menu[activeSubmenu].submenu
                         .slice(columnIndex * 2, columnIndex * 2 + 2)
-                        .map((subItem, index) => (
+                        .map((subItem: any, index: number) => (
                           <li
                             key={index}
                             className="flex items-center gap-2 cursor-pointer"

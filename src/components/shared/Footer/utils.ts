@@ -1,96 +1,110 @@
 export const footerMenu = [
   {
     title: "Nossos produtos",
-    open: false,
     submenu: [
       {
         title: "Mills Cotia",
-        url: "#",
+        url: "cotia",
       },
       {
         title: "Mills Cachoeirinha",
-        url: "#",
+        url: "Cachoeirinha",
       },
       {
         title: "Mills Serra",
-        url: "#",
+        url: "Serra",
       },
       {
         title: "Mills Osasco",
-        url: "#",
+        url: "Osasco",
       },
       {
         title: "Mills Camaçari",
-        url: "#",
+        url: "Camaçari",
       },
       {
         title: "Mills Pinheiros",
-        url: "#",
+        url: "Pinheiros",
       },
       {
         title: "Mills Rio de Janeiro",
-        url: "#",
+        url: "rj",
       },
       {
         title: "Mills Contagem",
-        url: "#",
+        url: "Contagem",
       },
       {
         title: "Mills Uberlândia",
-        url: "#",
+        url: "Uberlândia",
       },
       {
         title: "Mills Fortaleza",
-        url: "#",
+        url: "Fortaleza",
       },
     ],
   },
   {
     title: "Aluguel de equipamentos",
-    open: false,
     submenu: [
       {
-        title: "Mills Cotia",
+        title: "Submenu 1",
+        url: "#",
+      },
+      {
+        title: "Submenu 2",
+        url: "#",
+      },
+      {
+        title: "Submenu 3",
         url: "#",
       },
     ],
   },
   {
     title: "Venda de equipamentos",
-    open: false,
     submenu: [
       {
-        title: "Mills Cotia",
+        title: "Submenu 4",
+        url: "#",
+      },
+      {
+        title: "Submenu 5",
         url: "#",
       },
     ],
   },
   {
     title: "Serviços",
-    open: false,
     submenu: [
       {
-        title: "Mills Cotia",
+        title: "Submenu 6",
+        url: "#",
+      },
+      {
+        title: "Submenu 7",
         url: "#",
       },
     ],
   },
   {
     title: "Conheça a Mills",
-    open: false,
     submenu: [
       {
-        title: "Mills Cotia",
+        title: "Submenu 8",
         url: "#",
       },
     ],
   },
   {
     title: "Unidades",
-    open: false,
     submenu: [
       {
-        title: "Mills Cotia",
+        title: "Submenu 9",
+        url: "#",
+      },
+      {
+        title: "Submenu 10",
         url: "#",
       },
     ],

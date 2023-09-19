@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState, useContext } from "react";
 import Image from "next/image";
 import { search, millsLogo, carBag } from "@/assets";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
@@ -10,31 +10,52 @@ import { NavbarProps } from "./types";
 import brazil from "@/assets/brazil.svg";
 import { ChevronDown } from "@/assets/ChevronDown";
 import Link from "next/link";
-import { menu } from "./utils";
+//import { menu } from "./utils";
 import { SearchInput } from "./SearchInput/SearchInput";
 import { SearchModal } from "./SearchModal/SearchModal";
+import { useRouter } from "next/router";
+import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
 
 export const Navbar: React.FC<NavbarProps> = (props) => {
-  const { openMenu, searchMode, setSearchMode, onSearch } = props;
+  const {
+    menu,
+    openMenu,
+    searchMode,
+    setSearchMode = () => null,
+    onSearch,
+    theme,
+    setTheme = () => null
+  } = props;
+  const { currentSiteTheme, setCurrentSiteTheme } = useContext(
+    currentSiteThemeContext
+  );
+
+  useEffect(() => {
+    setCurrentSiteTheme(theme);
+  }, [theme]);
 
   const { isMobile } = useScreenWidth();
-  const [menuView, setMenuView] = useState("rentalLight");
+  const router = useRouter();
+  const [menuView, setMenuView] = useState(currentSiteTheme);
   const backgroundColor =
-    menuView === "rentalHeavy" ? "bg-green-800" : "bg-orange-500";
+    currentSiteTheme === "rentalHeavy" ? "bg-green-800" : "bg-orange-500";
   const backgroundButton =
-    menuView === "rentalHeavy" ? "" : "bg-white text-orange-500";
+    currentSiteTheme === "rentalHeavy" ? "" : "bg-white text-orange-500";
 
   const triggerClass =
     "font-ibm-font text-sm text-white data-[state=open]:font-bold data-[highlighted]:outline-none";
 
   const menuItemClass =
-    "text-green-800 group pl-5 leading-none flex items-center h-[58px] px-[10px] relative select-none outline-none data-[state=open]:bg-orange-500 data-[state=open]:rounded-r data-[state=open]:text-violet11 data-[highlighted]:bg-orange-500 data-[highlighted]:text-white data-[highlighted]:text-green-800 data-[highlighted]:rounded-s-none";
+    "text-green-800 group pl-5 leading-none flex items-center h-[58px] px-[10px] relative select-none outline-none data-[state=open]:bg-orange-500 data-[state=open]:rounded-r data-[state=open]:text-violet11 data-[highlighted]:bg-orange-500 data-[highlighted]:text-white data-[highlighted]:text-green-800 data-[highlighted]:rounded-s-none cursor-pointer";
 
   const renderWithImage = (subItem: any, index: number) => {
     if (subItem.image) {
       return (
         <Menubar.Sub>
-          <Menubar.SubTrigger className={menuItemClass}>
+          <Menubar.SubTrigger
+            className={menuItemClass}
+            onClick={() => router.push(subItem.link ?? "/")}
+          >
             {subItem.title}
           </Menubar.SubTrigger>
           <Menubar.Portal>
@@ -60,7 +81,11 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
       );
     } else {
       return (
-        <Menubar.Item key={index} className={menuItemClass}>
+        <Menubar.Item
+          key={index}
+          className={menuItemClass}
+          onClick={() => router.push(subItem.link ?? "/")}
+        >
           {subItem.title}
         </Menubar.Item>
       );
@@ -78,13 +103,19 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
     const link = document.createElement("a");
     if (linkDestination !== "") {
       link.href = linkDestination;
-      link.target = "_blank";
+      link.target = "";
       link.rel = "noopener noreferrer";
       link.click();
     }
   };
-  const handleSearchMode = (action: boolean) => {
-    return action ?? undefined;
+  const handleSearchMode = (isOpenSearchMode: boolean) => {
+    setSearchMode(isOpenSearchMode);
+  };
+  const handleSelectRentalTheme = (theme: string) => {
+    setTheme(theme);
+    setCurrentSiteTheme(theme);
+    // if (theme === "rentalHeavy") return router.push("/maquinas-pesadas");
+    // return router.push("/");
   };
   return (
     <nav>
@@ -92,13 +123,13 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
         <div className="container flex justify-between items-center">
           <div className="tablet:flex">
             <button
-              onClick={() => setMenuView("rentalLight")}
+              onClick={() => handleSelectRentalTheme("rentalLight")}
               className="py-1 px-8 tablet:py-[6px] text-sm text-white bg-orange-500 font-normal tablet:px-4 tablet:text-[10px] tablet:leading-3"
             >
               Rental Leves
             </button>
             <button
-              onClick={() => setMenuView("rentalHeavy")}
+              onClick={() => handleSelectRentalTheme("rentalHeavy")}
               className="py-1 px-8 tablet:py-[6px] text-sm text-white bg-green-800 font-normal tablet:px-4 tablet:text-[10px] tablet:leading-3"
             >
               Rental Pesados
@@ -144,7 +175,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
               )
             ) : (
               <Menubar.Root className="flex tablet:hidden justify-between w-full pl-9">
-                {menu.map((item) => {
+                {menu?.map((item: any) => {
                   return (
                     <Menubar.Menu key={item.title}>
                       <Menubar.Trigger
@@ -161,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                             sideOffset={5}
                             alignOffset={-25}
                           >
-                            {item.subMenu.map((subItem: any, index) => {
+                            {item.subMenu.map((subItem: any, index: number) => {
                               return (
                                 <Fragment key={index}>
                                   {renderWithImage(subItem, index)}
@@ -187,9 +218,12 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                   <Image src={search} alt="search" width={16} height={16} />
                 </button>
               )}
-              {menuView === "rentalLight" && <LoginButton />}
+              {currentSiteTheme === "rentalLight" && <LoginButton />}
 
-              <a className="cursor-pointer min-w-[16px]">
+              <a
+                className="cursor-pointer min-w-[16px]"
+                href="/carrinho/passo-01"
+              >
                 <Image src={carBag} alt="carBag" width={16} height={16} />
               </a>
               <div className="cursor-pointer" onClick={openMenu}>
@@ -205,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
               >
                 <p
                   className={`${
-                    menuView === "rentalLight"
+                    currentSiteTheme === "rentalLight"
                       ? "text-orange-500"
                       : "text-white"
                   } font-semibold whitespace-nowrap`}

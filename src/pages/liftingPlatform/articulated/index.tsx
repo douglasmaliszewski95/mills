@@ -1,98 +1,124 @@
 import { About } from "@/components/shared/About/About";
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Header } from "@/components/shared/Header/Header";
-import aboutLiftingPlatform from "@/assets/about-lifting-platform.jpg";
 import { OtherTypes } from "@/components/Category/OtherTypes/OtherTypes";
-import tesoura from "@/assets/img/tesoura.jpg";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Information } from "@/components/Category/Information/Information";
 import { Banner } from "@/components/shared/Banner/Banner";
-import banner from "@/assets/img/elevatingPlatforms.jpg";
 import { Utilizations } from "@/components/Category/Utilizations/Utilizations";
-import { utilizationCards } from "@/components/Articulated/utils";
+import { useCallback, useEffect, useState } from "react";
+import { getImage } from "@/services/hooks/getImage";
+import { getText } from "@/services/hooks/getText";
+import { getImageSrc } from "@/utils/images";
+import { ImageCMS } from "@/types";
+import SearchCMS from "@/dtos/SearchCMS";
 
-const articulated: React.FC = () => {
+const Articulated: React.FC = () => {
+  const [banner, setBanner] = useState<any>();
+  const [section, setSection] = useState<any>();
+  const [segments, setSegments] = useState<any>();
+  const [icons, setIcons] = useState<any>();
+  const [iconsText, setIconsText] = useState<any>();
+  const [norms, setNorms] = useState<any>();
+
+  const getContent = useCallback(async () => {
+    const images = await getImage("plataformas_elevatorias_articulada");
+    const texts = await getText("plataformas_elevatorias_articulada");
+
+    let filterIcons = [];
+
+    for (let i = 1; i <= images.icon_main_applications.length; i++) {
+      const search = images.icon_main_applications.find(
+        (x: any) => x.fields.content_order === i
+      );
+      if (search)
+        filterIcons.push({
+          id: search.id,
+          title: search.fields.content_title,
+          image: search.fields.native.links[0].href,
+          alt: search.fields.alt_attribute,
+        });
+    }
+
+    const orderedSegments = images?.articulated_platforms?.sort(
+      (a: SearchCMS, b: SearchCMS) =>
+        a?.description?.localeCompare(b?.description)
+    );
+
+    setBanner(images.banner_plataformas_elevatorias_articulada[0]);
+    setSection(images.plataformas_elevatorias[0]);
+    setSegments(orderedSegments);
+    setIcons(filterIcons);
+    setIconsText(texts.icon_main_applications_text[0]);
+    setNorms(texts.norms[0]);
+  }, []);
+
+  useEffect(() => {
+    getContent();
+  }, []);
+
   return (
     <>
       <Header />
       <main>
         <Banner
-          breadcrumb="Plataformas Elevatórias > Lança Articulada"
-          title="Lança articulada"
-          backgroundImage={banner.src}
-          blur="bg-black/50"
-        />
-        <About
-          title="Plataforma Elevatória Lança Articulada"
-          description="Acessar locais de difícil acesso é uma missão simples para a plataforma elevatória articulada. Com uma lança dobrável que permite alcance horizontal e vertical, ela pode executar os mais diversos tipos de trabalho com total estabilidade e segurança."
-          image={aboutLiftingPlatform}
-          alt="Imagem"
-        />
-        <About
-          title="Características da Plataforma Elevatória Articulada"
-          description={[
-            "As características podem variar de acordo com a motorização: a plataforma elevatória a diesel é indicada para piso irregular e, a plataforma elevatória elétrica, para piso plano.",
-            "O modelo de plataforma elevatória articulada possibilita o trabalho sobre diversos obstáculos e objetos, com mecanismos que permitem giros de até 360 graus.",
-            "Por ter uma estrutura menor que os outros tipos, transporta só um trabalhador. Entretanto, tem como ponto positivo a performance superior à de outros modelos (como a plataforma tesoura), o que permite executar o trabalho de maneira mais fácil e dinâmica.",
+          backgroundImage={banner && getImageSrc(banner?.fields)}
+          title={banner?.fields?.content_title ?? ""}
+          linkList={[
+            {
+              name: "Plataformas Elevatórias",
+              href: "/plataformas-elevatorias",
+            },
+            {
+              name: "Lança Articulada",
+              href: "/plataformas-elevatorias/articulada",
+            },
           ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
+        />
+        <About
+          title={segments ? segments?.[0].fields.content_title : ""}
+          description={segments ? segments?.[0].fields.content_text : ""}
+          image={segments?.[0].fields.native.links[0].href}
+          alt={segments ? segments?.[0].fields.alt_attribute : ""}
+          link={segments ? segments?.[0]?.fields.href_attribute : ""}
+        />
+        <About
+          title={segments ? segments?.[1].fields.content_title : ""}
+          description={segments ? segments?.[1].fields.content_text : ""}
+          image={segments?.[1].fields.native.links[0].href}
+          alt={segments ? segments?.[1].fields.alt_attribute : ""}
           hasButton={false}
           orientation="inverted"
           theme="beige-200"
         />
         <Information
-          title="Normas para trabalho em altura: Plataforma Elevatória"
-          description="Algumas normas brasileiras indicam regras e recomendações para uso da tecnicamente chamada Plataforma Elevatória Móvel de Trabalho (PEMT), entre elas estão a NBR 16776, da ABNT e as Normas Regulamentadoras 18 e 35, do Ministério do Trabalho e Previdência,  que abordam Segurança e Saúde no Trabalho da Indústria da Construção e Trabalho em Altura, respectivamente."
+          title={norms ? norms?.fields.title : ""}
+          description={norms ? norms?.fields.text_field[0] : ""}
         />
         <About
-          title="Onde usar plataforma elevatória articulada?"
-          description={[
-            "Aliando alta performance e versatilidade, a plataforma elevatória articulada pode ser usada na execução de diversos tipos de trabalhos.",
-            "Uma função muito comum é a substituição do andaime, com isso, a realização de atividades se torna mais segura, já que dispensa montagem e elimina os riscos do processo, além do ganho de tempo.",
-          ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
+          title={segments ? segments?.[2].fields.content_title : ""}
+          description={segments ? segments?.[2].fields.content_text : ""}
+          image={segments?.[2].fields.native.links[0].href}
+          alt={segments ? segments?.[2].fields.alt_attribute : ""}
           hasButton={false}
         />
         <Utilizations
-          title="Confira as principais aplicações deste tipo de plataforma elevatória:"
-          description="Alguns aspectos devem ser levados em consideração na hora de alugar a lança articulada. Pontos como ambiente interno ou externo, altura que deverá ser alcançada, obstáculos para acessar o local desejado e  tipo de solo ajudam a definir qual o modelo ideal para a necessidade da sua empresa."
-          cards={utilizationCards}
+          title={iconsText ? iconsText?.fields.title : ""}
+          description={iconsText ? iconsText?.fields.text_field[0] : ""}
+          cards={icons || []}
           theme="orange"
         />
         <About
-          title="Aluguel plataforma elevatória articulada: como funciona?"
-          description={[
-            "O preço do aluguel de plataforma elevatória articulada, é um atrativo que torna a modalidade uma alternativa interessante para as empresas que não pretendem comprar o equipamento.",
-            "É muito importante ter em mente todas as necessidades que o equipamento precisará suprir na sua empresa/atividade, assim, fica mais fácil encontrar uma solução assertiva entre as opções disponíveis para locação.",
-          ]}
-          image={aboutLiftingPlatform}
-          alt="Imagem"
+          title={section ? section?.fields.content_title : ""}
+          description={section ? section?.fields.content_text : ""}
+          image={section ? section?.fields.native.links[0].href : ""}
+          alt={section ? section?.fields.alt_attribute : ""}
           hasButton={false}
           orientation="inverted"
           theme="beige-200"
         />
-        <OtherTypes
-          title="Conheça outros tipos de plataforma elevatória"
-          description={[
-            "Aqui, na Mills, além da plataforma elevatória tesoura (ou plataforma pantográfica), estão disponíveis diversos outros modelos como a plataforma elevatória articulada e a plataforma elevatória telescópica, em motorização elétrica ou a diesel.",
-            "As plataformas elevatórias atendem diferentes demandas de trabalho em altura, portanto, o ideal é conhecer as especificações técnicas de cada uma e escolher a perfeita para o seu tipo de trabalho.",
-          ]}
-          cards={[
-            {
-              label: "Plataforma Elevatória Tesoura",
-              backgroundImage: tesoura.src,
-              href: "/plataformas-elevatorias/pantografica-ou-tesoura",
-            },
-            {
-              label: "Plataforma Elevatória Telescópica",
-              backgroundImage: tesoura.src,
-              href: "/plataformas-elevatorias/telescopica",
-            },
-          ]}
-        />
+        <OtherTypes title="Plataforma Elevatória Articulada" />
         <ExpertRecommendation />
         <MachinesAndPlatforms />
       </main>
@@ -101,4 +127,4 @@ const articulated: React.FC = () => {
   );
 };
 
-export default articulated;
+export default Articulated;

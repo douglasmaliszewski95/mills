@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   const { src } = req.query;
 
-  const url = `https://p19894161c1prd-store.occa.ocs.oraclecloud.com${src}`;
+  const url = `${process.env.OCC_URL_STORE}${src}`;
   const token = await getCredentialsOCC();
   const response = await fetch(url, {
     headers: {

@@ -15,7 +15,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = (props) => {
           <div className="flex items-center gap-4 flex-col">
             <Image src={checkCircle} alt="green right check" />
             <Dialog.Title className="text-green-800 text-sm font-semibold text-center">
-              {title}
+              {title ?? null}
             </Dialog.Title>
           </div>
         </Dialog.Content>

@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState, useCallback } from "react";
 import { Footer } from "@/components/shared/Footer/Footer";
 import { TrendingInformation } from "@/components/Home/TrendingInformation/TrendingInformation";
 import { MeetOurProducts } from "@/components/Home/MeetOurProducts/MeetOurProducts";
-import { FindPlatform } from "@/components/Home/FindPlatform/FindPlatform";
 import { MillsNumbers } from "@/components/Home/MillsNumbers/MillsNumbers";
 import { Segments } from "@/components/Home/Segments/Segments";
 import { Newsletter } from "@/components/Home/Newsletter/Newsletter";
@@ -14,22 +12,38 @@ import { RequestQuote } from "@/components/Home/RequestQuote/RequestQuote";
 import { BannerCarousel } from "@/components/Home/BannerCarousel/BannerCarousel";
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Header } from "@/components/shared/Header/Header";
-import { HomeSectionsProps } from "./types";
 import { getCMSHomeImage } from "@/utils/content";
-import { getSharedContent } from "@/utils/getSharedContent";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Home() {
   const [content, setContent] = useState<any>();
-
   const getContent = useCallback(async () => {
-    const { bannersResult, ourProducts, bannerNumbers, ourServices } =
-      await getCMSHomeImage();
-    setContent({ bannersResult, ourProducts, bannerNumbers, ourServices });
+    const {
+      bannersResult,
+      ourProducts,
+      segments,
+      bannerNumbers,
+      ourServices,
+      successHistory,
+      textNumbers,
+      successHistoryTexts,
+      millsMagazine,
+    } = await getCMSHomeImage();
+    setContent({
+      bannersResult,
+      ourProducts,
+      segments,
+      bannerNumbers,
+      ourServices,
+      successHistory,
+      textNumbers,
+      successHistoryTexts,
+      millsMagazine,
+    });
   }, []);
 
   useEffect(() => {
     getContent();
-    // getSharedContent();
   }, []);
 
   return (
@@ -40,18 +54,25 @@ export default function Home() {
           <BannerCarousel banners={content?.bannersResult} />
           <RequestQuote />
         </div>
-        <MeetOurProducts cards={content?.ourProducts} />
-        <FindPlatform />
-        <Segments />
+        <MeetOurProducts theme="rentalLight" cards={content?.ourProducts} />
+        <Segments
+          bgColor="bg-gray-150"
+          segments={content?.segments}
+          isHome={true}
+        />
         <MillsNumbers
-          bannerDesktop={content?.bannerNumbers[1]?.image || ""}
-          bannerMobile={content?.bannerNumbers[0]?.image || ""}
+          bannerDesktop={content?.bannerNumbers?.[0].image || ""}
+          bannerMobile={content?.bannerNumbers?.[0].mobileImage || ""}
+          textNumbers={content?.textNumbers}
         />
         <Newsletter />
         <OurServices serviceCards={content?.ourServices} />
-        <SuccessStories />
+        <SuccessStories
+          stories={content?.successHistory}
+          successHistoryTexts={content?.successHistoryTexts}
+        />
         <FrequentQuestions />
-        <TrendingInformation />
+        <TrendingInformation millsMagazine={content?.millsMagazine} />
         <MachinesAndPlatforms />
       </main>
       <Footer />

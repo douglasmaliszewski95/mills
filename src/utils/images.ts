@@ -1,5 +1,5 @@
 export const getImageSrc = (image: any) => {
-  return image?.fields.native.links[0].href || "";
+  return image?.native?.links[0]?.href || "";
 };
 
 export const getMobileImageName = (name: string) => {

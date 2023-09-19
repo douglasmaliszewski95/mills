@@ -15,7 +15,7 @@ interface Spec {
 
 export interface Product {
   id?: string;
-  image: StaticImageData | Image;
+  image: string;
   model: string;
   description: string;
   specs: Spec[];
@@ -38,6 +38,8 @@ export interface ArrowProps {
   width?: number;
   height?: number;
   customProps?: string;
+  arrowBorderRightDistance?: string;
+  arrowColor?: "white" | "orange" | "green";
 }
 
 export interface ProductsList {
@@ -180,4 +182,46 @@ export interface ProductOCC {
   productImagesMetadata: [{}];
   configurable: boolean;
   erro: string;
+}
+
+export interface ImageCMS {
+  fields: {
+    alt_attribute: string | null;
+    content_area: string | null;
+    content_subtitle: string | null;
+    content_text: string | null;
+    content_title: string | null;
+    content_order?: string | null;
+    href_attribute?: string | null;
+    subtitle?: string[];
+    title: string | null;
+    text_field: string[] | null;
+    buttonText?: string[] | null;
+  };
+  description: string;
+  name: string;
+  mobileObj?: ImageCMS | undefined;
+  id?: number | string;
+}
+
+export interface TextCMS {
+  fields: {
+    alt_attribute: string | null;
+    content_area: string | null;
+    content_subtitle: string | null;
+    content_text: string | null;
+    content_title: string | null;
+    content_text_json:
+      | {
+          title: string;
+          text: string;
+        }[]
+      | null;
+    text_field: string[] | null;
+    title: string | null;
+    hrefButton?: string[];
+    subtitle: string[] | [];
+  };
+  description: string;
+  name: string;
 }
