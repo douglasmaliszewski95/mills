@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/shared/Checkbox/Checkbox";
 import { FilterBarProps } from "./types";
+import { RefinementCrumbs, Refinements } from "@/dtos/SearchProducts";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { LargeChevronLeft } from "@/assets/LargeChevronLeft";
 import { SearchIcon } from "@/assets/SearchIcon";
@@ -11,8 +12,10 @@ import { useRouter } from "next/router";
 export const FilterBar: React.FC<FilterBarProps> = (props) => {
   const {
     filters,
+    refinementCrumbs,
     onSelectFilter,
     onSearch,
+    baseUrl = "/plataformas-elevatorias/busca",
     setIsFiltersOpen = () => null,
     clearFilters,
     submitFilters = () => null,
@@ -20,11 +23,16 @@ export const FilterBar: React.FC<FilterBarProps> = (props) => {
   const router = useRouter();
   const { isMobile } = useScreenWidth();
   const [inputValue, setInputValue] = useState("");
+  const appliedFilters: string[] = refinementCrumbs.map(
+    (crumb: RefinementCrumbs) => {
+      return crumb.label;
+    }
+  );
 
   const onSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!!inputValue) {
-      router.push(`/search?productName=${inputValue}`);
+    if (inputValue) {
+      router.push(`${baseUrl}?productName=${inputValue}`);
       onSearch(inputValue);
     }
   };
@@ -65,19 +73,21 @@ export const FilterBar: React.FC<FilterBarProps> = (props) => {
           </button>
         </form>
       </div>
-      {filters.map(({ id, title, options }, index) => (
-        <div key={id}>
-          <p className="text-green-800 font-semibold mb-2 px-[18px]">{title}</p>
-          {options.map((option, index) => (
+      {filters?.map((item, index) => (
+        <div key={item?.displayName}>
+          <p className="text-green-800 font-semibold mb-2 px-[18px]">
+            {item.displayName}
+          </p>
+          {item.refinements.map((option: Refinements, index: number) => (
             <div
-              key={index}
+              key={item?.displayName}
               className="flex gap-[10px] items-center mb-[10px] px-[18px]"
             >
               <Checkbox
-                checked={index % 2 === 0}
-                onToggle={() => onSelectFilter(option, index % 2 === 0)}
+                checked={appliedFilters.includes(option.label)}
+                onToggle={() => onSelectFilter(option.label, option.link)}
               />
-              <p className="text-sm text-green-800">{option}</p>
+              <p className="text-sm text-green-800">{option.label}</p>
             </div>
           ))}
           {index < filters.length - 1 && (

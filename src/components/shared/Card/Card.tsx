@@ -17,7 +17,7 @@ export const Card: React.FC<CardProps> = (props) => {
         <SolutionsInHeights color={isHovering ? "white" : "#F37021"} />
       </div>
       <div className="flex grow pb-4 max-h-[50%] tablet:pb-0">
-        <p className="leading-5">{title}</p>
+        <p className="leading-5">{title ?? null}</p>
       </div>
     </button>
   );

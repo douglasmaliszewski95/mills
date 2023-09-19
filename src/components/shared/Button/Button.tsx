@@ -8,6 +8,7 @@ const Button: React.FC<ButtonProps> = ({
   variant = "default",
   size = "medium",
   disabled = false,
+  onClick,
   ...rest
 }) => {
   return (
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
         size,
       })} ${className}`}
       disabled={variant === "disabled"}
+      onClick={onClick}
       {...rest}
     >
       {children}

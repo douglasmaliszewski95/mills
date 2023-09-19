@@ -4,4 +4,6 @@ export interface CardProps {
   image: string;
   title: string;
   alt: string;
+  href: string;
+  isCarrossel?: boolean;
 }

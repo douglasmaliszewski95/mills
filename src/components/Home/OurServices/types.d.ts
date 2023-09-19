@@ -5,8 +5,10 @@ interface ServiceCard {
   alt: string;
   article: string;
   url: string;
+  href: string;
 }
 
 export interface OurServicesProps {
   serviceCards: ServiceCard[] | undefined;
+  theme?: string;
 }

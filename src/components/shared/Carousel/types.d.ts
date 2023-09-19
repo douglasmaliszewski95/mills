@@ -11,4 +11,8 @@ export interface CarouselProps {
   spacing?: string;
   marginLeft?: string;
   hasDots?: boolean;
+  variableWidth?: boolean;
+  adaptiveHeight?: boolean,
+  infinite?: boolean;
+  smallDots?: boolean;
 }

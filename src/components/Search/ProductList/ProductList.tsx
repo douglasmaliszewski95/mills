@@ -7,12 +7,16 @@ import chevronLeft from "@/assets/large-orange-chevron-left.svg";
 import chevronRight from "@/assets/large-orange-chevron-right.svg";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { LargeChevronRight } from "@/assets/LargeChevronRight";
+import { MinimalistProductCard } from "@/components/shared/MinimalistProductCard/MinimalistProductCard";
 
 export const ProductList: React.FC<ProductListProps> = (props) => {
   const {
     products,
     selectedFilters,
     onRemoveFilter,
+    itemType = "Pecas",
+    type = "plataforma",
+    minimalistCards = false,
     setIsFiltersOpen = () => null,
   } = props;
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,18 +40,18 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
   );
 
   return (
-    <div className="tablet:px-[18px]">
+    <div className="tablet:px-[18px] w-full">
       <div className="flex flex-wrap gap-2 h-fit mb-2">
         {selectedFilters?.length > 0
           ? selectedFilters.map((filter) => (
               <div
-                key={filter}
+                key={filter.label}
                 className="h-fit flex border-[1px] border-orange-500 rounded pl-3 pr-1 py-1 gap-1 justify-between"
               >
-                <p className="text-green-800 text-xs">{filter}</p>
+                <p className="text-green-800 text-xs">{filter.label}</p>
                 <div
                   className="cursor-pointer"
-                  onClick={() => onRemoveFilter(filter)}
+                  onClick={() => onRemoveFilter(filter.label, filter.link)}
                 >
                   <Image width={6} height={6} src={closeIcon} alt="Xis" />
                 </div>
@@ -62,7 +66,7 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
       <h3 className="text-green-800 tablet:text-xs mb-6 tablet:mb-4">{`(${
         resultsQuantity || "Nenhuma"
       } ${
-        isMultipleProducts ? "plataformas encontradas" : "plataforma encontrada"
+        isMultipleProducts ? `${type}s encontradas` : `${type} encontrada`
       })`}</h3>
       {isMobile && (
         <button
@@ -73,13 +77,25 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
           <LargeChevronRight />
         </button>
       )}
-      <div className="grid grid-cols-3 gap-4 tablet:grid-cols-1">
-        {productsWithPagination?.map((product, index) => (
-          <ProductCard
-            key={`${product.displayName}${index}`}
-            product={product}
-          />
-        ))}
+      <div className="w-full grid grid-cols-3 gap-4 tablet:grid-cols-1">
+        {productsWithPagination?.map((product) =>
+          minimalistCards ? (
+            <MinimalistProductCard
+              key={product?.displayName}
+              itemType={itemType}
+              product={product}
+              baseUrl={
+                type === "peça"
+                  ? "pecas"
+                  : type === "equipamento"
+                  ? "vendas-seminovos-novos"
+                  : "formas-e-escoramentos"
+              }
+            />
+          ) : (
+            <ProductCard key={product?.displayName} product={product} />
+          )
+        )}
       </div>
       <div className="w-full flex justify-center mt-8">
         {resultsQuantity > quantityShowed && (

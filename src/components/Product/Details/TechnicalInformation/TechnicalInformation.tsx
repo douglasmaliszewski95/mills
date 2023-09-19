@@ -33,12 +33,15 @@ export const TechnicalInformation: React.FC<TechnicalInformationProps> = (
         <p className="text-green-800 text-sm font-medium">
           {technicalInfo.displayName}
         </p>
-        {technicalInfo.specs.map(({ label, value }, index) => (
-          <p
-            key={index}
-            className="text-green-800 text-sm font-medium"
-          >{`${label}: ${!!value ? value : "N/A"}`}</p>
-        ))}
+        {technicalInfo.specs.map(
+          ({ label, value }, index) =>
+            value !== null && (
+              <p
+                key={index}
+                className="text-green-800 text-sm font-medium"
+              >{`${label}: ${!!value ? value : "N/A"}`}</p>
+            )
+        )}
       </Collapsible.Content>
     </Collapsible.Root>
   );

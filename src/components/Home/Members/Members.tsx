@@ -27,7 +27,7 @@ export const Members = () => (
                 {item.text}
               </p>
               <Button variant="outlined" className="mt-6">
-                {item.buttonText}
+                {item?.buttonText}
               </Button>
             </div>
           );

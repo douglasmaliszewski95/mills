@@ -1,5 +1,7 @@
+import { useRouter } from "next/router";
 import Button from "../shared/Button/Button";
 import { RightImgWithLeftButtonsProps } from "./types";
+import { HtmlRenderer } from "../HtmlRender/htmlRender";
 
 export const RightImgWithLeftButtons: React.FC<
   RightImgWithLeftButtonsProps
@@ -11,6 +13,7 @@ export const RightImgWithLeftButtons: React.FC<
   width = "max-w-[574px]",
   imageHeight = "h-[550px]",
 }) => {
+  const router = useRouter();
   return (
     <section className="flex justify-center text-green-800 bg-beige-200">
       <div className="flex justify-between container tablet:flex-col">
@@ -18,7 +21,7 @@ export const RightImgWithLeftButtons: React.FC<
           className={`flex flex-col pt-20 gap-10 w-1/2 tablet:w-full tablet:px-4 tablet:pt-6 tablet:pb-9 ${width}`}
         >
           <h3 className="font-semibold text-2xl tablet:text-base">
-            {headerText}
+            <HtmlRenderer htmlContent={headerText} />
           </h3>
           <div className="flex flex-wrap gap-2">
             {textCards?.map((item, index) => {
@@ -34,7 +37,10 @@ export const RightImgWithLeftButtons: React.FC<
               );
             })}
           </div>
-          <Button className="max-w-[265px] py-3 tablet:max-w-full">
+          <Button
+            className="max-w-[265px] py-3 tablet:max-w-full"
+            onClick={() => router.push(buttonProps?.link ?? "")}
+          >
             {buttonProps?.text}
           </Button>
         </div>

@@ -1,21 +1,39 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import * as Separator from "@radix-ui/react-separator";
 import { chevronDown } from "@/assets";
+import { chevronUp } from "@/assets";
 import { listItems } from "./utils";
+import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
 
 export const MachinesAndPlatforms: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const { currentSiteTheme } = useContext(currentSiteThemeContext);
 
   return (
     <section>
       <div className="flex items-center flex-col py-14 font-ibm-font bg-white px-24 w-full tablet:px-4 tablet:pt-6">
         <div className="container w-full">
           <div className="flex flex-wrap justify-between tablet:flex-col">
-            <h2 className="text-3xl font-bold text-orange-500 tablet:text-lg">
-              Plataformas elevatórias em <br className="desktop:hidden" />
-              todo o Brasil
+            <h2
+              className={`${
+                currentSiteTheme === "rentalLight"
+                  ? "text-3xl text-orange-500"
+                  : "text-2xl text-green-800"
+              } font-bold tablet:text-lg`}
+            >
+              {currentSiteTheme === "rentalLight" ? (
+                <>
+                  Plataformas elevatórias em <br className="desktop:hidden" />
+                  todo o Brasil
+                </>
+              ) : (
+                <>
+                  Máquinas pesadas em <br className="desktop:hidden" />
+                  todo o Brasil
+                </>
+              )}
             </h2>
           </div>
           <div className="flex justify-between mt-16 tablet:flex-col tablet:mt-6">
@@ -36,7 +54,10 @@ export const MachinesAndPlatforms: React.FC = () => {
                         </p>
                         <Collapsible.Trigger asChild>
                           <button>
-                            <Image src={chevronDown} alt="chevron" />
+                            <Image
+                              src={!open ? chevronDown : chevronUp}
+                              alt="chevron"
+                            />
                           </button>
                         </Collapsible.Trigger>
                       </div>

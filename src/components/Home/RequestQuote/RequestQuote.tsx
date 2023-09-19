@@ -3,8 +3,10 @@ import { InputSelector } from "@/components/shared/InputSelector/InputSelector";
 import { useForm } from "react-hook-form";
 import { NumberInput } from "../NumberInput/NumberInput";
 import { places, timeStamps } from "./utils";
+import { useGetCMSShared } from "@/services/hooks/useGetCMSShared";
 
 export const RequestQuote: React.FC = () => {
+  const { equipmentFormList } = useGetCMSShared();
   const { handleSubmit, watch, setValue } = useForm<FormInputs>({
     defaultValues: {
       local: "",
@@ -13,7 +15,19 @@ export const RequestQuote: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormInputs) => null;
+  const onSubmit = (data: FormInputs) => {
+    if (disableButton()) return;
+    return console.log(data);
+  };
+
+  const disableButton = () => {
+    const local = watch("local");
+    const dateType = watch("dateType");
+    const quantity = watch("quantity");
+
+    if (local !== "" && dateType !== "" && quantity !== 0) return true;
+    return false;
+  };
 
   return (
     <div className="flex w-full justify-center z-10 absolute mb-[-60px] tablet:mt-0 tablet:mr-0">
@@ -28,7 +42,7 @@ export const RequestQuote: React.FC = () => {
           <InputSelector
             name="local"
             watch={watch}
-            options={places}
+            options={equipmentFormList}
             setValue={setValue}
             placeholder="Selecione onde você irá utilizar o equipamento"
           />
@@ -52,7 +66,13 @@ export const RequestQuote: React.FC = () => {
           </div>
         </div>
         <div className="basis-3/12 tablet:w-full tablet:mt-[-10px]">
-          <Button className="w-full" size="large">
+          <Button
+            className={`w-full ${
+              !disableButton() ? "bg-orange-500/25" : "bg-orange-500"
+            }`}
+            size="large"
+            disabled={disableButton()}
+          >
             Solicitar orçamento
           </Button>
         </div>

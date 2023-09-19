@@ -11,7 +11,7 @@ export const CartModal: React.FC<CartModalProps> = (props) => {
   const handleWhatsappClick = () => null;
 
   return (
-    <div className="fixed z-50 right-[18px] bottom-[18px] flex flex-col gap-3">
+    <div className="fixed z-50 right-[18px] bottom-[158px] flex flex-col gap-3">
       <button
         className="bg-orange-500 w-[50px] h-[50px] rounded-full relative"
         onClick={handleClickCart}

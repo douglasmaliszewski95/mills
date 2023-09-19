@@ -4,28 +4,45 @@ import bgUp from "@/assets/img/bgUp.png";
 import Button from "@/components/shared/Button/Button";
 import { Carousel } from "@/components/shared/Carousel/Carousel";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
-import { posts } from "./utils";
+import { useRouter } from "next/router";
+import { PostCardProps } from "./PostCard/types";
+import { HtmlRenderer } from "@/components/HtmlRender/htmlRender";
 
-export const TrendingInformation: React.FC = () => {
+interface TrendingInformationProps {
+  millsMagazine: {
+    text?: string;
+    title?: string;
+    posts?: PostCardProps[];
+  };
+  theme?: "rentalLight" | "rentalHeavy";
+}
+
+export const TrendingInformation = ({
+  millsMagazine,
+  theme = "rentalLight",
+}: TrendingInformationProps) => {
   const { isMobile } = useScreenWidth();
+  const router = useRouter();
 
   return (
-    <section className="relative flex flex-col items-center h-[506px] bg-orange-500 tablet:h-full">
+    <section
+      className={`relative flex flex-col items-center h-[506px]  ${
+        theme === "rentalLight" ? "bg-orange-500" : "bg-green-800"
+      }  tablet:h-full`}
+    >
       <div className="flex justify-between items-center container w-full pt-20 pb-12 font-ibm-font tablet:flex-col tablet:py-6">
         <div className="flex flex-col gap-6 w-full tablet:pl-4">
-          <p className="text-white text-2xl font-semibold tablet:text-lg">
-            Conheça a uP, <br /> a Revista Digital da Mills
+          <p className="text-white text-2xl whitespace-pre-line font-semibold tablet:text-lg w">
+            <HtmlRenderer htmlContent={millsMagazine?.title} />
           </p>
-          <p className="text-white text-lg tablet:text-xs">
-            Fique por dentro de tudo o que acontece no
-            <br className="desktop:hidden" /> mercado e receba conteúdo gratuito
-            sobre
-            <br className="desktop:hidden" /> novidades e tendências
+          <p className="text-white text-lg whitespace-pre-line tablet:text-xs">
+            {millsMagazine?.text}
           </p>
           <Button
-            variant="inverted"
+            variant={`${theme === "rentalLight" ? "inverted" : "default"}`}
             size="large"
             className="relative z-index-1 tablet:hidden"
+            onClick={() => router.push("https://blog.mills.com.br/")}
           >
             Ver publicações
           </Button>
@@ -38,7 +55,7 @@ export const TrendingInformation: React.FC = () => {
               slidesToShow={isMobile ? 1 : 3}
               darkOrangeDot
             >
-              {posts.map((post, index) => (
+              {millsMagazine?.posts?.map((post, index) => (
                 <PostCard key={index} {...post} />
               ))}
             </Carousel>

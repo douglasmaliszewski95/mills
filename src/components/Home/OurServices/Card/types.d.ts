@@ -6,4 +6,5 @@ export interface CardProps {
   title: string;
   article: string;
   url: string;
+  href: string;
 }

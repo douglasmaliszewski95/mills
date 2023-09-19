@@ -10,6 +10,7 @@ export const Carousel: React.FC<CarouselProps> = (props) => {
   const {
     children,
     className,
+    smallDots,
     darkOrangeDot,
     hasDots = true,
     nextArrow = <></>,
@@ -18,24 +19,33 @@ export const Carousel: React.FC<CarouselProps> = (props) => {
     slidesToScroll = 1,
     marginLeft,
     spacing = "-32",
+    variableWidth = false,
+    adaptiveHeight = true,
+    infinite = true,
   } = props;
   const [selectedSlide, setSelectedSlide] = useState(0);
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite,
     speed: 500,
     swapToSlide: true,
     nextArrow,
     prevArrow,
     slidesToScroll,
     slidesToShow,
-    adaptiveHeight: true,
+    adaptiveHeight,
+    variableWidth,
     appendDots: (dots: ReactNode) =>
       !hasDots ? (
         <></>
       ) : (
-        <ul style={{ marginBottom: `${spacing}px`, marginLeft: marginLeft }}>
+        <ul
+          style={{
+            marginBottom: `${spacing}px`,
+            marginLeft: marginLeft,
+          }}
+        >
           {dots}
         </ul>
       ),
@@ -44,8 +54,12 @@ export const Carousel: React.FC<CarouselProps> = (props) => {
       const classNameDots = isSelected
         ? `${
             darkOrangeDot ? "bg-orange-800" : "bg-orange-500"
-          } flex items-center rounded-full w-[12px] h-[12px] bg-orange-500`
-        : "rounded-full w-[8px] h-[8px] bg-gray-400 flex items-center mt-[2px]";
+          } flex items-center rounded-full ${
+            smallDots ? "w-[6px] h-[6px]" : "w-[12px] h-[12px]"
+          } bg-orange-500`
+        : `rounded-full ${
+            smallDots ? "w-[4px] h-[4px]" : "w-[8px] h-[8px]"
+          } bg-gray-400 flex items-center mt-[2px]`;
 
       return <div className={classNameDots}></div>;
     },

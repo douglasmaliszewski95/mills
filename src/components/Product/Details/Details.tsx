@@ -11,7 +11,7 @@ import { ImageOCC } from "@/components/shared/ImageOCC/ImageOCC";
 import { useRouter } from "next/router";
 
 export const Details: React.FC<DetailsProps> = (props) => {
-  const { product, addToCart } = props;
+  const { product, addToCart, theme } = props;
   const {
     id,
     brand,
@@ -28,6 +28,7 @@ export const Details: React.FC<DetailsProps> = (props) => {
     x_rampaMxima,
     x_capacidadeDoTanqueL,
     x_peso,
+    x_manual,
     height,
     width,
     description,
@@ -151,22 +152,31 @@ export const Details: React.FC<DetailsProps> = (props) => {
           {needTraining && (
             <div className="mb-3 flex py-4 pr-4 pl-6 border-[2px] border-green-800/80 rounded gap-3">
               <Image src={analytics} alt="Operário" width={25} height={25} />
-              <p className="text-sm text-green-800 tablet:text-xs">
-                Este equipamento só pode ser operado após treinamento prévio.
-              </p>
+              {theme === "rentalLight" ? (
+                <p className="text-sm text-green-800 tablet:text-xs">
+                  Este equipamento só pode ser operado após treinamento prévio.
+                </p>
+              ) : (
+                <p className="text-sm text-green-800 tablet:text-xs">
+                  Este equipamento só pode ser operado por profissionais
+                  capacitados.
+                </p>
+              )}
             </div>
           )}
           <div className="w-full h-[1px] bg-gray-200 mt-8 tablet:mt-6"></div>
-          <div className="flex justify-between w-full py-4">
-            <p className="text-green-800 font-semibold tablet:text-sm">{`Manual ${brand}`}</p>
-            <button>
-              <Image src={download} width={22} height={22} alt="Download" />
-            </button>
-          </div>
+          {x_manual && (
+            <div className="flex justify-between w-full py-4">
+              <p className="text-green-800 font-semibold tablet:text-sm">{`Manual ${brand}`}</p>
+              <button>
+                <Image src={download} width={22} height={22} alt="Download" />
+              </button>
+            </div>
+          )}
           <div className="w-full h-[1px] bg-gray-200"></div>
           <TechnicalInformation technicalInfo={technicalInformation} />
           <div className="w-full h-[1px] bg-gray-200 mb-8 tablet:mb-6"></div>
-          <Button className="w-full" onClick={() => addToCart(id)}>
+          <Button className="w-full" onClick={() => addToCart(product)}>
             <p className="text-sm font-semibold px-[40px]">
               Incluir no orçamento
             </p>

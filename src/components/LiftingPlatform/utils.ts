@@ -16,7 +16,7 @@ export const info = {
       "A execução de um trabalho em altura ou em áreas de difícil acesso deve ser feita de maneira segura, eficiente e otimizada.",
     description:
       "A utilização da plataforma elevatória dá suporte em atividades como: manutenção, reparos, limpeza de fachadas, obras e muitas outras. Ao optar pelo equipamento, sua empresa ainda atende as normas de segurança como NR 18, entre outras",
-    image: aboutLiftingPlatform,
+    image: aboutLiftingPlatform.src,
     alt: "Plataforma elevatória",
   },
   whereToUse: {
@@ -346,6 +346,14 @@ export const info = {
       },
       {
         id: "1",
+        title: "Segurança",
+        description:
+          "Não requerem trabalho de montagem, como no caso dos andaimes, portanto, os colaboradores não estarão expostos a esse tipo de risco.",
+        image: handHoldingShield,
+        alt: "",
+      },
+      {
+        id: "2",
         title: "Segurança",
         description:
           "Não requerem trabalho de montagem, como no caso dos andaimes, portanto, os colaboradores não estarão expostos a esse tipo de risco.",

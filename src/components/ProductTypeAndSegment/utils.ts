@@ -507,3 +507,216 @@ export const organization = {
     buttonProps: { text: "Fale com um especialista " },
   },
 };
+
+export const assemblyStructureMock = {
+  banner: {
+    title: "Inventário e Organização do Estoque",
+    backgroundImage: "banner",
+  },
+  sectionWithLeftImage: {
+    image:
+      "https://64.media.tumblr.com/25e872389d06ea2f31845aaaa22a905e/a8155b6b59975ef5-c8/s640x960/659d71ee2781c28af69e4b64baa8884d9515d2b2.jpg",
+    headerText:
+      "Você está se programando para participar da equipe de montagem e produção de um evento importante?",
+    paragraphText:
+      "Ter os equipamentos adequados para isso é o primeiro passo dessa jornada, e a Mills pode te ajudar com a locação de plataformas elevatórias. Ela é uma importante ferramenta utilizada para trabalhos em altura, auxiliando na realização de manutenção ou montagem em locais de difícil acesso, como fachadas, galpões e pavilhões.",
+  },
+  sectionWithLeftTextRightImage: {
+    image:
+      "https://64.media.tumblr.com/25e872389d06ea2f31845aaaa22a905e/a8155b6b59975ef5-c8/s640x960/659d71ee2781c28af69e4b64baa8884d9515d2b2.jpg",
+    headerText:
+      "As plataformas elevatórias são as mais recomendadas para montar as estruturas do seu próximo evento",
+    text: "Utilizar escadas ou andaimes para esse tipo de serviço não é o mais indicado, apesar de serem os equipamentos mais conhecidos. Eles não trazem segurança para o profissional envolvido nem para a estrutura em si. Por isso, dê preferência para as plataformas elevatórias. Elas são seguras, confiáveis e trazem dinamismo ao trabalho.",
+    buttonProps: undefined,
+  },
+  liftingPlatforms: {
+    headerText:
+      "Com a Mills, você pode alugar plataformas elevatórias e realizar:",
+    textCards: [
+      "Montagem de palcos para show, festivais, teatro e carnaval ",
+      "Montagem de estrutura para cenário",
+      "Desmontagem de estruturas com segurança",
+      "Montagem de telões em eventos de entretenimento e cinema",
+      "Montar estruturas de iluminação para apresentações culturais",
+      "Montar grandes estruturas para divulgar banners e patrocinadores do evento",
+      "Auxiliar na montagem de pórticos para grandes eventos",
+      "Auxiliar na montagem de arquibancadas (que podem ser pré-fabricadas ou não)",
+    ],
+  },
+  talkToSpecialist: {
+    headerText:
+      "Ainda tem dúvidas sobre qual é o equipamento mais indicado para sua demanda?",
+    buttonProps: { text: "Fale com um especialista " },
+  },
+  platforms: {
+    headerText:
+      "Conheça cada tipo de plataforma e descubra a ideal para o seu projeto",
+    image:
+      "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+    cards: [
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Articulada",
+        buttonText: "Ver modelos",
+      },
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Telescópica",
+        buttonText: "Ver modelos",
+      },
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Tesoura",
+        buttonText: "Ver modelos",
+      },
+    ],
+  },
+  whyRestAerialPlatforms: {
+    headerText:
+      "Por que alugar plataformas elevatórias para montagem e produção de eventos?",
+    whyList: [
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+    ],
+  },
+};
+export const othersMock = {
+  banner: {
+    title: "Outros",
+    backgroundImage: "banner",
+  },
+  sectionWithLeftImage: {
+    image:
+      "https://64.media.tumblr.com/25e872389d06ea2f31845aaaa22a905e/a8155b6b59975ef5-c8/s640x960/659d71ee2781c28af69e4b64baa8884d9515d2b2.jpg",
+    headerText: "Grafite e artes urbanas",
+    paragraphText:
+      "Para realizar um serviço de grafite e artes urbanas no geral, você pode aproveitar os benefícios de uma plataforma elevatória, podendo ser com lança articulada para piso plano ou piso irregular.\n\nEssa plataforma costuma ser utilizada em soluções em altura, como na limpeza de fachadas. Porém, nada impede que ela seja útil para realizar alguma arte urbana. Ela vai otimizar o seu tempo e tornar o serviço mais detalhado.",
+  },
+  sectionJustWithText: {
+    text: "Na realização de inventário e organizações de estoque, o recomendado é utilizar \nplataformas elevatórias. Elas possuem deslocamento vertical e horizontal, e \ntransitam em locais estreitos, promovendo um trabalho ágil e prático.",
+  },
+  sectionWithLeftTextRightImage: {
+    image:
+      "https://64.media.tumblr.com/25e872389d06ea2f31845aaaa22a905e/a8155b6b59975ef5-c8/s640x960/659d71ee2781c28af69e4b64baa8884d9515d2b2.jpg",
+    headerText: "Máquinas para colheita",
+    text: "A Mills também pode te ajudar a otimizar o seu processo de colheita. Nós disponibilizamos em nosso catálogo colheitadeiras modernas e eficientes para turbinar o seu esforço. Este é um investimento interessante para melhorar a sua produção de safras, trazendo bons resultados.",
+    buttonProps: undefined,
+  },
+  liftingPlatforms: {
+    headerText:
+      "Com a Mills, você pode alugar plataformas elevatórias e realizar:",
+    textCards: [
+      "Montagem de palcos para show, festivais, teatro e carnaval ",
+      "Montagem de estrutura para cenário",
+      "Desmontagem de estruturas com segurança",
+      "Montagem de telões em eventos de entretenimento e cinema",
+      "Montar estruturas de iluminação para apresentações culturais",
+      "Montar grandes estruturas para divulgar banners e patrocinadores do evento",
+      "Auxiliar na montagem de pórticos para grandes eventos",
+      "Auxiliar na montagem de arquibancadas (que podem ser pré-fabricadas ou não)",
+    ],
+  },
+  talkToSpecialist: {
+    headerText:
+      "Ainda tem dúvidas sobre qual é o equipamento mais indicado para sua demanda?",
+    buttonProps: { text: "Fale com um especialista " },
+  },
+  platforms: {
+    headerText:
+      "Conheça cada tipo de plataforma e descubra a ideal para o seu projeto",
+    image:
+      "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+    cards: [
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Articulada",
+        buttonText: "Ver modelos",
+      },
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Telescópica",
+        buttonText: "Ver modelos",
+      },
+      {
+        image:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        headerText: "Plataforma Elevatória Tesoura",
+        buttonText: "Ver modelos",
+      },
+    ],
+  },
+  whyRestAerialPlatforms: {
+    headerText:
+      "Por que alugar plataformas elevatórias para montagem e produção de eventos?",
+    whyList: [
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+      {
+        header: "Acesso seguro a lugares perigosos",
+        icon: "https://64.media.tumblr.com/6b6923fb8be14c0e44e8c4957c070086/a4ca5daf9fb8df35-b1/s75x75_c1/e56c9205acc4353e8eca41779f0a73bdc459a3e1.pnj",
+        text: "Como a sua cabine é integrada, o operador do veículo que vai manejá-las consegue ter equilíbrio, reduzindo o risco de acidentes.",
+      },
+    ],
+  },
+  millsServices: {
+    header: "A Mills oferece alguns serviços para a sua empresa, como:",
+    cardList: [
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+      {
+        bgImg:
+          "https://64.media.tumblr.com/bde372b72636a7d119ea10fe3fc4aa81/c4c3a26169d5cdb5-0a/s640x960/9c965b29995f5e7129e4c169ba05153ce784de22.jpg",
+        text: "Instalação e Manutenção Industrial",
+      },
+    ],
+  },
+};

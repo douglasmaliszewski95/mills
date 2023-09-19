@@ -12,14 +12,26 @@ export interface RightImgWithLeftTextProps {
   headerText: string;
   buttonProps?: ButtonProps;
   text: string;
+  bgColor?: string;
+  bgImage?: true | false;
+  textColor?: string;
+  showMobile?: true | false;
+  reverse?: true | false;
+  variant?: "default" | "outlined" | "disabled" | "inverted";
+  theme?: string;
+  bgWidth?: string;
 }
 
 export interface LeftImgWithRightTextProps {
   img: string;
-  headerText: string;
-  paragraphText: string;
+  headerText?: string;
+  paragraphText?: string;
   buttonProps?: ButtonProps;
   variant?: "orange" | "green";
+  bgImage?: true | false;
+  hideImageInMobileMode?: true | false;
+  reverse?: true | false;
+  paddingBottom?: string;
 }
 
 export interface DividerTextProps {
@@ -27,21 +39,21 @@ export interface DividerTextProps {
 }
 
 export interface BenefitsProps {
-  headerText: string;
-  cards: CardsProps[];
+  headerText?: string;
+  cards?: CardsProps[];
+  theme?: string;
 }
 
 export interface OpinionProps {
-  headerText: string;
-  paragraphText: string;
-  spanText: string;
-  testimonial: string;
+  headerText?: string;
+  paragraphText?: string;
+  spanText?: string;
+  testimonial?: string;
+  theme?: "rentalHeavy" | "rentalLight";
 }
 
 export interface PlatformsProps {
-  headerText: string;
-  image: string;
-  cards: CardBackground[];
+  bgColor?: string;
 }
 
 interface CardBackground {
@@ -63,4 +75,10 @@ interface CardsProps {
 
 interface ButtonProps {
   text: string;
+  link?: string;
+}
+
+interface LiftingPlatformsProps {
+  headerText: string;
+  textCards?: string[];
 }
