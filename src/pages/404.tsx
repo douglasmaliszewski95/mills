@@ -38,7 +38,7 @@ const NotFoundPage = () => {
     />
   ) : (
     <>
-      <Navbar setIsMenuOpen={setIsMenuOpen} />
+      <Navbar theme="rentalLight" setIsMenuOpen={setIsMenuOpen} />
       <main className="h-full bg-white w-full font-ibm-font">
         {isModalOpen && (
           <Dialog.Root open={isModalOpen}>
