@@ -5,7 +5,7 @@ export const ChevronUp: React.FC<IconProps> = (props) => {
 
   return (
     <svg
-      width={width}
+      width="32"
       height={height}
       viewBox="0 0 20 11"
       fill="none"

@@ -20,7 +20,7 @@ export const Utilizations: React.FC<UtilizationsProps> = (props) => {
             isOrangeBg ? "text-white" : "text-green-800"
           } text-2xl font-semibold tablet:text-base tablet:mr-[20%]`}
         >
-          {title}
+          {title ?? null}
         </h4>
         <div
           className={`${
@@ -34,15 +34,15 @@ export const Utilizations: React.FC<UtilizationsProps> = (props) => {
         {cards.map(({ id, title, image, alt }) => (
           <div
             key={id}
-            className="px-6 py-[18px] bg-beige-200 rounded flex gap-4 items-center"
+            className="px-6 py-[18px] bg-beige-200 rounded flex gap-4 items-center grow"
           >
-            <Image src={image} width={32} height={32} alt={alt} />
+            <img src={image} width={32} height={32} alt={alt} />
             <p
               className={`text-green-800 tablet:text-sm ${
                 smallFont ? "text-sm font-normal" : "font-semibold"
               }`}
             >
-              {title}
+              {title ?? null}
             </p>
           </div>
         ))}

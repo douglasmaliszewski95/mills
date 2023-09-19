@@ -10,7 +10,7 @@ export const BestSolutionsCard = (props: BestSolutionsCardProps) => {
       <div className="relative h-[64px]">
         <Image fill src={imagePath} alt={alt} />
       </div>
-      <p className="text-center text-orange leading-5">{title}</p>
+      <p className="text-center text-orange leading-5">{title ?? null}</p>
     </li>
   );
 };

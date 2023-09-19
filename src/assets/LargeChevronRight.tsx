@@ -1,14 +1,12 @@
-interface LargeChevronRightProps {
-  color?: string;
-}
+import { IconProps } from "@/utils/types";
 
-export function LargeChevronRight(props: LargeChevronRightProps) {
-  const { color } = props;
+export function LargeChevronRight(props: IconProps) {
+  const { color, width = "7", height = "12" } = props;
 
   return (
     <svg
-      width="7"
-      height="12"
+      width={width}
+      height={height}
       viewBox="0 0 7 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

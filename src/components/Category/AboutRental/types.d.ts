@@ -1,15 +1,20 @@
 import { StaticImageData } from "next/image";
 
-interface Item {
+export interface Item {
   id: string;
   title: string;
   description: string;
-  image: Image | StaticImageData;
+  image: string;
   alt: string;
 }
 
 export interface AboutRentalProps {
   title: string;
-  description: string;
+  description?: string;
   items: Item[];
+  theme?: "orange-500" | "white" | "gray-50";
+  textColor?: string;
+  iconFont?: "base";
+  largeDescription?: boolean;
+  forceTitleDisplay?: boolean;
 }

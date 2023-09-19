@@ -22,7 +22,7 @@ export const WhereToUse: React.FC<WhereToUseProps> = (props) => {
         />
       )}
       <h3 className="text-green-800 font-semibold text-2xl mb-[26px] tablet:text-base">
-        {title}
+        {title ?? null}
       </h3>
       {isDesktop ? (
         descriptions.map((description, index) => (

@@ -33,7 +33,7 @@ export const BannerCarousel: React.FC<BannerCarouselProps> = (props) => {
                     <div className="flex flex-col items-center justify-center h-[440px] px-20 tablet:px-4 tablet:h-[350px]">
                       <div className="tablet:pt-11">
                         <h1 className="text-4xl font-semibold text-white mb-9 tablet:text-base">
-                          {title}
+                          {title ?? null}
                         </h1>
                         <Button
                           className="max-w-[248px] w-full tablet:max-w-full"

@@ -6,6 +6,6 @@ interface Card {
 
 export interface OtherTypesProps {
   title: string;
-  description: string[];
-  cards: Card[];
+  description?: string[];
+  cards?: Card[];
 }

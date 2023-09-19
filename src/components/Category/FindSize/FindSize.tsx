@@ -16,7 +16,7 @@ export const FindSize: React.FC<FindSizeProps> = (props) => {
     >
       <div className="basis-1/2 tablet:basis-0 h-full flex items-center">
         <h3 className="text-white text-4xl font-semibold mb-6 tablet:mb-0 tablet:text-base">
-          {title}
+          {title ?? null}
         </h3>
       </div>
       <div className="basis-1/2 tablet:basis-0 px-6 max-w-[50%] tablet:max-w-full tablet:px-0 h-full">

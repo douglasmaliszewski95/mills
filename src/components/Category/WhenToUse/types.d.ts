@@ -1,4 +1,7 @@
 export interface WhenToUseProps {
   title: string;
-  cards: string[];
+  cards: {
+    text: string;
+    image: string;
+  }[];
 }
