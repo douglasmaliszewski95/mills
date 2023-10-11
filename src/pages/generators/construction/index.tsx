@@ -7,7 +7,7 @@ import { About } from "@/components/shared/About/About";
 import { ConstructionContent, ConstructionContentText } from "./types";
 import { getImageSrc } from "@/utils/images";
 import { GeneratorCarrousel } from "@/components/Category/GeneratorCarrousel/GeneratorCarrousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { SellParts } from "@/components/Category/SellParts/SellParts";
 import { transformContentToMobile } from "@/utils/content";
@@ -17,6 +17,7 @@ import { Banner } from "@/components/shared/Banner/Banner";
 import { Card } from "../types";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
 import { useRouter } from "next/router";
+import { updateParagraphs } from "@/utils/texts";
 
 const Construction = () => {
   const [content, setContent] = useState<ConstructionContent>();
@@ -25,15 +26,15 @@ const Construction = () => {
   const router = useRouter();
   const { isMobile } = useScreenWidth();
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentText]);
+
   const getContent = async () => {
     const contentAux = await getCMSContent("compressores_geradores_construcao");
     const contentShared = await getCMSContent("shared");
 
-    const contentTextAux = await getCMSText(
-      "compressores_geradores_construcao"
-    );
     const contentTextShared = await getCMSText("shared");
-
     const responsiveContent: any = isMobile
       ? transformContentToMobile(contentAux)
       : contentAux;
@@ -63,7 +64,7 @@ const Construction = () => {
     };
 
     const formattedText = {
-      products: contentTextAux?.["aluguel"][0]?.fields?.["text_field"],
+      products: contentTextShared?.["rent_models_text"]?.[0],
       sellParts: contentTextShared?.["vendemos_pecas"][0]?.fields?.["title"],
     };
 
@@ -156,8 +157,10 @@ const Construction = () => {
           />
         )}
         <GeneratorCarrousel
-          title="A Mills oferece o aluguel de compressores e geradores, de modo a otimizar o tempo da sua equipe de funcionários, diminuir a sua preocupação quanto a manutenções e ser uma opção mais viável financeiramente."
-          products={contentText?.products || []}
+          title={contentText?.products?.fields?.title}
+          description={contentText?.products?.fields?.subtitle}
+          products={contentText?.products?.fields?.text_field ?? []}
+          link={contentText?.products?.fields?.hrefButton}
         />
         <ExpertRecommendation />
         <MachinesAndPlatforms />

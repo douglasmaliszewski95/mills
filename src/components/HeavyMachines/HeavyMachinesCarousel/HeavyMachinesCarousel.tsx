@@ -8,11 +8,18 @@ import { ImageOCC } from "@/components/shared/ImageOCC/ImageOCC";
 import { LargeNextArrow } from "@/components/shared/Arrows/LargeNextArrow/LargeNextArrow";
 import { LargePrevArrow } from "@/components/shared/Arrows/LargePrevArrow/LargePrevArrow";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { TalkToSpecialistModal } from "@/components/shared/TalkToSpecialistModal/TalkToSpecialistModal";
 
 export const HeavyMachinesCarousel: React.FC<HeavyMachinesCarouselProps> = (
   props
 ) => {
-  const { title, buttonTitle, products: productIds, description } = props;
+  const {
+    title,
+    buttonTitle,
+    products: productIds,
+    description,
+    isTalkToSpecialist = false,
+  } = props;
   const [products, setProducts] = useState<ProductOCC[]>();
 
   const { isDesktop, isMobile } = useScreenWidth();
@@ -44,11 +51,18 @@ export const HeavyMachinesCarousel: React.FC<HeavyMachinesCarouselProps> = (
         {description && (
           <p className="text-lg text-green-800 tablet:text-xs">{description}</p>
         )}
-        {isDesktop && (
-          <Button className="max-w-[260px]">
-            <p className="font-semibold text-sm">{buttonTitle}</p>
-          </Button>
-        )}
+        {isDesktop &&
+          (isTalkToSpecialist ? (
+            <TalkToSpecialistModal>
+              <Button className="max-w-[260px]">
+                <p className="font-semibold text-sm">{buttonTitle}</p>
+              </Button>
+            </TalkToSpecialistModal>
+          ) : (
+            <Button className="max-w-[260px]">
+              <p className="font-semibold text-sm">{buttonTitle}</p>
+            </Button>
+          ))}
       </div>
       <div className="basis-1/2 max-w-[48%] tablet:max-w-[100%]">
         <Carousel
@@ -91,13 +105,22 @@ export const HeavyMachinesCarousel: React.FC<HeavyMachinesCarouselProps> = (
             </>
           ))}
         </Carousel>
-        {isMobile && (
-          <div className="px-4 mt-6">
-            <Button className="w-full">
-              <p className="font-semibold text-sm">{buttonTitle}</p>
-            </Button>
-          </div>
-        )}
+        {isMobile &&
+          (isTalkToSpecialist ? (
+            <TalkToSpecialistModal>
+              <div className="px-4 mt-6">
+                <Button className="w-full">
+                  <p className="font-semibold text-sm">{buttonTitle}</p>
+                </Button>
+              </div>
+            </TalkToSpecialistModal>
+          ) : (
+            <div className="px-4 mt-6">
+              <Button className="w-full">
+                <p className="font-semibold text-sm">{buttonTitle}</p>
+              </Button>
+            </div>
+          ))}
       </div>
     </Section>
   );

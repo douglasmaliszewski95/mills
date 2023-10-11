@@ -16,6 +16,7 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { ImageCMS } from "@/types";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const SmallLoader = () => {
@@ -26,6 +27,17 @@ const SmallLoader = () => {
   const [thirdImage, setThirdImage] = useState<string>("");
   const [sharedContent, setSharedContent] = useState<any>();
   const { isMobile } = useScreenWidth();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [
+    pageContent,
+    textContent,
+    firstContent,
+    secondContent,
+    thirdImage,
+    sharedContent,
+  ]);
 
   const getContent = async () => {
     const content = await getCMSContent("maquinas_pesadas_minicarregadeira");

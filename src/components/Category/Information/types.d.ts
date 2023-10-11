@@ -5,4 +5,5 @@ export interface InformationProps {
   titleSize?: string;
   width?: string;
   descriptionSize?: string;
+  position?: "top" | "bottom";
 }

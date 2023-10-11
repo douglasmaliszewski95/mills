@@ -69,9 +69,9 @@ export const QuestionsComponent: React.FC<QuestionsComponentProps> = (
             {item?.question.toLowerCase() ===
               selectedQuestion?.question.toLowerCase() && (
               <div className="pb-6">
-                <h1 className="font-normal text-xs text-green-800">
+                <h3 className="font-normal text-xs text-green-800">
                   {selectedQuestion?.answear}
-                </h1>
+                </h3>
               </div>
             )}
           </div>
@@ -114,9 +114,9 @@ export const QuestionsComponent: React.FC<QuestionsComponentProps> = (
         ))}
       </div>
       <div className="bg-green-800 flex flex-col gap-4 w-[50%] p-16">
-        <h1 className="font-normal text-lg text-white">
+        <h3 className="font-normal text-lg text-white">
           {selectedQuestion?.answear}
-        </h1>
+        </h3>
       </div>
     </Section>
   );

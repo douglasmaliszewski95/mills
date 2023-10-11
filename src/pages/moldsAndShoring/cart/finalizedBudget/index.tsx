@@ -61,7 +61,7 @@ export default function FinalizedBudget() {
                   produtos e queremos avisar que, em breve, um de nossos
                   especialistas irá entrar em contato com você. Caso você tenha
                   urgência, ligue gratuitamente para{" "}
-                  <a href="#" className="text-orange-500">
+                  <a href="#" className="text-orange-500 underline underline-offset-2">
                     0800 944 1282.
                   </a>
                 </p>

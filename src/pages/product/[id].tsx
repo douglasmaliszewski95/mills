@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ProductRecommendations } from "@/components/Product/ProductRecommendations/ProductRecommendations";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { Footer } from "@/components/shared/Footer/Footer";
@@ -8,18 +8,36 @@ import { Banner } from "@/components/shared/Banner/Banner";
 import { Header } from "@/components/shared/Header/Header";
 import { useRouter } from "next/router";
 import _ from "lodash";
-import { CartModal } from "@/components/shared/CartModal/CartModal";
 import { getImage } from "@/services/hooks/getImage";
-
+import { updateParagraphs } from "@/utils/texts";
+import { products } from "@/components/Product/utils";
+import { DeleteCartModal } from "@/components/shared/DeleteCartModal/DeleteCartModal";
+import { ProductOCC } from "@/types";
 
 export default function ProductDetails() {
   const router = useRouter();
   const { id } = router.query;
 
+  const [deleteCartProducts, setDeleteCartProducts] = useState<any>([]);
   const [currentProduct, setCurrentProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [banner, setBanner] = useState<any>();
   const [theme, setTheme] = useState<"rentalLight" | "rentalHeavy">();
+  const [disabledBtn, setDisabledBtn] = useState<boolean>(false);
+
+  useEffect(() => {
+    updateParagraphs();
+    const storedItems =
+      localStorage?.getItem("items") ?? ""
+        ? JSON.parse(localStorage?.getItem("items") ?? "")
+        : [];
+
+    const itemExists = storedItems.some(
+      (storedItem: any) => storedItem?.id === id
+    );
+
+    if (itemExists) setDisabledBtn(true);
+  }, [banner]);
 
   const getProduct = async (id: string) => {
     const response = await fetch(`/api/product?product=${id}`);
@@ -31,19 +49,21 @@ export default function ProductDetails() {
   };
 
   const getContent = useCallback(async () => {
-    if (theme === "rentalLight") {
+    const currentSiteTheme: any = localStorage.getItem("paymentFlow");
+    if (currentSiteTheme === "rentalLight") {
       const result = await getImage("plataforma_elevatoria_busca");
       setBanner(result.banner_search_platform[0]);
-    }
-    const result = await getImage("buscar_equipamento_pesados");
+    } else {
+      const result = await getImage("buscar_equipamento_pesados");
       setBanner(result.banner_search_equipment[0]);
+    }
   }, []);
 
   useEffect(() => {
     const currentSiteTheme: any = localStorage.getItem("paymentFlow");
     if (_.isEmpty(theme)) {
-      setTheme(currentSiteTheme)
-    } 
+      setTheme(currentSiteTheme);
+    }
   }, []);
 
   useEffect(() => {
@@ -61,6 +81,7 @@ export default function ProductDetails() {
     const itemExists = storedItems.some(
       (storedItem: any) => storedItem.id === product.id
     );
+
     if (!itemExists) {
       storedItems.push({
         ...product,
@@ -68,16 +89,59 @@ export default function ProductDetails() {
         timeToLocale: 0,
         typeToLocale: "Dias",
         quantity: 1,
+        paymentFlow: localStorage.getItem("paymentFlow"),
       });
-      localStorage.setItem("items", JSON.stringify(storedItems));
+
+      const filteredItems = storedItems.filter(
+        (item: ProductOCC) => item?.type === product.type
+      );
+
+      const deleteCart = filteredItems.length !== storedItems.length;
+
+      if (deleteCart) {
+        setDeleteCartProducts(filteredItems);
+      } else {
+        confirmCart(storedItems);
+      }
     } else {
+      setDisabledBtn(true);
     }
+  };
+
+  const confirmCart = (products: any) => {
+    localStorage.setItem("items", JSON.stringify(products));
     router.push("/carrinho/passo-01");
+  };
+
+  const removeFromCart = (product: any) => {
+    const storedItems =
+      localStorage.getItem("items") ?? ""
+        ? JSON.parse(localStorage.getItem("items") ?? "")
+        : [];
+
+    function arrayRemove(arr: [], value: {}) {
+      return arr.filter(function (geeks) {
+        return geeks != value;
+      });
+    }
+
+    if (storedItems.length > 1) {
+      storedItems?.map((items: any, index: number) => {
+        if (items.id === product.id) {
+          const filteredArry = arrayRemove(storedItems, items);
+          localStorage.setItem("items", JSON.stringify(filteredArry));
+        }
+      });
+    } else {
+      localStorage.removeItem("items");
+    }
+
+    setDisabledBtn(false);
   };
 
   return (
     <>
-      <Header theme={theme}/>
+      <Header theme={theme} />
       <main>
         <Banner
           breadcrumb="Home > Buscar equipamento"
@@ -85,16 +149,27 @@ export default function ProductDetails() {
           backgroundImage={banner?.fields.native.links[0].href}
         />
         {!_.isEmpty(currentProduct) && (
-          <Details product={currentProduct} addToCart={addToCart} theme={theme}/>
+          <Details
+            product={currentProduct}
+            addToCart={addToCart}
+            theme={theme}
+            isDisabled={disabledBtn}
+            removeFromCart={removeFromCart}
+          />
         )}
         <ExpertRecommendation />
         {!_.isEmpty(relatedProducts) && (
           <ProductRecommendations products={relatedProducts} />
         )}
-        <MachinesAndPlatforms/>
+        <MachinesAndPlatforms />
       </main>
-      <Footer  theme={theme} />
-      <CartModal />
+      <Footer theme={theme} />
+      {!_.isEmpty(deleteCartProducts) && (
+        <DeleteCartModal
+          onConfirm={() => confirmCart(deleteCartProducts)}
+          onClose={() => setDeleteCartProducts([])}
+        />
+      )}
     </>
   );
 }

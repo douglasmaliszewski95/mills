@@ -6,3 +6,4 @@ export const places = [
 ];
 
 export const timeStamps = ["Dias", "Meses"];
+export const timeStampsHeavy = ["Meses", "Anos"];

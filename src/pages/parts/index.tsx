@@ -17,10 +17,15 @@ import { SellParts } from "@/components/Category/SellParts/SellParts";
 import { AboutSmallImage } from "@/components/AboutSmallImage/AboutSmallImage";
 import { ShoringModels } from "@/components/formworkAndShoring/ShoringModels/ShoringModels";
 import { MultipleBrands } from "@/components/Parts/MultipleBrands/MultipleBrands";
+import { updateParagraphs } from "@/utils/texts";
 
 function Parts() {
   const [content, setContent] = useState<TransportContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -156,7 +161,8 @@ function Parts() {
           orientation="inverted"
           theme="green-800"
           color="white"
-          dnaColor="#ffffff"
+          dnaColor="white"
+          forceDnaOnMobile={isMobile ? true : false}
         />
         {content?.differentials && (
           <AboutRental
@@ -164,11 +170,13 @@ function Parts() {
             items={content?.differentials}
             theme="white"
             textColor="green-800"
+            hasDna={false}
           />
         )}
         <SellParts
           buttonTitle="Saiba mais"
           buttonVariant="inverted"
+          href={content?.greenInformation?.fields?.hrefButton?.at(0)}
           text={content?.greenInformation?.fields?.title}
         />
         <ShoringModels
@@ -189,7 +197,6 @@ function Parts() {
           ids={content?.compressorParts?.fields?.text_field ?? []}
           title={content?.compressorParts?.fields?.title ?? ""}
           cardText="Incluir no orçamento"
-          textOnCenter
           theme="white"
           buttonTitle="Ver todas"
         />
@@ -199,9 +206,10 @@ function Parts() {
           alt={content?.aboutSmallImage?.fields?.alt_attribute ?? ""}
         />
         <SellParts
-          buttonTitle="Saiba mais"
+          buttonTitle="Saiba Mais"
           buttonVariant="inverted"
           theme="orange-500"
+          href={content?.orangeInformation?.fields?.hrefButton?.at(0)}
           text={content?.orangeInformation?.fields?.title}
         />
         <About
@@ -222,6 +230,7 @@ function Parts() {
           theme="orange-500"
           color="white"
           dnaColor="#ffffff"
+          forceDnaOnMobile={isMobile ? true : false}
         />
         <About
           title={content?.fifthAbout?.fields?.content_title ?? ""}
@@ -242,8 +251,12 @@ function Parts() {
           orientation="inverted"
           theme="green-800"
           color="white"
-          buttonTitle="Fale com um especialista"
+          buttonTitle={
+            content?.expertRecommendation?.fields?.buttonText ??
+            "Fale com um especialista"
+          }
           buttonVariant="inverted"
+          isTalkToSpecialist
         />
       </main>
       <Footer />

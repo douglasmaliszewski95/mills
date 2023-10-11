@@ -1,20 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Banner } from "@/components/shared/Banner/Banner";
-
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
-
-import { useGetCMSOtherPage } from "@/services/hooks/useGetCMSOtherPage";
 import { Header } from "@/components/shared/Header/Header";
 import DynamicSection from "@/components/HeavyMachines/components/DynamicSection";
 import Button from "@/components/shared/Button/Button";
 import { Opinion } from "@/components/ProductTypeAndSegment/Opinion";
 import { useCallback, useEffect, useState } from "react";
-import { getImage } from "@/services/hooks/getImage";
 import { useGetCMSCases } from "@/components/Cases/useGetCmsCases";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
-import { HtmlRenderer } from "@/components/HtmlRender/htmlRender";
 import { useRouter } from "next/router";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Cases() {
   const router = useRouter();
@@ -37,10 +33,14 @@ export default function Cases() {
       changeInnovatePart,
     });
   }, []);
-  console.log({ content });
+
   useEffect(() => {
     getContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   return (
     <>
@@ -62,10 +62,10 @@ export default function Cases() {
           leftComponent={
             <div className="flex flex-col align-middle justify-center gap-6  max-w-[482px] tablet:px-4">
               <h3 className="font-semibold text-green-800 text-2xl tablet:text-base">
-                <HtmlRenderer htmlContent={content?.supportCustomers?.title} />
+                {content?.supportCustomers?.title}
               </h3>
               <p className="text-green-800  tablet:text-xs tablet:mb-8">
-                <HtmlRenderer htmlContent={content?.supportCustomers?.text} />
+                {content?.supportCustomers?.text}
               </p>
             </div>
           }
@@ -98,9 +98,7 @@ export default function Cases() {
                     />
                     <div className="flex flex-col justify-center px-12 max-w-[587px] gap-8 tablet:py-6 tablet:px-3">
                       <img alt="logo image" src={list?.logo} width="209px" />
-                      <p className="text-base">
-                        <HtmlRenderer htmlContent={list?.text} />
-                      </p>
+                      <p className="text-base">{list?.text}</p>
                       <Button
                         className="max-w-[265px]"
                         onClick={() => router.push(`cases/${list?.href}`)}
@@ -115,7 +113,7 @@ export default function Cases() {
           }
         />
 
-        <Opinion theme="rentalHeavy" />
+        <Opinion content={content?.customerReviews} />
 
         <DynamicSection
           paddingBottom="pb-10"
@@ -135,7 +133,7 @@ export default function Cases() {
           rightComponent={
             <div className="flex flex-col align-middle justify-center gap-6  max-w-[482px] tablet:px-4">
               <h3 className="font-semibold text-green-800 text-2xl tablet:text-base tablet:mt-14">
-                <HtmlRenderer htmlContent={content?.changeInnovatePart?.text} />
+                {content?.changeInnovatePart?.text}
               </h3>
               <Button
                 className="w-[265px] py-3"

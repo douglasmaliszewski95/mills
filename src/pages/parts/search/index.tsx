@@ -15,22 +15,28 @@ import {
   Refinements,
   Refinement,
 } from "@/dtos/SearchProducts";
-import { getImage } from "@/services/hooks/getImage";
 import _ from "lodash";
 import { getCMSContent } from "@/components/Generators/content";
 import { transformContentToMobile } from "@/utils/content";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Search() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [content, setContent] = useState<any>();
+  const [contentBase, setContentBase] = useState<any>();
   const [filters, setFilters] = useState<Filters[]>([]);
   const [refinementCrumbs, setRefinementCrumbs] = useState([]);
-  const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const [selectedFilters, setSelectedFilters] = useState<Refinement[]>([]);
 
   const { isDesktop, isMobile } = useScreenWidth();
+
+  const productSearchCode = process.env.NEXT_PUBLIC_PARTS;
 
   const mapFilters = () => {
     const newState: Refinement[] = refinementCrumbs.map(
@@ -119,7 +125,7 @@ export default function Search() {
   };
 
   const onSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(`?N=2123069400&Ntt=${term}`);
+    const response = await searchRequest(`?N=${productSearchCode}&Ntt=${term}`);
     const formattedResponse = await response.json();
     if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
@@ -129,7 +135,7 @@ export default function Search() {
   const initialSearch = useCallback(async (term: string) => {
     const response = await searchRequest(term);
     const formattedResponse = await response.json();
-    if (!!formattedResponse.error) return;
+    if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
     setFilters(formattedResponse.filters);
   }, []);
@@ -139,8 +145,8 @@ export default function Search() {
     const params = new URLSearchParams(queryString);
     const searchTerm = params.get("productName");
     _.isEmpty(searchTerm)
-    ? initialSearch("?N=2123069400")
-    : onSearch(searchTerm || "?N=2123069400");
+      ? initialSearch(`?N=${productSearchCode}`)
+      : onSearch(searchTerm ?? `?N=${productSearchCode}`);
   }, []);
 
   const formatData = useCallback(

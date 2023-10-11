@@ -16,6 +16,7 @@ import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { Header } from "@/components/shared/Header/Header";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function InventoryAndStockOrganization() {
   const router = useRouter();
@@ -25,6 +26,11 @@ export default function InventoryAndStockOrganization() {
   const [segments, setSegments] = useState<any>();
   const [texts, setTexts] = useState<any>();
   const [cards, setCards] = useState<any>();
+  const [segmentsTitle, setSegmentsTitle] = useState<string>('')
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner, segments, texts, cards]);
 
   const getContent = useCallback(async () => {
     const images = await getImage("inventario_organizacao_estoque");
@@ -41,6 +47,7 @@ export default function InventoryAndStockOrganization() {
         (x: any) => x.fields.content_page === "inventario_organizacao_estoque"
       )
     );
+    setSegmentsTitle(texts?.icon_segments_text[0]?.fields?.title)
   }, []);
 
   useEffect(() => {
@@ -91,7 +98,7 @@ export default function InventoryAndStockOrganization() {
           />
         )}
 
-        <Benefits />
+        <Benefits headerText={segmentsTitle}/>
         <Opinion />
         <Platforms />
 

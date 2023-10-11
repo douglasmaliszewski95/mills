@@ -7,4 +7,5 @@ export interface CardProps {
   article: string;
   url: string;
   href: string;
+  theme?: string;
 }

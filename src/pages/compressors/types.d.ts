@@ -6,6 +6,6 @@ export interface CompressorsContent {
 }
 
 export interface CompressorsContentText {
-  products: string[];
+  products: TextCMS;
   sellParts: string;
 }

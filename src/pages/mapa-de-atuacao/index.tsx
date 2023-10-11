@@ -1,54 +1,87 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Banner } from "@/components/shared/Banner/Banner";
-import LeftImgWithRightTextBg from "@/assets/img/LeftImgWithRightTextBg.png";
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
-import { Map, Marker, Overlay } from "pigeon-maps";
+import { Map, Marker, Overlay, ZoomControl } from "pigeon-maps";
 
-import { useGetCMSOtherPage } from "@/services/hooks/useGetCMSOtherPage";
 import { Header } from "@/components/shared/Header/Header";
-import DynamicSection from "@/components/HeavyMachines/components/DynamicSection";
-import lineUp from "@/assets/img/linesUp.png";
-import Button from "@/components/shared/Button/Button";
-import { Opinion } from "@/components/ProductTypeAndSegment/Opinion";
-import { HtmlRenderer } from "@/components/HtmlRender/htmlRender";
-import { Carousel } from "@/components/shared/Carousel/Carousel";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useGetCmsSingularCase } from "@/components/Cases/useGetCmsSingularCase";
-import { useGetCMSCases } from "@/components/Cases/useGetCmsCases";
-import dynamic from "next/dynamic";
 import { useGetPerformanceMap } from "@/components/PerformanceMap/useGetPerformanceMap";
+import { SearchDialog } from "@/components/PerformanceMap/SearchDialog/SearchDialog";
+import { updateParagraphs } from "@/utils/texts";
+import { expandIco } from "@/assets";
+import { MobileToggle } from "@/components/PerformanceMap/MobileToggle/MobileToggle";
 
 export default function PerformanceMap() {
   const { isMobile } = useScreenWidth();
-  const router = useRouter();
-  const [content, setContent] = useState<any>();
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [mapZoom, setMapZoom] = useState(6);
   const [listOfMarkers, setListOfMarkers] = useState<any>([]);
   const [markerInfo, setMarkerInfo] = useState<any>([]);
+  const [mobileToggle, setMobileToggle] = useState(false);
+  const [bannerResults, setBannerResults] = useState<any>([]);
+  const [uniqueStates, setUniqueStates] = useState<string[]>([]);
+  const [markerMobileInfo, setMarkerMobileInfo] = useState<any>([]);
 
   const getContent = useCallback(async () => {
-    const { markers } = await useGetPerformanceMap();
+    const { markers, uniqueStates, bannersResult } =
+      await useGetPerformanceMap();
     setListOfMarkers(markers);
-    // setContent();
+    setUniqueStates(uniqueStates);
+    setBannerResults(bannersResult);
   }, []);
 
   useEffect(() => {
     getContent();
   }, []);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [markerInfo, listOfMarkers]);
+
   const toggleMarkerVisibility = (index: any) => {
+    if (isMobile) {
+      setMarkerMobileInfo(listOfMarkers[index]);
+      return setMobileToggle(true);
+    }
     const updatedMarkers = [...listOfMarkers];
     updatedMarkers[index].visible = !updatedMarkers[index].visible;
     setListOfMarkers(updatedMarkers);
     setMarkerInfo(listOfMarkers[index]);
   };
 
+  const closeMarkerVisibility = (name: string) => {
+    setMarkerInfo([]);
+  };
+
+  const toggleFullScreen = () => {
+    if (!isFullScreen) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement?.requestFullscreen) {
+        // Firefox
+        document.documentElement?.requestFullscreen();
+      } else if (document.documentElement?.requestFullscreen) {
+        // Chrome, Safari, and Opera
+        document.documentElement?.requestFullscreen();
+      } else if (document.documentElement?.requestFullscreen) {
+        // IE/Edge
+        document.documentElement?.requestFullscreen();
+      }
+    }
+    setIsFullScreen(!isFullScreen);
+  };
+
   return (
     <>
       <Header theme="rentalHeavy" />
+      <MobileToggle
+        markerInfo={markerMobileInfo}
+        isOpen={mobileToggle}
+        onClose={() => setMobileToggle(false)}
+      />
       <main className="h-full bg-white w-full font-ibm-font">
         <Banner
           linkList={[
@@ -57,82 +90,82 @@ export default function PerformanceMap() {
               href: "#",
             },
           ]}
-          title={`São 55 unidades atuando em mais de 1.400 cidades `}
-          backgroundImage={""}
-          buttonTitle="Buscar unidades"
+          title={`São ${listOfMarkers?.length} unidades atuando em mais de 1.400 cidades `}
+          backgroundImage={
+            isMobile ? bannerResults?.srcMobile : bannerResults?.src
+          }
+          mapsButton={
+            listOfMarkers?.length > 0 && (
+              <SearchDialog
+                uniqueStates={uniqueStates}
+                listOfMarkers={listOfMarkers}
+              />
+            )
+          }
+          height="190px"
         />
-        {listOfMarkers && (
-          <div style={{ width: "100%" }}>
-            <Map height={743} defaultZoom={3}>
-              {listOfMarkers?.map((marker: any, index: number) => {
-                return (
-                  <>
-                    <Marker
-                      width={36}
-                      anchor={[marker.latitude, marker.longitude]}
-                      onClick={() => toggleMarkerVisibility(index)}
-                    />
-                    {marker.visible && (
-                      <Overlay
-                        anchor={[marker.latitude, marker.longitude]}
-                        offset={[0, 0]}
-                      >
-                        <div className="flex flex-col p-8 bg-white w-[333px] h-[143px] rounded-lg">
-                          <div className="flex justify-between w-full font-ibm-font font-semibold text-green-800">
-                            <p>{markerInfo?.unitInfo?.name}</p>
-                            <button
-                              className="flex text-orange-500 text-xs"
-                              onClick={() => toggleMarkerVisibility(index)}
-                            >
-                              X
-                            </button>
-                          </div>
-                          <p className="text-xs">
-                            {markerInfo?.unitInfo?.address}
-                          </p>
-                          <a className="text-orange-500 text-xs mt-3">
-                            Saiba mais sobre esta unidade
-                          </a>
-                        </div>
-                      </Overlay>
-                    )}
-                  </>
-                );
-              })}
-            </Map>
-          </div>
-        )}
-
-        {/* 
-        <DynamicSection
-          paddingTop="pb-10"
-          backgroundColor="bg-gray-80"
-          backgroundImageSrc={LeftImgWithRightTextBg}
-          backgroundStyle="bg-no-repeat bg-bottom-right-mobile"
-          customDivStyles="tablet:flex-col-reverse"
-          leftComponent={
-            <div
-              style={{
-                backgroundImage: `url(${content?.firstSection.img})`,
-                width: "inherit",
-                backgroundSize: "cover",
+        {listOfMarkers.length > 0 && (
+          <Map
+            height={743}
+            defaultCenter={[-23.024996, -45.5638792]}
+            defaultZoom={mapZoom}
+            metaWheelZoom
+            animate
+          >
+            <ZoomControl
+              buttonStyle={{
+                backgroundColor: "#f37020",
+                borderRadius: "100%",
+                color: "white",
+                height: "45px",
+                width: "45px",
+                marginBottom: "10px",
+                left: "100px",
               }}
-              className={`flex justify-center bg-no-repeat bg-cover h-[495px] py-12 tablet:w-full tablet:h-[232px] tablet: mb-[-40px]`}
             />
-          }
-          rightComponent={
-            <div className="flex flex-col align-middle justify-center gap-6 w-full bg-no-repeat bg-right-bottom tablet:px-4">
-              <div className="ml-12 w-[476px] tablet:w-full tablet:ml-0">
-                <h3 className="font-semibold text-green-800 text-2xl tablet:text-base">
-                  {content?.firstSection.title}
-                </h3>
-                <p className="text-green-800 mt-6 tablet:text-xs tablet:mb-8">
-                  {content?.firstSection.text}
-                </p>
-              </div>
-            </div>
-          }
-        /> */}
+            <button
+              className="flex justify-center items-center rounded-full bg-orange-500 h-[45px] w-[45px] absolute top-[260px] left-[30px]"
+              onClick={() => toggleFullScreen()}
+            >
+              <img src={expandIco.src} />
+            </button>
+            {listOfMarkers.map(({ markers }: any, index: number) => {
+              return (
+                <Marker
+                  key={index}
+                  width={36}
+                  anchor={markers}
+                  color="#F37021"
+                  onClick={() => toggleMarkerVisibility(index)}
+                />
+              );
+            })}
+            {markerInfo.length !== 0 && (
+              <Overlay anchor={markerInfo?.markers} offset={[0, 0]}>
+                <div className="flex flex-col p-8 bg-white w-[333px] h-[143px] rounded-lg">
+                  <div className="flex justify-between w-full font-ibm-font font-semibold text-green-800">
+                    <p>{markerInfo?.unitInfo?.name}</p>
+                    <button
+                      className="flex text-orange-500 text-xs"
+                      onClick={() =>
+                        closeMarkerVisibility(markerInfo?.unitInfo?.name)
+                      }
+                    >
+                      X
+                    </button>
+                  </div>
+                  <p className="text-xs">{markerInfo?.unitInfo?.address} </p>
+                  <a
+                    href={`${markerInfo?.unitInfo?.href}`}
+                    className="text-orange-500 text-xs mt-3"
+                  >
+                    Saiba mais sobre esta unidade
+                  </a>
+                </div>
+              </Overlay>
+            )}
+          </Map>
+        )}
         <MachinesAndPlatforms />
       </main>
       <Footer />

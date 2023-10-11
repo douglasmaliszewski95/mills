@@ -26,13 +26,13 @@ export const OurAcknowledgments: React.FC<OurAcknowledgmentsProps> = (
         containerClass="mt-10 tablet:mt-6 tablet:px-4 tablet:mb-10 "
         sectionClass={`bg-${theme}`}
       >
-        <h1
+        <h3
           className={`font-semibold text-2xl ${
             theme === "white" ? "text-green-800" : "text-white"
           } tablet:text-base w-[40%] tablet:w-full`}
         >
           {title}
-        </h1>
+        </h3>
 
         <Carousel
           hasDots={true}

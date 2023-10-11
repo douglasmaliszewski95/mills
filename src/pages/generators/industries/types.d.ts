@@ -7,6 +7,7 @@ export interface IndustriesContent {
 }
 
 export interface TextContent {
-  products: string[];
+  products: TextCMS;
   sellParts: string;
+  link?: string;
 }

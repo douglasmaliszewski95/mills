@@ -3,7 +3,7 @@ import { Footer } from "@/components/shared/Footer/Footer";
 import { Header } from "@/components/shared/Header/Header";
 import { OtherTypes } from "@/components/Category/OtherTypes/OtherTypes";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Information } from "@/components/Category/Information/Information";
 import { Banner } from "@/components/shared/Banner/Banner";
 import { Utilizations } from "@/components/Category/Utilizations/Utilizations";
@@ -11,8 +11,10 @@ import { useCallback, useEffect, useState } from "react";
 import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import { getImageSrc } from "@/utils/images";
-import { ImageCMS } from "@/types";
+//import { ImageCMS } from "@/types";
 import SearchCMS from "@/dtos/SearchCMS";
+import { updateParagraphs } from "@/utils/texts";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
 
 const Articulated: React.FC = () => {
   const [banner, setBanner] = useState<any>();
@@ -21,10 +23,20 @@ const Articulated: React.FC = () => {
   const [icons, setIcons] = useState<any>();
   const [iconsText, setIconsText] = useState<any>();
   const [norms, setNorms] = useState<any>();
+  const { isMobile } = useScreenWidth();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner, section, segments, icons, iconsText, norms]);
 
   const getContent = useCallback(async () => {
-    const images = await getImage("plataformas_elevatorias_articulada");
-    const texts = await getText("plataformas_elevatorias_articulada");
+    const [
+      images,
+      texts
+    ]: any = await Promise.all([
+      getImage("plataformas_elevatorias_articulada"),
+      getText("plataformas_elevatorias_articulada")
+    ]);
 
     let filterIcons = [];
 
@@ -63,7 +75,7 @@ const Articulated: React.FC = () => {
       <Header />
       <main>
         <Banner
-          backgroundImage={banner && getImageSrc(banner?.fields)}
+          backgroundImage={banner && getImageSrc(isMobile ? banner?.mobileObj?.fields : banner?.fields)}
           title={banner?.fields?.content_title ?? ""}
           linkList={[
             {
@@ -95,6 +107,7 @@ const Articulated: React.FC = () => {
         <Information
           title={norms ? norms?.fields.title : ""}
           description={norms ? norms?.fields.text_field[0] : ""}
+          position="top"
         />
         <About
           title={segments ? segments?.[2].fields.content_title : ""}
@@ -102,6 +115,7 @@ const Articulated: React.FC = () => {
           image={segments?.[2].fields.native.links[0].href}
           alt={segments ? segments?.[2].fields.alt_attribute : ""}
           hasButton={false}
+          forceImageDisplayOnMobile={true}
         />
         <Utilizations
           title={iconsText ? iconsText?.fields.title : ""}
@@ -117,6 +131,8 @@ const Articulated: React.FC = () => {
           hasButton={false}
           orientation="inverted"
           theme="beige-200"
+          dnaOnTop={true}
+          dnaColor="white"
         />
         <OtherTypes title="Plataforma Elevatória Articulada" />
         <ExpertRecommendation />

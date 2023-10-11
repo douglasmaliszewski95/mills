@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface BannerProps {
   breadcrumb?: string;
   title: string;
@@ -9,4 +11,6 @@ export interface BannerProps {
   buttonTitle?: string;
   subTitle?: string;
   width?: string;
+  mapsButton?: any;
+  className?: string;
 }

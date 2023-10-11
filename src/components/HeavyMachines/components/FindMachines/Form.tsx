@@ -1,11 +1,19 @@
 import Button from "@/components/shared/Button/Button";
 import { InputSelector } from "@/components/shared/InputSelector/InputSelector";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { optionsType, formType } from "./types";
+import { useRouter } from "next/router";
 
-export const Form: React.FC = () => {
+export const Form: React.FC<formType> = (props) => {
+  const { options } = props;
   const { register, handleSubmit, setValue, getValues, watch } = useForm<any>();
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<any> = (data) => data;
+  const onSubmit: SubmitHandler<optionsType> = (data) => {
+    options?.map((option: optionsType) => {
+      if (option.name === data.name) router.push(option.href);
+    });
+  };
 
   return (
     <form
@@ -17,21 +25,13 @@ export const Form: React.FC = () => {
           Qual é a categoria do seu trabalho ?
         </label>
         <InputSelector
-          name="machine"
+          name="name"
           watch={watch}
           placeholder="Selecione o tipo de máquina"
           setValue={setValue}
           theme="rentalHeavy"
           className="text-white"
-          options={[
-            "Retroescavadeira",
-            "Pá Carregadeira",
-            "Escavadeira",
-            "Motoniveladora",
-            "Rolo Compactador",
-            "Minicarregadeira",
-            "Tratos de Esteiras",
-          ]}
+          options={options.map((option: optionsType) => option.name)}
         />
       </div>
       <div className="flex items-end">

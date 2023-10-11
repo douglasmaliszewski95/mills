@@ -19,9 +19,9 @@ export const MainWorks: React.FC<MainWorkProps> = (props) => {
       containerClass="flex flex-row tablet:flex-col tablet:mb-10"
     >
       <div className="w-[50%] tablet:w-full py-20 tablet:py-10">
-        <h1 className="text-green-800 text-2xl font-semibold tablet:w-full w-[386px] tablet:text-base tablet:pl-[18px]">
+        <h3 className="text-green-800 text-2xl font-semibold tablet:w-full w-[386px] tablet:text-base tablet:pl-[18px]">
           {title}
-        </h1>
+        </h3>
         {isMobile ? (
           <Carousel className="pl-[18px] mt-6" hasDots={false} slidesToShow={3}>
             {workCardsData.map((card, index) => (

@@ -1,6 +1,6 @@
 import { Information } from "@/components/Category/Information/Information";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { GlobalImpact } from "@/components/InstitutionalComponents/Globallmpact/GlobalImpact";
 import { InterestCards } from "@/components/InstitutionalComponents/InterestCards/InterestCards";
 import { IntCardProps } from "@/components/InstitutionalComponents/InterestCards/types";
@@ -24,6 +24,7 @@ import { InformationWithButton } from "@/components/shared/InformationWithButton
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const SustainabilityJourney = () => {
@@ -35,6 +36,7 @@ const SustainabilityJourney = () => {
   const getPageContent = async () => {
     const content = await getCMSContent("jornada_de_sustentabilidade");
     const contentText = await getCMSText("jornada_de_sustentabilidade");
+
     setPageContent(content);
     setTextContent(contentText);
   };
@@ -42,6 +44,10 @@ const SustainabilityJourney = () => {
   useEffect(() => {
     getPageContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
 
   const formatSustainabilityJourney = () => {
     const sustainabilityJourney: SustainabilityJourneyCardProps[] = [];
@@ -53,7 +59,7 @@ const SustainabilityJourney = () => {
         description: card?.description,
         text: card?.fields?.content_text,
         title: card?.fields?.content_title,
-        links: card?.fields?.href_attribute
+        links: card?.fields?.href_attribute,
       });
     });
 
@@ -113,7 +119,8 @@ const SustainabilityJourney = () => {
         src: getImageSrc(isMobile ? card?.mobileObj?.fields : card?.fields),
         id: card?.fields?.content_order,
         title: card?.fields?.content_title,
-        link: card?.fieds?.href_attribute
+        link: card?.fields?.href_attribute,
+        btnTitle: card?.fields?.button_text,
       });
     });
 
@@ -130,7 +137,7 @@ const SustainabilityJourney = () => {
         title: card.fields.content_title,
         src: getImageSrc(isMobile ? card?.mobileObj?.fields : card?.fields),
         id: card.fields.content_order,
-        link: card.fields.href_attribute
+        link: card.fields.href_attribute,
       });
     });
 
@@ -149,7 +156,7 @@ const SustainabilityJourney = () => {
 
   return (
     <Fragment>
-      <Header menu={undefined}/>
+      <Header menu={undefined} />
       <main className="overflow-x-hidden">
         <Banner
           backgroundImage={getImageSrc(
@@ -176,12 +183,16 @@ const SustainabilityJourney = () => {
         <SustainabilityJourneyButtons
           cards={formatSustainabilityJourneyButtons()}
           title={titleA}
+          link={pageContent?.full_report_pdf[0]?.fields?.native?.links[0]?.href}
           ods={formatOds()}
         />
 
         <PositiveImpactsCarousel
           cards={formatPositiveImpactCard()}
-          title={textContent?.carousel_positive_impact_text[0]?.fields.content_text_json[0]?.text}
+          title={
+            textContent?.carousel_positive_impact_text[0]?.fields
+              .content_text_json[0]?.text
+          }
         />
 
         <InformationWithButton
@@ -206,7 +217,10 @@ const SustainabilityJourney = () => {
         <OurAcknowledgments
           theme="green-800"
           acknowledgmentsCards={formatOurAcknowledgmentCarousel()}
-          title={textContent?.recognition_initiative_text[0]?.fields?.content_text_json[0]?.text}
+          title={
+            textContent?.recognition_initiative_text[0]?.fields
+              ?.content_text_json[0]?.text
+          }
         />
 
         <GlobalImpact
@@ -224,6 +238,14 @@ const SustainabilityJourney = () => {
               : pageContent?.global_compact[0]?.fields
           )}
           title={textContent?.global_compact_text[0]?.fields?.title}
+          buttonOne={{
+            href:textContent?.global_compact_text[0]?.fields?.hrefButton?.[0],
+            title: textContent?.global_compact_text[0]?.fields?.buttonText?.[0],
+          }}
+          buttonTwo={{
+            href: textContent?.global_compact_text[0]?.fields?.hrefButton?.[1],
+            title: textContent?.global_compact_text[0]?.fields?.buttonText?.[1],
+          }}
         />
       </main>
 

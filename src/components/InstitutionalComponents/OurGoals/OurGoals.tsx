@@ -21,7 +21,7 @@ export const OurGoals: React.FC<OurGoalsProps> = (props) => {
 
       <Section containerClass="flex bg-white flex-col justify-between pt-16 tablet:pt-8 tablet:px-4 text-green-800">
         <div className="w-[750px] tablet:w-[70%]">
-          <h1 className="text-base font-normal tablet:text-xs">{title}</h1>
+          <h3 className="text-base font-normal tablet:text-xs">{title}</h3>
           <p className="text-2xl tablet:text-base font-semibold mt-4">
             {description}
           </p>

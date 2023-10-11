@@ -9,6 +9,7 @@ interface SustainabilityJourneyButtonsProps {
     title: stirng;
     cards: SustainabilityJourneyButtonsCardProps[]
     ods: odsInterface[];
+    link: string;
 }
 
 interface odsInterface {

@@ -19,6 +19,8 @@ export interface Product {
   model: string;
   description: string;
   specs: Spec[];
+  route: string;
+  type: string;
 }
 
 export type Inputs = {
@@ -60,6 +62,16 @@ export interface ProductOCC {
   brand: string;
   parentCategories: [ProductsList];
   x_emissoMdiaKgDeCOH: string;
+  x_emissaoMedia: string;
+  x_pesoOperacional: string;
+  x_potenciaDoMotor: string;
+  x_cabine: string;
+  x_capacidadeDoTanque: string;
+  x_potenciaStandByKVA: string;
+  x_potenciaStandByKW: string;
+  x_potenciaPrimeKVA: string;
+  x_potenciaPrimeKW: string;
+  x_motor: string;
   height: number;
   defaultProductListingSku: null;
   assetable: boolean;
@@ -197,6 +209,7 @@ export interface ImageCMS {
     title: string | null;
     text_field: string[] | null;
     buttonText?: string[] | null;
+    button_text?: string[] | null;
   };
   description: string;
   name: string;
@@ -219,7 +232,8 @@ export interface TextCMS {
       | null;
     text_field: string[] | null;
     title: string | null;
-    hrefButton?: string[];
+    hrefButton?: string[] | [];
+    buttonText?: string[] | [];
     subtitle: string[] | [];
   };
   description: string;

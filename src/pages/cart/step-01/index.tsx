@@ -8,16 +8,60 @@ import { CartList } from "@/components/Cart/CartList/CartList";
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import Image from "next/image";
 import Button from "@/components/shared/Button/Button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { updateParagraphs } from "@/utils/texts";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { getCMSContent } from "@/components/Generators/content";
+import _ from "lodash";
+import { transformContentToMobile } from "@/utils/content";
+import { getImageSrc } from "@/utils/images";
 
 export default function StepOne() {
   const router = useRouter();
-  const { banner } = useGetCMSAssemblyStructure();
   const [isClient, setIsClient] = useState(false);
+  const [items, setItems] = useState<any>()
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    const storedItems = localStorage.getItem("items");
+    setItems(storedItems ? JSON.parse(storedItems) : []);
+  }, []);
+
+  const { isMobile } = useScreenWidth();
+  const [banner, setBanner] = useState<any>();
+  const [contentBase, setContentBase] = useState<any>();
+
+  const formatData = useCallback(
+    (contentAux: any) => {
+      const content = isMobile
+        ? transformContentToMobile(contentAux)
+        : contentAux;
+
+      setBanner(content?.["banner_request_quote"]?.[0]);
+    },
+    [isMobile]
+  );
+
+  useEffect(() => {
+    const getContent = async () => {
+      if (_.isEmpty(contentBase)) {
+        const contentAux = await getCMSContent("solicitar_orcamento");
+        setContentBase(contentAux);
+        formatData(contentAux);
+      } else {
+        formatData({ ...contentBase });
+      }
+    };
+    getContent();
+  }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner]);
+
   return (
     isClient && (
       <>
@@ -29,10 +73,10 @@ export default function StepOne() {
                 name: "Home",
                 href: "/",
               },
-              { name: "Solicitar orçamento", href: "#" },
+              { name: "Solicitar orçamento", href: "/carrinho/passo-01" },
             ]}
-            title={"Solicitar orçamento"}
-            backgroundImage={banner?.src}
+            title={banner?.fields?.content_title}
+            backgroundImage={getImageSrc(banner?.fields)}
           />
           <div className="flex flex-col items-center ">
             <div className="my-8">

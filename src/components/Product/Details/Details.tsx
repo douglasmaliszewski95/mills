@@ -11,7 +11,7 @@ import { ImageOCC } from "@/components/shared/ImageOCC/ImageOCC";
 import { useRouter } from "next/router";
 
 export const Details: React.FC<DetailsProps> = (props) => {
-  const { product, addToCart, theme } = props;
+  const { product, addToCart, theme, isDisabled, removeFromCart } = props;
   const {
     id,
     brand,
@@ -28,7 +28,7 @@ export const Details: React.FC<DetailsProps> = (props) => {
     x_rampaMxima,
     x_capacidadeDoTanqueL,
     x_peso,
-    x_manual,
+    x_linkManual,
     height,
     width,
     description,
@@ -105,6 +105,16 @@ export const Details: React.FC<DetailsProps> = (props) => {
     ],
   };
 
+  const handleDownloadClick = () => {
+    const link = document.createElement("a");
+    link.href = x_linkManual;
+    link.download = x_linkManual;
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Section containerClass="pb-[110px] tablet:pb-8 tablet:px-4">
       <button
@@ -115,18 +125,18 @@ export const Details: React.FC<DetailsProps> = (props) => {
         <p className="text-orange-500 text-sm">Voltar</p>
       </button>
       <div className="flex tablet:flex-col">
-        <div className="basis-1/2 pr-[78px] tablet:pr-0">
-          <h5 className="text-green-800 font-semibold leading-4 pr-[89px]">
-            {`${brand} ${id}`}
-          </h5>
-          <h2 className="text-[30px] tablet:text-base text-green-800 font-semibold leading-8 mb-8">
+        <div className="basis-1/2 pr-[78px] tablet:pr-0 h-auto">
+          <p className="text-green-800 font-semibold leading-4 pr-[89px]">
+            {`${brand ?? ""} ${id}`}
+          </p>
+          <h1 className="text-[30px] tablet:text-base text-green-800 font-semibold leading-8 mb-8">
             {displayName}
-          </h2>
-          <ImageOCC
-            imageName={primaryFullImageURL}
-            alt={primaryImageAltText}
-            className="w-full mt-8 tablet:mt-0 tablet:mb-8 tablet:max-h-[184px] object-contain"
-          />
+          </h1>
+            <ImageOCC
+              imageName={primaryFullImageURL}
+              alt={primaryImageAltText}
+              className="w-full mt-8 tablet:mt-0 tablet:mb-8 tablet:max-h-[184px] object-contain sticky top-0"
+            />
         </div>
         <div className="basis-1/2 pr-[138px] tablet:pr-0">
           <p className="text-green-800 mb-7 tablet:text-xs">{description}</p>
@@ -165,10 +175,10 @@ export const Details: React.FC<DetailsProps> = (props) => {
             </div>
           )}
           <div className="w-full h-[1px] bg-gray-200 mt-8 tablet:mt-6"></div>
-          {x_manual && (
+          {x_linkManual && (
             <div className="flex justify-between w-full py-4">
               <p className="text-green-800 font-semibold tablet:text-sm">{`Manual ${brand}`}</p>
-              <button>
+              <button onClick={handleDownloadClick}>
                 <Image src={download} width={22} height={22} alt="Download" />
               </button>
             </div>
@@ -176,11 +186,28 @@ export const Details: React.FC<DetailsProps> = (props) => {
           <div className="w-full h-[1px] bg-gray-200"></div>
           <TechnicalInformation technicalInfo={technicalInformation} />
           <div className="w-full h-[1px] bg-gray-200 mb-8 tablet:mb-6"></div>
-          <Button className="w-full" onClick={() => addToCart(product)}>
+          <Button
+            className={`w-[60%] tablet:w-full ${
+              isDisabled && "disabled opacity-40 cursor-default"
+            }`}
+            onClick={() => addToCart(product)}
+          >
             <p className="text-sm font-semibold px-[40px]">
               Incluir no orçamento
             </p>
           </Button>
+          {isDisabled && (
+            <p className="text-xs font-normal italic text-green-800 mt-2">
+              Você já incluiu esse equipamento no seu carrinho de orçamento.
+              <br />
+              <a
+                className="text-orange-500 underline cursor-pointer"
+                onClick={() => removeFromCart(product)}
+              >
+                Remover do carrinho
+              </a>
+            </p>
+          )}
         </div>
       </div>
     </Section>

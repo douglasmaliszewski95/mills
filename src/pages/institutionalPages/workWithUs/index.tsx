@@ -1,5 +1,5 @@
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { AboutWithButton } from "@/components/InstitutionalComponents/AboutWithButtons/AboutWithButtons";
 import { About } from "@/components/shared/About/About";
 import { Banner } from "@/components/shared/Banner/Banner";
@@ -8,6 +8,7 @@ import { Header } from "@/components/shared/Header/Header";
 import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useContext, useEffect, useState } from "react";
 
 const WorkWithUs = () => {
@@ -23,6 +24,10 @@ const WorkWithUs = () => {
     setPageContent(content);
     setTextContent(contentText);
   };
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
 
   useEffect(() => {
     getPageContent();
@@ -67,25 +72,25 @@ const WorkWithUs = () => {
           description={pageContent?.work_with_us[1]?.fields?.content_text}
           image={getImageSrc(
             isMobile
-              ? pageContent?.work_with_us[1]?.mobileObj?.fields
-              : pageContent?.work_with_us[1]?.fields
+              ? pageContent?.work_with_us[2]?.mobileObj?.fields
+              : pageContent?.work_with_us[2]?.fields
           )}
-          title={pageContent?.work_with_us[1]?.fields?.content_title}
+          title={pageContent?.work_with_us[2]?.fields?.content_title}
           theme="beige-200"
           showDna={false}
           orientation="inverted"
-          buttonTitle={pageContent?.work_with_us[1]?.fields?.button_text}
-          link={pageContent?.work_with_us[1]?.fields?.href_attribute}
+          buttonTitle={pageContent?.work_with_us[2]?.fields?.button_text}
+          link={pageContent?.work_with_us[2]?.fields?.href_attribute}
         />
 
         <About
           description=""
           image={getImageSrc(
             isMobile
-              ? pageContent?.work_with_us[2]?.mobileObj?.fields
-              : pageContent?.work_with_us[2]?.fields
+              ? pageContent?.work_with_us[1]?.mobileObj?.fields
+              : pageContent?.work_with_us[1]?.fields
           )}
-          title={pageContent?.work_with_us[2]?.fields?.content_text}
+          title={pageContent?.work_with_us[1]?.fields?.content_text}
           theme="white"
           forceImageDisplayOnMobile={true}
           showDna={false}

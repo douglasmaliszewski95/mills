@@ -13,14 +13,14 @@ export const OurServices: React.FC<OurServicesProps> = (props) => {
             theme === "rentalHeavy" ? "text-green-800" : "text-orange-500"
           }`}
         >
-          Nossos serviços
+          Serviços Mills para Locação de Equipamentos e Plataforma Elevatória
         </h2>
         <p className="text-lg text-green-800 mb-8 tablet:text-xs">
           Conheça os serviços disponíveis para simplificar seu dia a dia
         </p>
         <Carousel>
           {serviceCards?.map((card) => (
-            <Card key={card.id} {...card} />
+            <Card key={card.id} {...card} theme={theme} />
           ))}
         </Carousel>
       </div>

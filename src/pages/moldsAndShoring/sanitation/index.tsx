@@ -15,9 +15,10 @@ import { transformContentToMobile } from "@/utils/content";
 import { ConstructionSlideShow } from "@/components/Category/ConstructionSlideShow/ConstructionSlideShow";
 import { transformCMSArrayToObject } from "@/utils/transformCMSArrayToObject";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Item } from "@/components/Category/AboutRental/types";
 import { ShoringModels } from "@/components/formworkAndShoring/ShoringModels/ShoringModels";
+import { updateParagraphs } from "@/utils/texts";
 
 function Sanitation() {
   const [content, setContent] = useState<SanitationContent>();
@@ -111,6 +112,10 @@ function Sanitation() {
     };
     getContent();
   }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
 
   return (
     <>
@@ -217,6 +222,7 @@ function Sanitation() {
             mobileTheme="beige-200"
           />
         )}
+        <ExpertRecommendation />
         <MachinesAndPlatforms />
       </main>
       <Footer />

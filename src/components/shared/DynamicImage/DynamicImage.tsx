@@ -28,11 +28,10 @@ function DynamicImage({ src, alt }: DynamicImageProps) {
 
   return (
     <img
+      className={`w-[${originalWidth}px] h-[${originalHeight}px]`}
       ref={imageRef}
       src={src}
       alt={alt}
-      width={originalWidth ?? 0}
-      height={originalHeight ?? 0}
     />
   );
 }

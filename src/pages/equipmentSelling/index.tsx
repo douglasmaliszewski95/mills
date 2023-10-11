@@ -14,6 +14,9 @@ import { AboutRental } from "@/components/Category/AboutRental/AboutRental";
 import { transformContentToMobile } from "@/utils/content";
 import { SellParts } from "@/components/Category/SellParts/SellParts";
 import { AboutSmallImage } from "@/components/AboutSmallImage/AboutSmallImage";
+import { updateParagraphs } from "@/utils/texts";
+import { ShoringModels } from "@/components/formworkAndShoring/ShoringModels/ShoringModels";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 
 function EquipmentSelling() {
   const [content, setContent] = useState<TransportContent>();
@@ -27,7 +30,7 @@ function EquipmentSelling() {
         ? transformContentToMobile(contentAux)
         : contentAux;
 
-      const advantages = responsiveContent?.["icon_sale_equipment"]?.map(
+      const advantagesAux = responsiveContent?.["icon_sale_equipment"]?.map(
         (icon: ImageCMS) => ({
           id: icon?.description,
           title: icon?.fields?.content_title,
@@ -36,6 +39,30 @@ function EquipmentSelling() {
           image: getImageSrc(icon?.fields),
         })
       );
+
+      const advantages = [
+        advantagesAux?.find(
+          (icon: ImageCMS) => icon.id === "icon venda equipamentos variedade"
+        ),
+        advantagesAux?.find(
+          (icon: ImageCMS) => icon.id === "icon venda equipamentos customizada"
+        ),
+        advantagesAux?.find(
+          (icon: ImageCMS) =>
+            icon.id === "icon venda equipamentos inspecao anual"
+        ),
+        advantagesAux?.find(
+          (icon: ImageCMS) =>
+            icon.id === "icon venda equipamentos controle qualidade"
+        ),
+        advantagesAux?.find(
+          (icon: ImageCMS) =>
+            icon.id === "icon venda equipamentos assessoria tecnica"
+        ),
+        advantagesAux?.find(
+          (icon: ImageCMS) => icon.id === "icon venda equipamentos manutencao"
+        ),
+      ];
 
       const formattedData = {
         banner: responsiveContent?.["banner_venda_equipamentos"]?.[0],
@@ -58,7 +85,9 @@ function EquipmentSelling() {
           ({ description }: ImageCMS) => description === "venda equipamentos06"
         ),
         seventhAbout: responsiveContent?.["logo_brand_sale"]?.[0],
+        eighthAbout: responsiveContent?.["fale_especialista"]?.[0],
         advantages,
+        equipments: contentText?.["buy_new_equipment"]?.[0],
         knowMore: contentText?.["know_more_lifting"]?.[0],
       };
       setContent(formattedData);
@@ -69,8 +98,13 @@ function EquipmentSelling() {
   useEffect(() => {
     const getContent = async () => {
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("venda_equipamentos");
-        const contentText = await getText("venda_equipamentos");
+        const [
+          contentAux,
+          contentText
+        ]: any = await Promise.all([
+          getCMSContent("venda_equipamentos"),
+          getText("venda_equipamentos")
+        ]);        
         setContentBase({ contentAux, contentText });
         formatData({ contentAux, contentText });
       } else {
@@ -79,6 +113,10 @@ function EquipmentSelling() {
     };
     getContent();
   }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [contentBase, content]);
 
   return (
     <>
@@ -92,7 +130,7 @@ function EquipmentSelling() {
           linkList={[
             {
               name: "Venda de equipamentos",
-              href: "/vendas-equipamentos",
+              href: "/vendas-de-maquinas",
             },
           ]}
         />
@@ -164,12 +202,13 @@ function EquipmentSelling() {
         />
         {content?.advantages && (
           <AboutRental
-            title="Vantagens do aluguel de plataformas elevatórias"
+            title="Adquira seus equipamentos com a Mills"
             description="Temos uma equipe especializada na venda de equipamentos novos e seminovos, como as plataformas elevatórias, compressores e geradores. Todos os equipamentos possuem manutenção em dia e passam por um rigoroso processo de qualidade, que atesta e garante o pleno funcionamento do equipamento."
             items={content?.advantages}
             theme="white"
             textColor="green-800"
             iconFont="base"
+            hasDna={false}
             largeDescription={isDesktop}
             forceTitleDisplay
           />
@@ -179,6 +218,30 @@ function EquipmentSelling() {
           image={getImageSrc(content?.seventhAbout?.fields)}
           alt={content?.seventhAbout?.fields?.alt_attribute ?? ""}
         />
+        <ShoringModels
+          ids={content?.equipments?.fields?.text_field ?? []}
+          title={content?.equipments?.fields?.title ?? ""}
+          cardText="Incluir no orçamento"
+          theme="white"
+          buttonTitle={content?.equipments?.fields?.buttonText?.[0] ?? ""}
+          href={content?.equipments?.fields?.hrefButton?.[0] ?? ""}
+        />
+        <About
+          title={content?.eighthAbout?.fields?.content_title ?? ""}
+          description={content?.eighthAbout?.fields?.content_text ?? ""}
+          image={getImageSrc(content?.eighthAbout?.fields)}
+          alt={content?.eighthAbout?.fields?.alt_attribute ?? ""}
+          link={content?.eighthAbout?.fields?.href_attribute ?? "#"}
+          buttonTitle={
+            content?.eighthAbout?.fields?.buttonText ??
+            "Fale com um especialista"
+          }
+          forceImageDisplayOnMobile
+          theme="orange-500"
+          color="white"
+          isTalkToSpecialist
+        />
+        <MachinesAndPlatforms />
       </main>
       <Footer />
     </>

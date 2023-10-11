@@ -29,7 +29,7 @@ export const Segments: React.FC<SegmentsProps> = (props) => {
               theme === "rentalLight" ? "text-orange-500" : "text-green-800"
             }`}
           >
-            Trabalhamos em diversos tipos de segmentos
+            Locação de Equipamentos e Plataforma Elevatória para diversos tipos de segmentos
           </h2>
         ) : (
           <>

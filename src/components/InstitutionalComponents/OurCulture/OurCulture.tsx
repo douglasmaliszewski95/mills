@@ -13,7 +13,7 @@ export const OurCulture: React.FC<ourCultureProps> = (props) => {
     >
       <div className="grid grid-cols-2 gap-14 tablet:gap-4 w-full tablet:grid-cols-1">
         <div className="flex flex-col text-green-800 pt-10 tablet:pt-2">
-          <h1 className="text-base font-normal tablet:text-xs">{title}</h1>
+          <h3 className="text-base font-normal tablet:text-xs">{title}</h3>
           <p className="text-[28px] tablet:text-base font-semibold mt-4">
             {description}
           </p>

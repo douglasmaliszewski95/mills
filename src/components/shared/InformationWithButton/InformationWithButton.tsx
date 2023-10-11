@@ -38,29 +38,27 @@ export const InformationWithButton: React.FC<InformationWithButtonProps> = (
           <DnaBottom color={dnaColor} />
         </div>
       )}
-
       <Section
         containerClass={`flex flex-row tablet:px-4 tablet:flex-col tablet:py-8 ${paddingY}`}
         sectionClass={theme}
       >
         <div
-          className={`w-[50%] tablet:w-full ${
-            theme === "bg-beige-200" ? "text-green-800" : "text-white"
-          }`}
+          className={`w-[50%] tablet:w-full ${theme === "bg-beige-200" ? "text-green-800" : "text-white"
+            }`}
         >
-          <h1
-            className={`text-2xl font-semibold ${
-              description ? "mb-6" : "0"
-            } tablet:text-base ${width}`}
+          <h3
+            className={`text-2xl font-semibold ${description ? "mb-6" : "0"
+              } tablet:text-base ${width}`}
           >
             {title}
-          </h1>
+          </h3>
           {description && (
             <p className="text-sm font-normal tablet:text-sm ">{description}</p>
           )}
         </div>
         <div className="flex relative justify-center items-center tablet:w-full w-[50%] tablet:mt-4">
           <a
+          target="_blank"
             href={buttonLink}
             className={`${buttonColor} flex items-center justify-center rounded-3xl ${buttonTextColor} font-semibold text-sm w-[265.14px] tablet:w-full h-[37px]`}
           >
@@ -68,6 +66,11 @@ export const InformationWithButton: React.FC<InformationWithButtonProps> = (
           </a>
         </div>
       </Section>
+      {isMobile && <div className="relative flex justify-end">
+        <div className="absolute bottom-[5px] right-[-10px]">
+          <DnaBottom width="380" height="60" color="#FFFFFF" />
+        </div>
+      </div>}
     </section>
   ) : (
     <Section
@@ -75,22 +78,21 @@ export const InformationWithButton: React.FC<InformationWithButtonProps> = (
       sectionClass={theme}
     >
       <div
-        className={`w-[50%] tablet:w-full flex flex-col justify-center tablet:px-4 ${
-          theme === "bg-beige-200" ? "text-green-800" : "text-white"
-        }`}
+        className={`w-[50%] tablet:w-full flex flex-col justify-center tablet:px-4 ${theme === "bg-beige-200" ? "text-green-800" : "text-white"
+          }`}
       >
-        <h1
-          className={`text-2xl font-semibold ${
-            description ? "mb-6" : "0"
-          } tablet:text-base ${width}`}
+        <h3
+          className={`text-2xl font-semibold ${description ? "mb-6" : "0"
+            } tablet:text-base ${width}`}
         >
           {title}
-        </h1>
+        </h3>
         {description && (
           <p className="text-sm font-normal tablet:text-sm ">{description}</p>
         )}
 
         <a
+        target="_blank"
           href={buttonLink ? buttonLink : ''}
           className={`${buttonColor} mt-2 flex items-center justify-center rounded-3xl ${buttonTextColor} font-semibold text-sm w-[265.14px] tablet:w-full h-[37px]`}
         >

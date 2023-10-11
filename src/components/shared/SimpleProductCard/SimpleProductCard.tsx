@@ -3,12 +3,18 @@ import { ImageOCC } from "../ImageOCC/ImageOCC";
 import { SimpleProductCardProps } from "./types";
 
 export const SimpleProductCard: React.FC<SimpleProductCardProps> = (props) => {
-  const {
-    product,
-    cardText = "Ver detalhes",
-    borderFull,
-    handleAddToCart = () => null,
-  } = props;
+  const { product, cardText, borderFull, handleAddToCart = () => null } = props;
+
+  const baseUrl =
+    product.type === "Compressores"
+      ? "compressores"
+      : product.type === "Geradores"
+      ? "geradores"
+      : product.type === "Equipamentos"
+      ? "formas-e-escoramentos"
+      : product.type === "MaquinasPesadas"
+      ? "maquinas-pesadas"
+      : "plataformas-elevatorias";
 
   return (
     <div
@@ -30,9 +36,15 @@ export const SimpleProductCard: React.FC<SimpleProductCardProps> = (props) => {
         <p className="text-lg text-green-800 font-semibold text-center">
           {product.id}
         </p>
-        <Button onClick={() => handleAddToCart(product)} variant="outlined">
-          {cardText}
-        </Button>
+        <a href={`${baseUrl}${product.route}`} className="w-full">
+          <Button
+            onClick={() => cardText && handleAddToCart(product)}
+            variant="outlined"
+            className="w-full"
+          >
+            {cardText ?? "Ver detalhes"}
+          </Button>
+        </a>
       </div>
     </div>
   );

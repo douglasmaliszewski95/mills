@@ -7,4 +7,5 @@ export interface PostCardProps {
   title: string;
   date: string;
   link: string;
+  theme?: string;
 }

@@ -161,7 +161,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             <Button
               type="submit"
               variant={variant === "green" ? "inverted" : "default"}
-              className="max-w-[265px]"
+              className="max-w-[265px] tablet:max-w-full"
             >
               {buttonProps?.text}
             </Button>

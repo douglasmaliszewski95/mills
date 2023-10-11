@@ -19,30 +19,39 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 import MobileMenu from "./MobileMenu";
 import { useGetCMSShared } from "@/services/hooks/useGetCMSShared";
 import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
+import { CartModal } from "../CartModal/CartModal";
+import { TalkToSpecialistModal } from "../TalkToSpecialistModal/TalkToSpecialistModal";
 
 interface FooterProps {
   theme?: string;
 }
 
 export const Footer = ({ theme }: FooterProps) => {
-  const { footerList } = useGetCMSShared();
-  const { currentSiteTheme, setCurrentSiteTheme } = useContext(
-    currentSiteThemeContext
-  );
+  const { footerData, footerList } = useGetCMSShared();
+  const { currentSiteTheme } = useContext(currentSiteThemeContext);
   const { isMobile } = useScreenWidth();
   const [activeSubmenu, setActiveSubmenu] = useState<null | number>(null);
-  const [menu, setMenu] = useState<any>([]);
+  const [menuFooter, setMenuFooter] = useState<any>([]);
+  const [currentMobileMenu, setCurrentMobileMenu] = useState("");
 
   useEffect(() => {
-    setCurrentSiteTheme(theme);
-  }, [theme]);
-
-  useEffect(() => {
-    setMenu(footerList);
-  }, [footerList]);
+    setMenuFooter(
+      isMobile
+        ? footerList?.mobileMenu
+        : currentSiteTheme === "rentalLight"
+        ? footerList?.menu
+        : footerList?.heavyMenu
+    );
+  }, [
+    isMobile
+      ? footerList?.mobileMenu
+      : currentSiteTheme === "rentalLight"
+      ? footerList?.menu
+      : footerList?.heavyMenu,
+  ]);
 
   const openSubmenu = (clickedItem: MenuProps, index: number) => {
-    setMenu((prevMenu: any) => {
+    setMenuFooter((prevMenu: any) => {
       return prevMenu.map((item: any) => {
         if (item === clickedItem) {
           return { ...item, open: !item.open };
@@ -67,7 +76,7 @@ export const Footer = ({ theme }: FooterProps) => {
           <div className="flex flex-wrap justify-between tablet:flex-col">
             <Image
               src={millsLogoOrange}
-              alt="logo"
+              alt="Mills - Locação de Equipamentos e Plataforma Elevatória"
               className="w-32 h-14 tablet:w-14 tablet:h-6 tablet: mb-4"
             />
             <div className="flex gap-3">
@@ -91,7 +100,7 @@ export const Footer = ({ theme }: FooterProps) => {
                   />
                 </Avatar.Root>
               </a>
-              <a>
+              <a href="https://www.instagram.com/millsoficial" target="blank">
                 <Avatar.Root
                   className={`${
                     currentSiteTheme === "rentalLight"
@@ -103,11 +112,11 @@ export const Footer = ({ theme }: FooterProps) => {
                     src={instagram}
                     width={isMobile ? 12 : 20}
                     height={isMobile ? 12 : 20}
-                    alt="instagram"
+                    alt="Locação de Equipamento e Plataformas Elevatória"
                   />
                 </Avatar.Root>
               </a>
-              <a>
+              <a href="https://www.facebook.com/millsbr/" target="blank">
                 <Avatar.Root
                   className={`${
                     currentSiteTheme === "rentalLight"
@@ -123,7 +132,10 @@ export const Footer = ({ theme }: FooterProps) => {
                   />
                 </Avatar.Root>
               </a>
-              <a>
+              <a
+                href="https://www.linkedin.com/company/millsoficial/mycompany"
+                target="blank"
+              >
                 <Avatar.Root
                   className={`${
                     currentSiteTheme === "rentalLight"
@@ -135,11 +147,11 @@ export const Footer = ({ theme }: FooterProps) => {
                     src={linkedin}
                     width={isMobile ? 12 : 20}
                     height={isMobile ? 12 : 20}
-                    alt="linkedin"
+                    alt="Locação de Equipamento e Plataformas Elevatória"
                   />
                 </Avatar.Root>
               </a>
-              <a>
+              <a href="https://www.youtube.com/user/canalmills" target="blank">
                 <Avatar.Root
                   className={`${
                     currentSiteTheme === "rentalLight"
@@ -151,7 +163,7 @@ export const Footer = ({ theme }: FooterProps) => {
                     src={youtube}
                     width={isMobile ? 17 : 20}
                     height={isMobile ? 17 : 20}
-                    alt="youtube"
+                    alt="Locação de Equipamento e Plataformas Elevatória"
                   />
                 </Avatar.Root>
               </a>
@@ -165,16 +177,19 @@ export const Footer = ({ theme }: FooterProps) => {
           <div className="mt-12 tablet:mt-0 tablet:text-xs">
             <ul className="font-ibm-font">
               <li className="mb-4">
-                <span className="font-medium">Central de Relacionamento:</span>
+                <span className="font-medium">
+                  {footerData?.central?.title}
+                </span>
                 <br className="desktop:hidden" />{" "}
-                <span className="tablet:text-orange-500">0800 705 1000</span>
+                <span className="tablet:text-orange-500">
+                  {footerData?.central?.text}
+                </span>
               </li>
               <li className="mt-2">
-                <span className="font-medium">Horário de atendimento:</span>
-                <br className="desktop:hidden" /> Segunda a sexta, das 7 às 18h
-                <span className="tablet:hidden"> | </span>
-                <br className="desktop:hidden" />
-                Sábados, das 8h às 12h
+                <span className="font-medium">
+                  {footerData?.horario?.title}
+                </span>
+                <br className="desktop:hidden" /> {footerData?.horario?.text}
               </li>
             </ul>
           </div>
@@ -187,7 +202,7 @@ export const Footer = ({ theme }: FooterProps) => {
           <div className="tablet:hidden">
             <div className="mt-12">
               <ul className="flex gap-8 flex-wrap font-medium text-sm tablet:flex-col">
-                {menu?.map((item: any, index: number) => {
+                {menuFooter?.map((item: any, index: number) => {
                   return (
                     <li
                       key={index}
@@ -216,14 +231,14 @@ export const Footer = ({ theme }: FooterProps) => {
                       key={columnIndex}
                       className="flex flex-col font-medium font-ibm-font text-sm text-orange-500 leading-7"
                     >
-                      {menu[activeSubmenu].submenu
+                      {menuFooter[activeSubmenu].submenu
                         .slice(columnIndex * 2, columnIndex * 2 + 2)
                         .map((subItem: any, index: number) => (
                           <li
                             key={index}
                             className="flex items-center gap-2 cursor-pointer"
                           >
-                            {subItem.title}
+                            <a href={subItem.url}>{subItem.title}</a>
                           </li>
                         ))}
                     </ul>
@@ -232,44 +247,74 @@ export const Footer = ({ theme }: FooterProps) => {
               </div>
             )}
           </div>
-          <div className="mt-10 tablet:hidden">
-            <ul className="flex flex-wrap font-medium text-sm max-w-[900px] tablet:flex-col">
-              {secondMenu.map((item, index) => {
+
+          {/* menu mobile */}
+          <div className="flex desktop:hidden">
+            <div className="flex flex-col w-full gap-6">
+              {menuFooter?.map((item: any, index: number) => {
                 return (
-                  <li
+                  <div
                     key={index}
-                    className="flex items-center gap-2 cursor-pointer mr-2 mb-3"
+                    className={`flex flex-col w-full text-sm font-medium`}
+                    onClick={() => {
+                      setCurrentMobileMenu(
+                        currentMobileMenu === item.title ? "" : item.title
+                      );
+                    }}
                   >
-                    {item.title}
-                    {item.showBorder ? (
-                      <div className="h-6 w-[1px] bg-green-800" />
-                    ) : (
-                      <div className="h-6 w-[1px] bg-transparent" />
+                    <div className="flex gap-2 cursor-pointer items-center text-green-800">
+                      {item.title}
+
+                      <Image
+                        src={chevronDown}
+                        className={`w-[14px] transform ${
+                          currentMobileMenu === item.title
+                            ? "rotate-180 transition duration-500"
+                            : ""
+                        }`}
+                        alt="chevronDown"
+                      />
+                    </div>
+                    {currentMobileMenu === item.title && (
+                      <div className="px-6 bg-white py-4 my-4 flex flex-col gap-6 text-orange-500">
+                        {item.submenu.map((submenu: any, index: number) => (
+                          <a key={index} href={submenu.url}>{submenu.title}</a>
+                        ))}
+                      </div>
                     )}
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
           </div>
-          {/* menu desktop */}
-          <div className="flex flex-col desktop:hidden">
-            <MobileMenu />
-            <MobileMenu />
-            <span className="text-green-800 font-medium text-sm mb-4">
-              Política de Privacidade e Cookies
-            </span>
-            <span className="text-green-800 font-medium text-sm mb-4">
-              Termos e condições de uso
-            </span>
-            <span className="text-green-800 font-medium text-sm mb-4">
-              Contrato
-            </span>
-            <span className="text-green-800 font-medium text-sm mb-4">
-              Programa de Integridade
-            </span>
-            <span className="text-green-800 font-medium text-sm ">
-              Dúvidas Frequentes
-            </span>
+          <div className="mt-10">
+            <ul className="flex flex-wrap font-medium gap-4 text-sm max-w-[950px] tablet:flex-col">
+              {footerData?.[isMobile ? "mobileLinks" : "links"]?.map(
+                (item: any, index: number) => {
+                  if (item.link === "modal_especialista") {
+                    return (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 cursor-pointer mr-2 mb-3"
+                      >
+                        <TalkToSpecialistModal>
+                          <p>{item.title}</p>
+                        </TalkToSpecialistModal>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li
+                      key={index}
+                      className="flex items-center gap-2 cursor-pointer mr-2 mb-3"
+                    >
+                      <a target="_blank" href={item.link}>{item.title}</a>
+                    </li>
+                  );
+                }
+              )}
+            </ul>
           </div>
         </div>
       </div>
@@ -286,6 +331,7 @@ export const Footer = ({ theme }: FooterProps) => {
           </div>
         </div>
       </div>
+      <CartModal />
     </footer>
   );
 };

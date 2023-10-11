@@ -2,6 +2,8 @@ import { Section } from "@/components/shared/Section/Section";
 import verticalLines from "@/assets/verticalLineGray.svg";
 import verticalLinesGray from "@/assets/verticalLinesDarkGray.svg";
 import Image from "next/image";
+import dnaBottom from "@/assets/dna-top-orange.svg";
+import dnaBottomWhite from "@/assets/dna-bottom.svg";
 import { AboutWithButtonProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import Button from "@/components/shared/Button/Button";
@@ -24,15 +26,18 @@ export const AboutWithButton: React.FC<AboutWithButtonProps> = (props) => {
   return type === "singleBtn" ? (
     <section className="relative">
       {!isMobile && (
-        <Image
-          src={theme === "white" ? verticalLinesGray : verticalLines}
-          alt="Linhas verticais laranjas e verdes"
-          className={`absolute ${
+        <div
+          className={`absolute  ${
             orientation === "normal"
-              ? "right-0 top-2 w-[45%]"
-              : "left-0 bottom-2 w-[55%]"
-          } w-[40%] tablet:w-[45%] rotate-180`}
-        />
+              ? "right-0 top-1"
+              : "left-0 bottom-2 pl-12"
+          }`}
+        >
+          <img
+            src={theme === "orange-500" ? dnaBottomWhite.src : dnaBottom.src}
+            className="w-full rotate-180 "
+          />
+        </div>
       )}
       <Section
         containerClass={`flex ${
@@ -48,7 +53,7 @@ export const AboutWithButton: React.FC<AboutWithButtonProps> = (props) => {
             theme === "white" ? "text-green-800" : "text-white"
           } pt-20 tablet:p-4`}
         >
-          <h1 className="font-semibold text-2xl tablet:text-base">{title}</h1>
+          <h3 className="font-semibold text-2xl tablet:text-base">{title}</h3>
           <p className="text-lg mt-6 tablet:text-xs tablet:mt-4">
             {description}
           </p>
@@ -71,7 +76,7 @@ export const AboutWithButton: React.FC<AboutWithButtonProps> = (props) => {
       sectionClass="bg-green-800"
     >
       <div className="text-white w-[45%] tablet:w-full tablet:py-6 py-20 tablet:px-4">
-        <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+        <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
         <p className="text-lg font-normal tablet:mt-4 mt-8 tablet:text-xs">
           {description}
         </p>
@@ -86,7 +91,9 @@ export const AboutWithButton: React.FC<AboutWithButtonProps> = (props) => {
                   href={
                     text === "Pá carregadeira"
                       ? "/maquinas-pesadas/pa-carregadeira"
-                      : `/maquinas-pesadas/${text.replace(" ", "-").toLowerCase()}`
+                      : `/maquinas-pesadas/${text
+                          .replace(" ", "-")
+                          .toLowerCase()}`
                   }
                   target="blank"
                 >

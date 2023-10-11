@@ -10,17 +10,22 @@ import { getImageSrc } from "@/utils/images";
 import { About } from "@/components/shared/About/About";
 import { transformContentToMobile } from "@/utils/content";
 import { ShovelLoaderContent } from "./types";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { AboutWrapCards } from "@/components/shared/AboutWrapCards/AboutWrapCards";
 import { getText } from "@/services/hooks/getText";
 import { TalkToSpecialistHeavy } from "@/components/ProductTypeAndSegment/TalkToSpecialistHeavy";
 import { HeavyMachinesCarousel } from "@/components/HeavyMachines/HeavyMachinesCarousel/HeavyMachinesCarousel";
 import { InformationWithButton } from "@/components/shared/InformationWithButton/InformationWithButton";
 import { InformationWithLines } from "@/components/HeavyMachines/InformationWithLines/InformationWithLines";
+import { updateParagraphs } from "@/utils/texts";
 
 function ShovelLoader() {
   const [content, setContent] = useState<ShovelLoaderContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -64,7 +69,6 @@ function ShovelLoader() {
           "maquinas_pesadas_pa_carregadeira"
         );
         const contentText = await getText("maquinas_pesadas_pa_carregadeira");
-        console.log("contentText", contentText);
         const contentShared = await getCMSContent("shared");
         setContentBase({ contentAux, contentText, contentShared });
         formatData({ contentAux, contentText, contentShared });
@@ -104,6 +108,7 @@ function ShovelLoader() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
           orientation="inverted"
           hideImage={isMobile}
         />

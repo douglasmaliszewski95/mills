@@ -1,7 +1,9 @@
 import { CheckBorder } from "@/assets/CheckBorder";
+
 import { Section } from "../Section/Section";
 import { TrainingMenuProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { UnCheckBorder } from "@/assets/UnCheckBorder";
 
 export const TrainingMenu: React.FC<TrainingMenuProps> = (props) => {
   const {
@@ -39,8 +41,8 @@ export const TrainingMenu: React.FC<TrainingMenuProps> = (props) => {
                 <td className="pl-6 tablet:pl-4 font-semibold text-lg tablet:text-xs text-green-800 font-ibm-font pb-8">
                   {text}
                 </td>
-                <td className="flex pr-[152px] tablet:pr-10 gap-[184px] tablet:gap-[52px]">
-                  <CheckBorder color="#DADADA" />
+                <td className="flex pr-[152px] tablet:pr-10 gap-[184px] tablet:gap-[52px] h-10 items-center">
+                  <UnCheckBorder />
                   <CheckBorder />
                 </td>
               </tr>

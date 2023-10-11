@@ -14,11 +14,16 @@ import { AboutRental } from "@/components/Category/AboutRental/AboutRental";
 import { ForestryContent } from "./types";
 import { SimpleBanner } from "@/components/SimpleBanner/SimpleBanner";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
+import { updateParagraphs } from "@/utils/texts";
 
 function Forestry() {
   const [content, setContent] = useState<ForestryContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isDesktop, isMobile } = useScreenWidth();
 
@@ -94,6 +99,7 @@ function Forestry() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
         />
         <About
           title={content?.secondAbout?.fields?.content_title ?? ""}
@@ -126,6 +132,7 @@ function Forestry() {
           color="white"
           buttonVariant="whiteOutline"
           dnaColor="#ffffff"
+          isTalkToSpecialist
         />
         <MachinesAndPlatforms />
       </main>

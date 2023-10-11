@@ -15,10 +15,10 @@ export const FilterBar: React.FC<FilterBarProps> = (props) => {
     refinementCrumbs,
     onSelectFilter,
     onSearch,
-    baseUrl = "/plataformas-elevatorias/busca",
     setIsFiltersOpen = () => null,
     clearFilters,
     submitFilters = () => null,
+    page = ''
   } = props;
   const router = useRouter();
   const { isMobile } = useScreenWidth();
@@ -32,7 +32,7 @@ export const FilterBar: React.FC<FilterBarProps> = (props) => {
   const onSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (inputValue) {
-      router.push(`${baseUrl}?productName=${inputValue}`);
+      router.push(`${window.location.pathname}?productName=${inputValue}`);
       onSearch(inputValue);
     }
   };
@@ -74,19 +74,27 @@ export const FilterBar: React.FC<FilterBarProps> = (props) => {
         </form>
       </div>
       {filters?.map((item, index) => (
-        <div key={item?.displayName}>
+        <div key={index}>
           <p className="text-green-800 font-semibold mb-2 px-[18px]">
             {item.displayName}
           </p>
           {item.refinements.map((option: Refinements, index: number) => (
             <div
-              key={item?.displayName}
+              key={index}
               className="flex gap-[10px] items-center mb-[10px] px-[18px]"
             >
-              <Checkbox
-                checked={appliedFilters.includes(option.label)}
-                onToggle={() => onSelectFilter(option.label, option.link)}
-              />
+              {option.label === page ? (
+                <Checkbox
+                  checked={true}
+                  onToggle={() => onSelectFilter(option.label, option.link)}
+                />
+              ) : (
+                <Checkbox
+                  checked={appliedFilters.includes(option.label)}
+                  onToggle={() => onSelectFilter(option.label, option.link)}
+                />
+              )}
+
               <p className="text-sm text-green-800">{option.label}</p>
             </div>
           ))}

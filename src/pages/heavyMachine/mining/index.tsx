@@ -11,14 +11,19 @@ import { About } from "@/components/shared/About/About";
 import { transformContentToMobile } from "@/utils/content";
 import { MiningContent } from "./types";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { AboutCards } from "@/components/HeavySegments/AboutCards/AboutCards";
 import { OverflowCards } from "@/components/HeavySegments/OverflowCards/OverflowCards";
 import { getText } from "@/services/hooks/getText";
+import { updateParagraphs } from "@/utils/texts";
 
 function Mining() {
   const [content, setContent] = useState<MiningContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -98,6 +103,7 @@ function Mining() {
             "Fale com um especialista"
           }
           orientation="inverted"
+          isTalkToSpecialist
           hideImage={isMobile}
         />
         <AboutCards
@@ -135,6 +141,7 @@ function Mining() {
             "Fale com um especialista"
           }
           theme="gray-50"
+          isTalkToSpecialist
           forceImageDisplayOnMobile
         />
         <MachinesAndPlatforms />

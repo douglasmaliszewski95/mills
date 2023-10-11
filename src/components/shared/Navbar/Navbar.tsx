@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useContext } from "react";
+import React, { Fragment, useEffect, useState, useContext, use } from "react";
 import Image from "next/image";
 import { search, millsLogo, carBag } from "@/assets";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
@@ -15,6 +15,8 @@ import { SearchInput } from "./SearchInput/SearchInput";
 import { SearchModal } from "./SearchModal/SearchModal";
 import { useRouter } from "next/router";
 import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
+import { TalkToSpecialistModal } from "../TalkToSpecialistModal/TalkToSpecialistModal";
+import { getCurrentTheme } from "@/utils/theme";
 
 export const Navbar: React.FC<NavbarProps> = (props) => {
   const {
@@ -23,30 +25,46 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
     searchMode,
     setSearchMode = () => null,
     onSearch,
-    theme,
-    setTheme = () => null
+    setTheme = () => null,
   } = props;
   const { currentSiteTheme, setCurrentSiteTheme } = useContext(
     currentSiteThemeContext
   );
 
-  useEffect(() => {
-    setCurrentSiteTheme(theme);
-  }, [theme]);
-
   const { isMobile } = useScreenWidth();
   const router = useRouter();
-  const [menuView, setMenuView] = useState(currentSiteTheme);
-  const backgroundColor =
-    currentSiteTheme === "rentalHeavy" ? "bg-green-800" : "bg-orange-500";
-  const backgroundButton =
-    currentSiteTheme === "rentalHeavy" ? "" : "bg-white text-orange-500";
+
+  const isHeavy = currentSiteTheme === "rentalHeavy";
+
+  const backgroundColor = isHeavy ? "bg-green-800" : "bg-orange-500";
+  const backgroundButton = isHeavy ? "" : "bg-white text-orange-500";
 
   const triggerClass =
     "font-ibm-font text-sm text-white data-[state=open]:font-bold data-[highlighted]:outline-none";
 
-  const menuItemClass =
-    "text-green-800 group pl-5 leading-none flex items-center h-[58px] px-[10px] relative select-none outline-none data-[state=open]:bg-orange-500 data-[state=open]:rounded-r data-[state=open]:text-violet11 data-[highlighted]:bg-orange-500 data-[highlighted]:text-white data-[highlighted]:text-green-800 data-[highlighted]:rounded-s-none cursor-pointer";
+  const menuItemClass = `${
+    isHeavy
+      ? "text-white data-[state=open]:bg-white data-[state=open]:text-green-800 data-[highlighted]:bg-white data-[highlighted]:text-green-800"
+      : "text-green-800 data-[state=false]:bg-orange-500 data-[highlighted]:bg-orange-500 data-[highlighted]:text-white"
+  } group pl-5 leading-none flex items-center h-[58px] px-[10px] relative select-none outline-none data-[state=open]:rounded-r data-[highlighted]:text-green-800 data-[highlighted]:rounded-s-none cursor-pointer`;
+
+  useEffect(() => {
+    const currentTheme = getCurrentTheme();
+    setCurrentSiteTheme(currentTheme);
+    setTheme(currentTheme);
+  }, []);
+
+  const handleSelectRentalTheme = (theme: string) => {
+    if (theme === "rentalHeavy") {
+      setTheme(theme);
+      localStorage.setItem("paymentFlow", theme);
+      router.push("/maquinas-pesadas");
+    } else {
+      setTheme(theme);
+      localStorage.setItem("paymentFlow", theme);
+      router.push("/");
+    }
+  };
 
   const renderWithImage = (subItem: any, index: number) => {
     if (subItem.image) {
@@ -61,7 +79,9 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           <Menubar.Portal>
             <Menubar.SubContent
               key={index}
-              className="bg-white h-fit pt-5 mt-[-18px] pl-14 pb-[68px] pr-9"
+              className={`${
+                isHeavy ? "bg-green-800" : "bg-white"
+              } h-fit pt-5 mt-[-18px] pl-14 pb-[68px] pr-9`}
               alignOffset={calculateOffset(-3, index)}
             >
               <Image
@@ -72,7 +92,11 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                 height={260}
                 alt="Pa carregadeira"
               />
-              <p className="text-green-800 font-normal text-xs w-[382px]">
+              <p
+                className={`${
+                  isHeavy ? "text-white" : "text-green-800"
+                } font-normal text-xs w-[382px]`}
+              >
                 {subItem.subTitle}
               </p>
             </Menubar.SubContent>
@@ -111,12 +135,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
   const handleSearchMode = (isOpenSearchMode: boolean) => {
     setSearchMode(isOpenSearchMode);
   };
-  const handleSelectRentalTheme = (theme: string) => {
-    setTheme(theme);
-    setCurrentSiteTheme(theme);
-    // if (theme === "rentalHeavy") return router.push("/maquinas-pesadas");
-    // return router.push("/");
-  };
+
   return (
     <nav>
       <div className="flex w-full tablet:pl-0 justify-center items-center bg-brown-100 tablet:px-4">
@@ -145,9 +164,9 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
             <p className="tablet:hidden text-xs text-green-800 ml-1 mr-2">
               Português
             </p>
-            <div className="mt-[3px] tablet:ml-1">
+            {/* <div className="mt-[3px] tablet:ml-1">
               <ChevronDown color="#004042" width="8" height="4" />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -159,7 +178,12 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
         >
           <div className={`flex w-full ${!searchMode && "mr-6"}`}>
             <Link href="/">
-              <Image src={millsLogo} width={76} height={32} alt="logo" />
+              <Image
+                src={millsLogo}
+                width={76}
+                height={32}
+                alt="Mills - Locação de Equipamentos e Plataforma Elevatória"
+              />
             </Link>
             {searchMode ? (
               isMobile ? (
@@ -187,10 +211,13 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                       {item.subMenu && (
                         <Menubar.Portal>
                           <Menubar.Content
-                            className="font-medium text-sm mt-[20px] text-white bg-white py-5 w-80 will-change-[transform,opacity]"
+                            className={`font-medium text-sm mt-[18px] text-white ${
+                              isHeavy ? "bg-green-800" : "bg-white"
+                            } py-5 w-80 will-change-[transform,opacity]`}
                             align="start"
                             sideOffset={5}
                             alignOffset={-25}
+                            onInteractOutside={(e) => e.preventDefault()}
                           >
                             {item.subMenu.map((subItem: any, index: number) => {
                               return (
@@ -219,7 +246,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                 </button>
               )}
               {currentSiteTheme === "rentalLight" && <LoginButton />}
-
+              {currentSiteTheme === null && <LoginButton />}
               <a
                 className="cursor-pointer min-w-[16px]"
                 href="/carrinho/passo-01"
@@ -234,19 +261,22 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
                   className="desktop:hidden"
                 />
               </div>
-              <Button
-                className={`text-xs px-7 tablet:hidden ${backgroundButton}`}
-              >
-                <p
-                  className={`${
-                    currentSiteTheme === "rentalLight"
-                      ? "text-orange-500"
-                      : "text-white"
-                  } font-semibold whitespace-nowrap`}
+              <TalkToSpecialistModal>
+                <Button
+                  className={`text-xs px-7 tablet:hidden ${backgroundButton}`}
                 >
-                  Orçamento rápido
-                </p>
-              </Button>
+                  <p
+                    className={`${
+                      currentSiteTheme === "rentalLight" ||
+                      currentSiteTheme === null
+                        ? "text-orange-500"
+                        : "text-white"
+                    } font-semibold whitespace-nowrap`}
+                  >
+                    Orçamento rápido
+                  </p>
+                </Button>
+              </TalkToSpecialistModal>
             </div>
           </div>
         </div>

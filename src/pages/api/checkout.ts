@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import mailer from "nodemailer";
-import { ses_instance } from "../../utils/sesConfig";
+import { transporter } from "../../utils/SESTransporter";
 import { 
   getAdminEmails,
   sendLightEmail, 
-  sendHeavyEmail 
+  sendHeavyEmail,
+  sendQuestionWithSpecialist,
+  sendQuickBudgetEmail
 } from "../../services/mailer/functions";
 
 type DefaultResponse = {
@@ -20,36 +21,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (req.method) {
     case "POST":
       const budget_data = req.body;
-      const order_type = req.body.orderType;
       try {
-        if (!budget_data.personalInformations.email)
-          return res.status(400).json({ success: false, message: "email is required" });
-
-        if (order_type !== "rentalLight" && order_type !== "rentalHeavy")
-          return res.status(400).json({ success: false, message: "invalid order type" });
-
-        const email_configs = await getAdminEmails();
-        const filtered_items = (email_configs.items).filter((item: any) => 
+        const dinamical_emails = await getAdminEmails();
+        const filtered_items = (dinamical_emails.items).filter((item: any) => 
           item.fields.content_area === "budget"
         );
 
-        const transporter = mailer.createTransport({ 
-          service: "gmail",
-          auth: {
-              user: "marksales.dev@gmail.com",
-              pass: "moemvyvqegivusbm"
-          }
-        });
-        //({ SES: ses_instance });
-
-        switch (order_type) {
-          case "rentalLight":
-            sendLightEmail(filtered_items[0], budget_data, transporter);
+        if (budget_data.items) {
+          switch (budget_data.orderType) {
+            case "rentalLight": sendLightEmail(filtered_items[0], budget_data, transporter);
             break;
-          case "rentalHeavy":
-            sendHeavyEmail(filtered_items[0], budget_data, transporter);
+            case "rentalHeavy": sendHeavyEmail(filtered_items[0], budget_data, transporter);
             break;
-        };
+          };
+        } else if (budget_data.motivoContato)
+          sendQuestionWithSpecialist(filtered_items[0], budget_data, transporter)
+          else
+          sendQuickBudgetEmail(filtered_items[0], budget_data, transporter);
 
         res.status(200).json({ success: true, message: "email successfully sent" });
       } catch (error: any) {
@@ -61,5 +49,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   };
 
 };
-
-//"email successfully sent"

@@ -12,6 +12,7 @@ export const AboutRental: React.FC<AboutRentalProps> = (props) => {
     theme = "green-800",
     textColor = "white",
     iconFont = "lg",
+    hasDna = true,
     forceTitleDisplay = false,
     largeDescription = false,
   } = props;
@@ -26,6 +27,7 @@ export const AboutRental: React.FC<AboutRentalProps> = (props) => {
       } pb-20 tablet:pb-12 tablet:px-[18px] relative`}
     >
       {isDesktop &&
+        hasDna &&
         (theme === "white" || theme === "gray-50" ? (
           <div className="absolute top-3 right-3">
             <DnaTopResponsive sizePercentage={116.5} />

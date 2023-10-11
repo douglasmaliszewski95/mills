@@ -1,6 +1,6 @@
 import { Information } from "@/components/Category/Information/Information";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { IntegrityAndQuality } from "@/components/InstitutionalComponents/IntegrityAndQuality/IntegrityAndQuality";
 import { IntegrityAndQualityModalProps } from "@/components/InstitutionalComponents/IntegrityAndQuality/types";
 import { RelationshipManual } from "@/components/InstitutionalComponents/RelationshipManual/RelationshipManual";
@@ -14,6 +14,7 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { ImageCMS } from "@/types";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const IntegrityProgram = () => {
@@ -65,6 +66,10 @@ const IntegrityProgram = () => {
   useEffect(() => {
     getPageContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
 
   return (
     <Fragment>

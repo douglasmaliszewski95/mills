@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Button from "../shared/Button/Button";
+// import Image from "next/image";
+// import Button from "../shared/Button/Button";
 import bgImg from "@/assets/img/WhyRestAerialPlatformsBg.png";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 
@@ -27,7 +27,7 @@ export const WhyRestAerialPlatforms: React.FC<any> = ({
                   key={index}
                   className="flex flex-col items-center gap-4 w-[370px]"
                 >
-                  <Image alt="icon" src={item.icon} width={56} height={56} />
+                  <img alt="icon" src={item.icon} />
                   <h3 className="text-green-800">
                     <b>{item.header}</b>
                   </h3>

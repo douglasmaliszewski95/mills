@@ -3,7 +3,8 @@ import { GlobalImpactProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 
 export const GlobalImpact: React.FC<GlobalImpactProps> = (props) => {
-  const { description, firstImage, secondImage, title } = props;
+  const { description, firstImage, secondImage, title, buttonOne, buttonTwo } =
+    props;
   const { isMobile } = useScreenWidth();
 
   return (
@@ -23,21 +24,29 @@ export const GlobalImpact: React.FC<GlobalImpactProps> = (props) => {
       </div>
 
       <div className="flex flex-col text-green-800 w-[50%] tablet:w-full tablet:py-0 py-16 tablet:mb-10">
-        <h1 className="font-semibold text-2xl w-[80%] tablet:w-full">
+        <h3 className="font-semibold text-2xl w-[80%] tablet:w-full">
           {title}
-        </h1>
+        </h3>
         <p className="text-lg font-normal mt-6 w-[90%] tablet:w-full tablet:text-base tablet:font-normal">
           {description}
         </p>
 
         {!isMobile && (
           <div className="flex flex-col gap-4 w-[50%] tablet:w-full">
-            <button className="h-[37px] bg-orange-500 text-white text-sm font-semibold mt-10 rounded-3xl">
-              Acessar página Mills na ONU
-            </button>
-            <button className="h-[37px] bg-transparent border-[1px] border-orange-500 text-orange-500 rounded-3xl text-sm font-semibold">
-              Saiba mais sobre as ODS
-            </button>
+            <a
+              href={buttonOne.href}
+              target="_blank"
+              className="h-[37px] bg-orange-500 text-white text-sm font-semibold mt-10 rounded-3xl flex items-center justify-center"
+            >
+              {buttonOne.title}
+            </a>
+            <a
+              href={buttonTwo.href}
+              target="_blank"
+              className="h-[37px] bg-transparent border-[1px] border-orange-500 text-orange-500 rounded-3xl text-sm font-semibold flex items-center justify-center"
+            >
+              {buttonTwo.title}
+            </a>
           </div>
         )}
       </div>

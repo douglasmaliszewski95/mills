@@ -12,9 +12,9 @@ export const WhatPeopleSay = () => (
   >
     <div className="flex content-center flex-row flex-wrap gap-20 pt-28 pb-20 items-center tablet:justify-center tablet:mx-8">
       <div>
-        <h4 className="text-base font-normal text-orange">
+        <h3 className="text-base font-normal text-orange">
           HISTÓRIAS DE SUCESSO
-        </h4>
+        </h3>
         <p className="text-4xl font-semibold text-green-800">
           O que os clientes dizem
           <br /> sobre a Mills - Locação
@@ -25,7 +25,7 @@ export const WhatPeopleSay = () => (
         </Button>
       </div>
       <article>
-        <Image src={quotation} width={42} height={34} alt="quotation" />
+        <Image src={quotation} width={42} height={34} alt="Histórias de Sucesso Mills - Locação de Equipamentos e Plataforma Elevatória" />
         <p className="font-semibold text-green-800 italic mt-5">
           Com o crescimento das nossas operações em todo o Brasil,
           <br />

@@ -12,6 +12,8 @@ import { getImageSrc } from "@/utils/images";
 import { About } from "@/components/shared/About/About";
 import { transformContentToMobile } from "@/utils/content";
 import { GridInformation } from "@/components/shared/GridInformation/GridInformation";
+import { updateParagraphs } from "@/utils/texts";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 
 function Maintenance() {
   const [content, setContent] = useState<TransportContent>();
@@ -61,8 +63,13 @@ function Maintenance() {
     const getContent = async () => {
       if (isMobile === undefined) return;
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("manutencao");
-        const contentText = await getText("manutencao");
+        const [
+          contentAux,
+          contentText
+        ]: any = await Promise.all([
+          getCMSContent("manutencao"),
+          getText("manutencao")
+        ]);
         setContentBase({ contentAux, contentText });
         formatData({ contentAux, contentText });
       } else {
@@ -71,6 +78,10 @@ function Maintenance() {
     };
     getContent();
   }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
 
   return (
     <>
@@ -84,7 +95,7 @@ function Maintenance() {
           linkList={[
             {
               name: "Manutenção e assistência técnica",
-              href: "/manutencao",
+              href: "/manutencao-e-assistencia-tecnica",
             },
           ]}
           height="184px"
@@ -94,7 +105,11 @@ function Maintenance() {
           description={content?.firstAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.firstAbout?.fields)}
           alt={content?.firstAbout?.fields?.alt_attribute ?? ""}
-          buttonTitle="Falar com um especialista"
+          buttonTitle={
+            content?.firstAbout?.fields?.buttonText ??
+            "Falar com um especialista"
+          }
+          isTalkToSpecialist
         />
         {content?.gridCards && (
           <GridInformation
@@ -145,6 +160,7 @@ function Maintenance() {
           hasButton={false}
           imagePadding="py-8 tablet:px-4"
           forceImageDisplayOnMobile
+          dnaColor="#EBE3C7"
         />
         <About
           title={content?.fifthAbout?.fields?.content_title ?? ""}
@@ -155,6 +171,7 @@ function Maintenance() {
           orientation="inverted"
           theme="beige-200"
         />
+        <MachinesAndPlatforms />
       </main>
       <Footer />
     </>

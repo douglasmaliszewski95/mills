@@ -3,7 +3,7 @@ import { Footer } from "@/components/shared/Footer/Footer";
 import { Header } from "@/components/shared/Header/Header";
 import { Banner } from "@/components/shared/Banner/Banner";
 import { About } from "@/components/shared/About/About";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
 import { Information } from "@/components/Category/Information/Information";
 import { OurCulture } from "@/components/InstitutionalComponents/OurCulture/OurCulture";
@@ -20,6 +20,7 @@ import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
 import { getImageSrc } from "@/utils/images";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { updateParagraphs } from "@/utils/texts";
 
 const AboutMills = () => {
   const [pageContent, setPageContent] = useState<any>();
@@ -30,6 +31,7 @@ const AboutMills = () => {
   const getPageContent = async () => {
     const content = await getCMSContent("sobre_a_mills");
     const contentText = await getCMSText("sobre_a_mills");
+
     setPageContent(content);
     setTextContent(contentText);
   };
@@ -98,6 +100,10 @@ const AboutMills = () => {
     getPageContent();
   }, []);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
+
   return (
     <Fragment>
       <Header menu={undefined} />
@@ -105,10 +111,14 @@ const AboutMills = () => {
         <Banner
           subTitle={pageContent?.banner_about_mills[0]?.fields?.content_title}
           backgroundImage={
-            pageContent?.banner_about_mills[0]?.fields?.native.links[0].href
+            isMobile
+              ? pageContent?.banner_about_mills[0]?.mobileObj?.fields?.native
+                  .links[0].href
+              : pageContent?.banner_about_mills[0]?.fields?.native.links[0].href
           }
           title={pageContent?.banner_about_mills[0]?.fields?.content_title}
           blur="bg-black/[0.6]"
+          className="bg-center"
         />
 
         <About

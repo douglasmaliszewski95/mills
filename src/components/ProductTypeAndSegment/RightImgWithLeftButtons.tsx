@@ -21,7 +21,7 @@ export const RightImgWithLeftButtons: React.FC<
           className={`flex flex-col pt-20 gap-10 w-1/2 tablet:w-full tablet:px-4 tablet:pt-6 tablet:pb-9 ${width}`}
         >
           <h3 className="font-semibold text-2xl tablet:text-base">
-            <HtmlRenderer htmlContent={headerText} />
+            {headerText}
           </h3>
           <div className="flex flex-wrap gap-2">
             {textCards?.map((item, index) => {
@@ -37,12 +37,14 @@ export const RightImgWithLeftButtons: React.FC<
               );
             })}
           </div>
-          <Button
-            className="max-w-[265px] py-3 tablet:max-w-full"
-            onClick={() => router.push(buttonProps?.link ?? "")}
-          >
-            {buttonProps?.text}
-          </Button>
+          <a href={buttonProps?.link ?? "#"} className="max-w-[265px]">
+            <Button
+              size="large"
+              className="max-w-[265px] py-2 tablet:max-w-full"
+            >
+              {buttonProps?.text}
+            </Button>
+          </a>
         </div>
         <div
           style={{

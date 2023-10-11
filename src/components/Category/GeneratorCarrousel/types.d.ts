@@ -3,4 +3,5 @@ export interface GeneratorCarrouselProps {
   title: string;
   description?: string;
   hasDna?: boolean;
+  link?: string;
 }

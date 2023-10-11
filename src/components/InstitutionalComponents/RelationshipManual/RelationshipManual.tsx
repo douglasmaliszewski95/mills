@@ -17,9 +17,9 @@ export const RelationshipManual: React.FC<RelationshipManualProps> = (
         containerClass="flex flex-row tablet:flex-col gap-12 tablet:gap-6 tablet:px-4 tablet:py-0 tablet:pt-24 tablet:pb-10 py-24"
       >
         <div className="text-green-800 w-[50%] tablet:w-full">
-          <h1 className="text-2xl font-semibold w-[90%] tablet:text-base tablet:w-full">
+          <h3 className="text-2xl font-semibold w-[90%] tablet:text-base tablet:w-full">
             {title}
-          </h1>
+          </h3>
           <p className="text-lg font-normal mt-6 tablet:text-xs tablet:mt-2">
             {description}
           </p>

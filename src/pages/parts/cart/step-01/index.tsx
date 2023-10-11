@@ -15,6 +15,8 @@ import { ImageCMS } from "@/types";
 import { transformContentToMobile } from "@/utils/content";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { useCallback, useEffect, useState } from "react";
+import { updateParagraphs } from "@/utils/texts";
+import { getImageSrc } from "@/utils/images";
 
 export default function StepOne() {
   const router = useRouter();
@@ -24,13 +26,17 @@ export default function StepOne() {
   const [content, setContent] = useState<any>();
   const [contentBase, setContentBase] = useState<any>();
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   const formatData = useCallback(
     ({ contentAux }: any) => {
       const responsiveContent = isMobile
         ? transformContentToMobile(contentAux)
         : contentAux;
 
-      setContent(responsiveContent);
+      setContent(responsiveContent?.banner_search_parts?.[0]);
     },
     [isMobile]
   );
@@ -39,7 +45,7 @@ export default function StepOne() {
     const getContent = async () => {
       if (isMobile === undefined) return;
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("pecas_carrinho");
+        const contentAux = await getCMSContent("venda_pecas_busca");
         setContentBase({ contentAux });
         formatData({ contentAux });
       } else {
@@ -73,7 +79,7 @@ export default function StepOne() {
             },
           ]}
           title={"Solicitar orçamento"}
-          backgroundImage={banner?.src}
+          backgroundImage={getImageSrc(content?.fields)}
         />
         <div className="flex flex-col items-center ">
           <div className="my-8">
@@ -81,7 +87,7 @@ export default function StepOne() {
               steps={[
                 {
                   step: 1,
-                  text: "Qual o tipo de equipamento você precisa?",
+                  text: "Qual o tipo de peça que você precisa?",
                   active: true,
                   activeMobile: true,
                 },
@@ -94,7 +100,11 @@ export default function StepOne() {
               ]}
             />
           </div>
-          <CartList buttonTitle="+ Adicionar nova peça" isSimpleCard />
+          <CartList
+            buttonTitle="+ Adicionar nova peça"
+            href="/pecas/busca"
+            isSimpleCard
+          />
           <div className="container">
             <div className="flex justify-end mt-7 tablet:mx-5">
               <Button

@@ -15,7 +15,7 @@ export const OurGoalsCard: React.FC<GoalsCardProps> = (props) => {
         flex flex-row tablet:flex-col tablet:w-full w-[56%] 
         tablet:rounded-b-lg roundedr-xl`}
       >
-        <h1 className="text-[200px] tablet:text-[100px] absolute">{id}</h1>
+        <h3 className="text-[200px] tablet:text-[100px] absolute">{id}</h3>
         <div className="pl-32 tablet:pt-32 tablet:pl-2">
           <h2 className="text-lg font-semibold mb-2 tablet:text-sm">
             {cardTitle}

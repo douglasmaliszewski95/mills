@@ -7,6 +7,7 @@ import { Carousel } from "@/components/shared/Carousel/Carousel";
 import Image from "next/image";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { ImageOCC } from "@/components/shared/ImageOCC/ImageOCC";
+import { CardProduct } from "./CardProduct";
 
 export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
   const { backgroundColor, variant, title, paragraphs, products, href } = props;
@@ -27,7 +28,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
         >
           {title ?? null}
         </h3>
-        {paragraphs.map((paragraph, index) => (
+        {paragraphs?.map((paragraph, index) => (
           <p
             key={index}
             className={`${
@@ -51,7 +52,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
       <div className="max-w-[50%] tablet:max-w-none h-full w-full tablet:rounded bg-white grow-0 relative h-full tablet:static">
         <div className="max-w-[100%] absolute h-full overflow-hidden tablet:overflow-visible tablet:static">
           <Carousel
-            className="h-full"
+            className="h-full pt-40 tablet:pt-0"
             hasDots={false}
             nextArrow={
               <LargeNextArrow
@@ -66,48 +67,28 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = (props) => {
               />
             }
           >
-            {products.map(({ id, image, model, description, specs }) => (
-              <div key={id}>
-                <div className="flex pr-20 pl-16 gap-2 h-[468px] tablet:h-full items-center h-full tablet:px-12 tablet:my-[18px] items-center h-full tablet:flex-col">
-                  <ImageOCC
-                    imageName={image}
-                    alt={description}
-                    className="max-w-[50%] tablet:max-w-full h-max"
-                  />
-                  <div className="tablet:mt-[18px]">
-                    <h5 className="text-green-800 font-semibold tablet:text-sm">
-                      {model}
-                    </h5>
-                    <h5 className="text-green-800 font-semibold tablet:text-sm max-w-[248x]">
-                      {description}
-                    </h5>
-                    <div className="flex flex-col gap-px mt-[18px]">
-                      {specs?.map(({ name, value }) => (
-                        <p
-                          key={`${name}${value}`}
-                          className="text-green-800 text-sm tablet:text-[10px]"
-                        >{`${name}: ${value}`}</p>
-                      ))}
-                    </div>
-                    <Button
-                      variant="outlined"
-                      className="w-82 mt-1.5 pl-0 border-none tablet:mb-6"
-                      size="small"
-                    >
-                      Ver detalhes
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
+            {products.map(
+              ({ id, image, model, description, specs, route, type }) => (
+                <CardProduct
+                  key={id}
+                  id={id}
+                  image={image}
+                  model={model}
+                  description={description}
+                  specs={specs}
+                  route={route}
+                  type={type}
+                />
+              )
+            )}
           </Carousel>
         </div>
       </div>
       {!isDesktop && (
-        <a href={href} className="max-w-[264px] my-6">
+        <a href={href} className="my-6">
           <Button
             variant={isWhite ? "inverted" : "default"}
-            className="max-w-[264px] w-full tablet:max-w-[992px]"
+            className="w-full tablet:max-w-[992px]"
           >
             <p className="py-[2px] text-sm font-semibold">Saiba mais</p>
           </Button>

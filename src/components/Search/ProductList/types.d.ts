@@ -6,7 +6,14 @@ export interface ProductListProps {
   selectedFilters: Refinement[];
   minimalistCards?: boolean;
   type?: string;
-  itemType?: "Equipamentos" | "Pecas";
+  itemType?:
+    | "Equipamentos"
+    | "Pecas"
+    | "Seminovos"
+    | "MaquinasPesadas"
+    | "Compressores"
+    | "Geradores"
+    | null;
   onRemoveFilter: (label: string, link: string) => void;
   setIsFiltersOpen?: (isOpen: boolean) => void;
 }

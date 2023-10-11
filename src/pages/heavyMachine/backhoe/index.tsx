@@ -12,6 +12,7 @@ import { InformationWithButton } from "@/components/shared/InformationWithButton
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { ImageCMS, TextCMS } from "@/types";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const Backhoe = () => {
@@ -55,6 +56,10 @@ const Backhoe = () => {
   useEffect(() => {
     getPageContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [sharedInformation, pageContent, textContent]);
 
   const formattedCompareMachines = () => {
     let formattCompareMachines: ProductsProps[] = [];

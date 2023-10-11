@@ -18,6 +18,7 @@ import {
 import _ from "lodash";
 import { getCMSContent } from "@/components/Generators/content";
 import { transformContentToMobile } from "@/utils/content";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Search() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -31,15 +32,17 @@ export default function Search() {
 
   const { isDesktop, isMobile } = useScreenWidth();
 
+  const productSearchCode = process.env.NEXT_PUBLIC_MOLDS_AND_SHORING;
+
   const mapFilters = () => {
-    const newState: Refinement[] = refinementCrumbs.map(
-      (crumb: RefinementCrumbs) => {
+    const newState: Refinement[] = refinementCrumbs
+      .filter((crumb: RefinementCrumbs) => crumb.label !== "Leves")
+      .map((crumb: RefinementCrumbs) => {
         return {
           link: crumb.removeAction.link,
           label: crumb.label,
         };
-      }
-    );
+      });
 
     setSelectedFilters(newState);
   };
@@ -53,11 +56,14 @@ export default function Search() {
   }, []);
 
   const onSelectFilter = async (label: string, link: string) => {
-    const response = await searchRequest(link);
+    const response = link === "?pageSize=150"
+      ? await initialSearchRequest("?N=2813591389")
+      : await initialSearchRequest(link);
     const formattedResponse = await response.json();
     setProducts(formattedResponse.products[0]);
-    const usedFilters = formattedResponse.refinementCrumbs.map(
-      (filter: RefinementCrumbs) => {
+    const usedFilters = formattedResponse.refinementCrumbs
+      .filter((crumb: RefinementCrumbs) => crumb.label !== "Leves")
+      .map((filter: RefinementCrumbs) => {
         return {
           displayName: filter.displayName,
           refinements: [
@@ -67,8 +73,7 @@ export default function Search() {
             },
           ],
         };
-      }
-    );
+      });
 
     const repeatedMenu = formattedResponse.filters.map((used: Filters) => {
       const repeated = usedFilters.filter(
@@ -113,12 +118,29 @@ export default function Search() {
 
   const submitFilters = () => null;
 
-  const searchRequest = (params: string) => {
-    return fetch(`/api/search?productName=${params}`);
+  const searchRequest = (product: string) => {
+    const requestBody = {
+      category: "2813591389",
+      searchTerm: product,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    };
+
+    return fetch("/api/search", requestOptions);
+  };
+
+  const initialSearchRequest = (product: string) => {
+    return fetch(`/api/search?productName=${product}`);
   };
 
   const onSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(`?N=473615506&Ntt=${term}`);
+    const response = await searchRequest(term);
     const formattedResponse = await response.json();
     if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
@@ -126,7 +148,7 @@ export default function Search() {
   }, []);
 
   const initialSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(term);
+    const response = await initialSearchRequest(term);
     const formattedResponse = await response.json();
     if (!!formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
@@ -138,8 +160,8 @@ export default function Search() {
     const params = new URLSearchParams(queryString);
     const searchTerm = params.get("productName");
     _.isEmpty(searchTerm)
-    ? initialSearch("?N=473615506")
-    : onSearch(searchTerm || "?N=473615506");
+      ? initialSearch("?N=2813591389")
+      : onSearch(searchTerm || "?N=2813591389");
   }, []);
 
   const formatData = useCallback(
@@ -166,6 +188,10 @@ export default function Search() {
     };
     getContent();
   }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
 
   return isFiltersOpen && !isDesktop ? (
     <FilterBar
@@ -217,7 +243,6 @@ export default function Search() {
             selectedFilters={selectedFilters}
             onRemoveFilter={onSelectFilter}
             setIsFiltersOpen={setIsFiltersOpen}
-            minimalistCards
             type="equipamento"
           />
         </Section>

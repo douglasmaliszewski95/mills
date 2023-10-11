@@ -16,7 +16,7 @@ export const SmallLoaderFunc: React.FC<SmallLoaderFuncProps> = (props) => {
 
   return (
     <Section containerClass="tablet:px-4 flex flex-col gap-12 tablet:py-8 tablet:gap-0 py-20">
-      <h1 className="text-2xl text-green-800 font-semibold tablet:w-full w-[50%] tablet:text-base">{title}</h1>
+      <h3 className="text-2xl text-green-800 font-semibold tablet:w-full w-[50%] tablet:text-base">{title}</h3>
       {isMobile ? (
         <div className="flex flex-col">
           {carouselComp.map((item: SmallLoaderCarouselComponentProps) => (

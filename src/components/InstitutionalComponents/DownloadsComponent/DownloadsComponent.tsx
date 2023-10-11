@@ -5,6 +5,7 @@ import { DownloadsCardProps, DownloadComponentProps } from "./types";
 
 export const DownloadsComponent: React.FC<DownloadComponentProps>= (props) => {
     const { downloadCards = [] } = props;
+    
   const card = (cardItem: DownloadsCardProps) => {
     return (
       <div
@@ -12,7 +13,7 @@ export const DownloadsComponent: React.FC<DownloadComponentProps>= (props) => {
         className="w-full border-[0.5px] border-green-800 items-center tablet:items-start rounded-lg flex flex-row px-6 py-4 text-green-800 justify-between tablet:flex-col tablet:gap-6"
       >
         <div className="tablet:text-sm text-base">
-          <h1 className="font-semibold">{cardItem.title}</h1>
+          <h3 className="font-semibold">{cardItem.title}</h3>
           <p className="font-normal">{cardItem.subtitle}</p>
         </div>
         <a

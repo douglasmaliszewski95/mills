@@ -8,6 +8,7 @@ interface CardItemProps {
   order: number;
   imageMobile: string;
   buttonText: string;
+  link: string;
 }
 
 export const Platforms: React.FC<PlatformsProps> = ({
@@ -37,9 +38,14 @@ export const Platforms: React.FC<PlatformsProps> = ({
                           <h4 className="font-semibold text-xl w-[218px] text-center tablet:text-base">
                             {cardItem.headerText}
                           </h4>
-                          <Button className="w-full max-w-[265px] mt-16 tablet:mt-9">
-                            {cardItem?.buttonText}
-                          </Button>
+                          <a href={cardItem.link ?? "#"}>
+                            <Button
+                              className="w-full max-w-[265px] mt-16 tablet:mt-9"
+                              size="large"
+                            >
+                              {cardItem?.buttonText}
+                            </Button>
+                          </a>
                         </div>
                       </div>
                     </div>

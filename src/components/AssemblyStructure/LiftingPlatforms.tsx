@@ -6,6 +6,7 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 export const LiftingPlatforms: React.FC<LiftingPlatformsProps> = ({
   headerText,
   textCards,
+  buttonProps,
 }) => {
   const { isMobile } = useScreenWidth();
   return (
@@ -34,7 +35,9 @@ export const LiftingPlatforms: React.FC<LiftingPlatformsProps> = ({
               );
             })}
           </div>
-          <Button className="max-w-[265px] py-[10px]">Ver modelos</Button>
+          <a href={buttonProps?.link ?? "#"} className="max-w-[265px]">
+            <Button className="w-full py-[10px]">{buttonProps?.text}</Button>
+          </a>
         </div>
       </div>
     </section>

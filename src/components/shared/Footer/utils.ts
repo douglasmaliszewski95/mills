@@ -119,7 +119,7 @@ export const secondMenu = [
   },
   {
     title: "Programa de Integridade",
-    link: "#",
+    link: "",
     showBorder: true,
   },
   {

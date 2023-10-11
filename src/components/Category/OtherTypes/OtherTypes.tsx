@@ -3,17 +3,25 @@ import { OtherTypesProps } from "./types";
 import { useCallback, useEffect, useState } from "react";
 import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
+import { updateParagraphs } from "@/utils/texts";
 
 export const OtherTypes: React.FC<OtherTypesProps> = (props) => {
   const { title } = props;
   const [images, setImages] = useState<any>();
   const [texts, setTexts] = useState<any>();
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [images, texts]);
+
   const getContent = useCallback(async () => {
     const getImages = await getImage("shared");
     const getTexts = await getText("shared");
+
+    const filterText = getTexts?.other_platforms?.find((x: any) => x.fields.subtitle[0] === title)
+
     setImages(getImages.segments);
-    setTexts(getTexts.other_platforms?.[0]);
+    setTexts(filterText);
   }, []);
 
   useEffect(() => {

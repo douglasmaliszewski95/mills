@@ -27,6 +27,17 @@ export const buttonStyles = cva("button", {
         "text-white",
         "cursor-pointer",
       ],
+      outlinedHeavy: [
+        "bg-transparent",
+        "border-green-800",
+        "border-2",
+        "text-sm",
+        "font-semibold",
+        "transition",
+        "text-green-800",
+        "font-ibm-font",
+        "cursor-pointer",
+      ],
     },
     size: {
       responsive: ["rounded-3xl h-full w-full"],

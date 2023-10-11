@@ -18,10 +18,86 @@ import { SellParts } from "@/components/Category/SellParts/SellParts";
 import { TrainingMenu } from "@/components/shared/TrainingMenu/TrainingMenu";
 import { Trainings } from "@/components/shared/Trainings/Trainings";
 import { AboutSmallImage } from "@/components/AboutSmallImage/AboutSmallImage";
+import { updateParagraphs } from "@/utils/texts";
+import { useRouter } from "next/router";
+import TrainingDialog from "@/components/shared/Trainings/Modal/Modal";
 
 function Maintenance() {
+  const router = useRouter();
   const [content, setContent] = useState<TransportContent>();
   const [contentBase, setContentBase] = useState<any>();
+  const [customServices, setCustomServices] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [flux, setFlux] = useState("" as any);
+
+  useEffect(() => {
+    const customServices = localStorage.getItem("customServices");
+    setCustomServices(customServices ? JSON.parse(customServices) : undefined);
+  }, []);
+
+  useEffect(() => {
+    if (customServices === undefined) {
+      const newCustomServices = {
+        shipping: {
+          checked: false,
+          state: "",
+          city: "",
+        },
+        operationTraining: { checked: false, quantity: 0 },
+        ipafTraining: { checked: false, quantity: 0 },
+        loadingUnloadingOperationQuantity: { checked: false, quantity: 0 },
+        seatBeltTraining: { checked: false, quantity: 0 },
+        accessoriesAndImplements: {
+          checked: false,
+          backhoeLoader: [],
+          smallLoader: [],
+        },
+      };
+      setCustomServices(newCustomServices);
+      return localStorage.setItem(
+        "customServices",
+        JSON.stringify(newCustomServices)
+      );
+    }
+  }, [customServices]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
+  const handleAddOrChangeCustomServices = async (
+    name: string,
+    value: any,
+    property: string,
+    href: string
+  ) => {
+    if (customServices.hasOwnProperty(name)) {
+      const updatedCustomServices = {
+        ...customServices,
+        [name]: {
+          ...customServices[name],
+          [property]: value,
+        },
+      };
+
+      setCustomServices(updatedCustomServices);
+      localStorage.setItem(
+        "customServices",
+        JSON.stringify(updatedCustomServices)
+      );
+    }
+    router.push(href);
+    // "/carrinho/passo-01"
+  };
+
+  const addIpafToCart = () => {
+    handleAddOrChangeCustomServices(
+      "ipafTraining",
+      true,
+      "checked",
+      "/carrinho/passo-01"
+    );
+  };
 
   const { isMobile } = useScreenWidth();
 
@@ -70,8 +146,56 @@ function Maintenance() {
     getContent();
   }, [formatData]);
 
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const cleanBag = (item: string) => {
+    const itemList = JSON.parse((localStorage.getItem("items") ?? "[]") as any);
+    const findRentalLight = itemList.find(
+      (item: any) => item.paymentFlow === "rentalLight"
+    );
+    if (itemList.length === 0) {
+      return handleAddOrChangeCustomServices(
+        item,
+        true,
+        "checked",
+        "/treinamento/passo-1"
+      );
+    }
+    if (findRentalLight) {
+      return handleAddOrChangeCustomServices(
+        item,
+        true,
+        "checked",
+        "/carrinho/passo-01"
+      );
+    }
+    if (!findRentalLight) {
+      setIsDialogOpen(true);
+      setFlux(item);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (flux === "ipafTraining") {
+      localStorage.setItem("items", JSON.stringify([]));
+      return handleAddOrChangeCustomServices(
+        "ipafTraining",
+        true,
+        "checked",
+        "/treinamento/passo-1"
+      );
+    }
+  };
+
   return (
     <>
+      <TrainingDialog
+        open={isDialogOpen}
+        handleClose={() => handleClose()}
+        handleFinalize={() => goToNextPage()}
+      />
       <Header />
       <main>
         <Banner
@@ -92,6 +216,7 @@ function Maintenance() {
           image={getImageSrc(content?.firstAbout?.fields)}
           alt={content?.firstAbout?.fields?.alt_attribute ?? ""}
           buttonTitle="Incluir no orçamento"
+          onClick={() => cleanBag("ipafTraining")}
         />
         <AboutSmallImage
           title={content?.logo?.fields?.content_title ?? ""}
@@ -117,6 +242,7 @@ function Maintenance() {
           buttonTitle="Incluir no orçamento"
           orientation="inverted"
           theme="beige-200"
+          onClick={() => cleanBag("operationTraining")}
         />
         {content?.tabs && (
           <CarouselTabs tabs={content?.secondTabs} theme="green-800" />
@@ -131,7 +257,6 @@ function Maintenance() {
           color="white"
           dnaColor="#ffffff"
           orientation="inverted"
-          dnaOnTop
         />
         {content?.differentials && (
           <TrainingMenu menu={content?.differentials} />

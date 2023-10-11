@@ -17,11 +17,16 @@ import { Slideshow } from "@/components/shared/Slideshow/Slideshow";
 import { FrequentQuestions } from "@/components/Home/FrequentQuestions/FrequentQuestions";
 import { SimpleInformation } from "@/components/shared/SimpleInformation/SimpleInformation";
 import dnaBottom from "@/assets/colored-dna-bottom.svg";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
+import { updateParagraphs } from "@/utils/texts";
 
 function Shipping() {
   const [content, setContent] = useState<TransportContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -128,7 +133,7 @@ function Shipping() {
         />
         {content?.differentials && (
           <AboutRental
-            title="Vantagens do aluguel de plataformas elevatórias"
+            title="Diferenciais do nosso serviço"
             items={content?.differentials}
             theme="orange-500"
           />
@@ -145,7 +150,7 @@ function Shipping() {
         <div className="relative tablet:pb-16">
           <About
             title={content?.secondAbout?.fields?.content_title ?? ""}
-            description={content?.secondAbout?.fields?.content_subtitle ?? ""}
+            description={content?.secondAbout?.fields?.content_text ?? ""}
             image={getImageSrc(content?.secondAbout?.fields)}
             alt={content?.secondAbout?.fields?.alt_attribute ?? ""}
             link={content?.secondAbout?.fields?.href_attribute ?? "#"}

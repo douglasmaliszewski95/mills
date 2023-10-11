@@ -27,6 +27,16 @@ input[type="radio"]:checked::before {
   background-color: transparent; /* Tornar o thumb (alça) transparente */
 }
 
+.pigeon-zoom-buttons {
+  left: 30px !important;
+  top: 150px !important;
+}
+
+.input-form ::placeholder {
+  color: rgb(0 64 66 / var(--tw-text-opacity));
+  font-size: medium;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

@@ -14,7 +14,7 @@ export default async function handler(
     const token = await getCredentialsOCC();
     if (token.access_token) {
       const response = await fetch(
-        `${process.env.OCC_URL_STORE}/ccstore/v1/search${productName}`,
+        `${process.env.OCC_URL_STORE}/ccstore/v1/search${productName}&pageSize=150`,
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
@@ -57,13 +57,13 @@ export default async function handler(
         products: result,
       });
   } else {
-    const { category, recordsPerPage, searchTerm } = req.body;
+    const { category, searchTerm } = req.body;
     let productIds: string = "";
     let result: Products[] = [];
     const token = await getCredentialsOCC();
     if (token.access_token) {
       const response = await fetch(
-        `${process.env.OCC_URL_STORE}/ccstore/v1/search?N=${category}&Nrpp=${recordsPerPage}&Ntt=${searchTerm}`,
+        `${process.env.OCC_URL_STORE}/ccstore/v1/search?N=${category}&Ntt=${searchTerm}&pageSize=150`,
         {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
@@ -85,7 +85,12 @@ export default async function handler(
         ).then((res) => res.json());
         if (search.items.length > 0) {
           result.push(search.items);
-          res.status(200).json({ erro: "", products: result });
+          res.status(200).json({
+            erro: "",
+            products: result,
+            filters: response.navigation.navigation,
+            refinementCrumbs: response.breadcrumbs.refinementCrumbs,
+          });
         } else
           res
             .status(200)

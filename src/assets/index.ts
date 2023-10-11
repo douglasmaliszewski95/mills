@@ -22,3 +22,5 @@ export { default as largeOrangeChevronLeft } from "./large-orange-chevron-left.s
 export { default as exclamationIco } from "./exclamationIco.svg";
 export { default as whatsAppGreen } from "./whats-ico-green.svg";
 export { default as truck } from "./truck.svg";
+export { default as plusIco } from "./plusIco.svg";
+export { default as expandIco } from "./expandIco.svg";

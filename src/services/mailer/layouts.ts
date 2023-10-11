@@ -1,6 +1,6 @@
 const oracle_base_url = "https://p19894161c1prd-store.occa.ocs.oraclecloud.com";
 
-export function lightEquipmentLayout (budget_data: any) {
+export function lightEquipmentLayout(budget_data: any) {
   let html_base_layout = `
     <!doctype html>
     <html>
@@ -362,7 +362,7 @@ export function lightEquipmentLayout (budget_data: any) {
                         
                         <br />
                 
-                        <p class="flex-item colorGreen">Abaixo segue o resumo do <span class="colorOrange"><b>orçamento</b></span> de código <span class="colorOrange"><b>9874568</b></span></p>
+                        <p class="flex-item colorGreen">Abaixo segue o resumo do <span class="colorOrange"><b>orçamento</b>.</p>
                         
                         <br />
                     </div>
@@ -390,7 +390,7 @@ export function lightEquipmentLayout (budget_data: any) {
                             <span><b class="colorOrange fontWeight">Equipamentos selecionados</b></span>
   `;
 
-  budget_data.items.forEach((item: any) => {
+  budget_data?.items?.forEach((item: any) => {
     html_base_layout += `
       <div class="groupItems">
         <div class="flex-container w-100 flex-wrap clsGroupItem">
@@ -400,15 +400,31 @@ export function lightEquipmentLayout (budget_data: any) {
                 <img src="${oracle_base_url + item.primaryFullImageURL}" />
               </td>
               <td class="clsGroupInfo">
-                <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${item.brand} ${item.id}</b></span>
+                <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${
+                  item.brand
+                } ${item.id}</b></span>
                 <p class="flex-item colorGreen">${item.displayName}</p>
-                <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${item.x_alturaDeTrabalhoM} m</p>
-                <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${item.x_alcanceHorizontalM} m</p>
-                <p class="flex-item colorGreen"><b>Peso: </b> ${item.x_peso} kg</p>
-                <p class="flex-item colorGreen"><b>Emissão Média: </b> ${item.x_emissoMdiaKgDeCOH} Kg DE CO2 por hora</p>
-                <p class="flex-item colorGreen"><b>Local de utilização: </b> ${item.localUtility}</p>
-                <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${item.timeToLocale} ${item.typeToLocale}</p>
-                <p class="flex-item colorGreen"><b>Quantidade: </b> ${item.quantity}</p>
+                <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${
+                  item.x_alturaDeTrabalhoM
+                } m</p>
+                <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${
+                  item.x_alcanceHorizontalM
+                } m</p>
+                <p class="flex-item colorGreen"><b>Peso: </b> ${
+                  item.x_peso
+                } kg</p>
+                <p class="flex-item colorGreen"><b>Emissão Média: </b> ${
+                  item.x_emissoMdiaKgDeCOH
+                } Kg DE CO2 por hora</p>
+                <p class="flex-item colorGreen"><b>Local de utilização: </b> ${
+                  item.localUtility
+                }</p>
+                <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${
+                  item.timeToLocale
+                } ${item.typeToLocale}</p>
+                <p class="flex-item colorGreen"><b>Quantidade: </b> ${
+                  item.quantity
+                }</p>
               </td>
             </tr>
           </table>
@@ -421,15 +437,31 @@ export function lightEquipmentLayout (budget_data: any) {
             </tr>
             <tr>
               <td class="clsGroupInfo">
-                <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${item.brand} ${item.id}</b></span>
+                <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${
+                  item.brand
+                } ${item.id}</b></span>
                 <p class="flex-item colorGreen">${item.displayName}</p>
-                <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${item.x_alturaDeTrabalhoM} m</p>
-                <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${item.x_alcanceHorizontalM} m</p>
-                <p class="flex-item colorGreen"><b>Peso: </b> ${item.x_peso} kg</p>
-                <p class="flex-item colorGreen"><b>Emissão Média: </b> ${item.x_emissoMdiaKgDeCOH} Kg DE CO2 por hora</p>
-                <p class="flex-item colorGreen"><b>Local de utilização: </b> ${item.localUtility}</p>
-                <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${item.timeToLocale} ${item.typeToLocale}</p>
-                <p class="flex-item colorGreen"><b>Quantidade: </b> ${item.quantity}</p>
+                <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${
+                  item.x_alturaDeTrabalhoM
+                } m</p>
+                <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${
+                  item.x_alcanceHorizontalM
+                } m</p>
+                <p class="flex-item colorGreen"><b>Peso: </b> ${
+                  item.x_peso
+                } kg</p>
+                <p class="flex-item colorGreen"><b>Emissão Média: </b> ${
+                  item.x_emissoMdiaKgDeCOH
+                } Kg DE CO2 por hora</p>
+                <p class="flex-item colorGreen"><b>Local de utilização: </b> ${
+                  item.localUtility
+                }</p>
+                <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${
+                  item.timeToLocale
+                } ${item.typeToLocale}</p>
+                <p class="flex-item colorGreen"><b>Quantidade: </b> ${
+                  item.quantity
+                }</p>
               </td>
             </tr>
           </table>
@@ -439,33 +471,6 @@ export function lightEquipmentLayout (budget_data: any) {
   });
 
   html_base_layout += `
-                            <span><b class="colorOrange fontWeight">Outros serviços selecionados</b></span>
-            
-                            <div class="groupItems">
-                                <div class="d-inline-block w-100 flex-wrap clsGroupItem pa-0">
-                                    <img width="64px" height="64px" class="itemImgOthersServices itemImgTruck" src="https://hml-nova-mills.mills.com.br/email/assets/iconTruck.png" />
-                                    <div class="d-inline-block text-left clsGroupInfo">
-                                        <span class="d-block"><b class="colorGreen">Frete Mills - Serviço de Entrega e Devolução de Equipamentos</b></span>
-                                        <span class="d-block colorGreen">Belo Horizonte, Minas Gerais</span>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="groupItems">
-                                <div class="d-inline-block w-100 flex-wrap clsGroupItem pa-0">
-                                    <img width="64px" height="64px" class="itemImgOthersServices itemImgTruck" src="https://hml-nova-mills.mills.com.br/email/assets/iconTeacher.png" />
-                                    <div class="d-inline-block text-left clsGroupInfo">
-                                        <span class="d-block"><b class="colorGreen">Treinamento Operação Mills: Certificação Nacional</b></span>
-                                        <span class="d-block colorGreen">Quantidade de operadores: 1</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-            
-                    </div>
-            
-                    <br />
-            
                     <div class="clsFooterInfo">
                         <p class="colorGreen">
                             Precisa de ajuda? 
@@ -508,11 +513,73 @@ export function lightEquipmentLayout (budget_data: any) {
       </body>
     </html>
   `;
-  
-  return html_base_layout;
-};
 
-export function heavyEquipmentLayout (budget_data: any) {
+  return html_base_layout;
+}
+
+export function adminLightLayout(budget_data: any) {
+    let html_base_layout = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+        .mills_logo {
+            width: 116px;
+            background-color: #F37021;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+        .title {
+            color: #F37021;
+        }
+        </style>
+        </head>
+        <body>
+        <main>
+            <p>
+            <img class="mills_logo" src="https://hml-nova-mills.mills.com.br/email/assets/iconMills.png" />
+            <h1 class="title">Solicitação de reserva</h1>
+            <b>Nome: ${budget_data.personalInformations.nome}</b>
+            <br>
+            <b>E-mail: ${budget_data.personalInformations.email}</b>
+            <br>
+            <b>Telefone: ${budget_data.personalInformations.telefone}</b>
+            <br>
+            <b>CNPJ: ${budget_data.personalInformations.cnpj}</b>
+            <br>
+            <b>Comentários: ${budget_data.personalInformations.additionalComments}</b>
+            </p>
+            <p>
+            <h1 class="title">Detalhes do carrinho:</h1>
+            ${budget_data.items.map((item: any) => {
+                return `
+                    <b>${item.displayName}</b>
+                    <br>
+                    <b>Local de utilização: ${item.localUtility}</b>
+                    <br>
+                    <b>Período: ${item.timeToLocale} ${item.typeToLocale}</b>
+                    <br>
+                    <b>Quantidade: ${item.quantity}</b>
+                    <br>
+                    <br>
+                `
+            }).join("")}
+            </p>
+            ------------------------------------
+            <p>
+            <b>Origem: Mídia</b>
+            <br>
+            <b>Formulário: Carrinho de orçamento de compra</b>
+            </p>
+        </main>
+        </body>
+        </html>
+    `;
+
+    return html_base_layout;
+}
+
+export function heavyEquipmentLayout(budget_data: any) {
   let html_base_layout = `
     <!doctype html>
       <html>
@@ -884,7 +951,7 @@ export function heavyEquipmentLayout (budget_data: any) {
                   
                           <br />
       
-                          <p class="flex-item colorGreen">Abaixo segue o resumo do <span class="colorOrange"><b>orçamento</b></span> de número <span class="colorOrange"><b>9874568</b></span></p>
+                          <p class="flex-item colorGreen">Abaixo segue o resumo do <span class="colorOrange"><b>orçamento</b>.</p>
                           
                           <br />
                       </div>
@@ -909,7 +976,7 @@ export function heavyEquipmentLayout (budget_data: any) {
                               </p>
               
                               <span><b class="colorOrange fontWeight">Equipamentos selecionados</b></span>
-  `
+  `;
 
   budget_data.items.forEach((item: any) => {
     html_base_layout += `
@@ -918,18 +985,33 @@ export function heavyEquipmentLayout (budget_data: any) {
             <table class="tableDesktop">
                 <tr>
                     <td class="itemImg">
-                        <img src="${oracle_base_url + item.primaryFullImageURL}" />
+                        <img src="${
+                          oracle_base_url + item.primaryFullImageURL
+                        }" />
                     </td>
                     <td class="clsGroupInfo">
-                        <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${item.brand} ${item.id}</b></span>
+                        <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${
+                          item.brand
+                        } ${item.id}</b></span>
                         <p class="flex-item colorGreen">${item.displayName}</p>
-                        <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${item.x_alturaDeTrabalhoM} m</p>
-                        <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${item.x_alcanceHorizontalM} m</p>
-                        <p class="flex-item colorGreen"><b>Peso: </b> ${item.x_peso} kg</p>
-                        <p class="flex-item colorGreen"><b>Emissão Média: </b> ${item.x_emissoMdiaKgDeCOH} Kg DE CO2 por hora</p>
-                        <p class="flex-item colorGreen"><b>Local de utilização: </b> ${item.localUtility}</p>
-                        <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${item.timeToLocale} ${item.typeToLocale}</p>
-                        <p class="flex-item colorGreen"><b>Quantidade: </b> ${item.quantity}</p>
+                        <p class="flex-item colorGreen"><b>Peso operacional: </b> ${
+                          item.weight
+                        } t</p>
+                        <p class="flex-item colorGreen"><b>Potência do motor: </b> ${
+                          item.x_potenciaDoMotor
+                        } HP</p>
+                        <p class="flex-item colorGreen"><b>Cabine: </b> ${
+                          item.x_cabine
+                        }</p>
+                        <p class="flex-item colorGreen"><b>Local de utilização: </b> ${
+                          item.localUtility
+                        }</p>
+                        <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${
+                          item.timeToLocale
+                        } ${item.typeToLocale}</p>
+                        <p class="flex-item colorGreen"><b>Quantidade: </b> ${
+                          item.quantity
+                        }</p>
                     </td>
                 </tr>
             </table>
@@ -937,20 +1019,38 @@ export function heavyEquipmentLayout (budget_data: any) {
             <table class="tableMobile">
                 <tr>
                     <td class="itemImg">
-                        <img src="${oracle_base_url + item.primaryFullImageURL}" />
+                        <img src="${
+                          oracle_base_url + item.primaryFullImageURL
+                        }" />
                     </td>
                 </tr>
                 <tr>
                     <td class="clsGroupInfo">
-                        <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${item.brand} ${item.id}</b></span>
+                        <span class="clsGroupInfoTitle"><b class="colorOrange fontWeight">${
+                          item.brand
+                        } ${item.id}</b></span>
                         <p class="flex-item colorGreen">${item.displayName}</p>
-                        <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${item.x_alturaDeTrabalhoM} m</p>
-                        <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${item.x_alcanceHorizontalM} m</p>
-                        <p class="flex-item colorGreen"><b>Peso: </b> ${item.x_peso} kg</p>
-                        <p class="flex-item colorGreen"><b>Emissão Média: </b> ${item.x_emissoMdiaKgDeCOH} Kg DE CO2 por hora</p>
-                        <p class="flex-item colorGreen"><b>Local de utilização: </b> ${item.localUtility}</p>
-                        <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${item.timeToLocale} ${item.typeToLocale}</p>
-                        <p class="flex-item colorGreen"><b>Quantidade: </b> ${item.quantity}</p>
+                        <p class="flex-item colorGreen"><b>Altura de Trabalho: </b> ${
+                          item.x_alturaDeTrabalhoM
+                        } m</p>
+                        <p class="flex-item colorGreen"><b>Alcance Horizontal: </b> ${
+                          item.x_alcanceHorizontalM
+                        } m</p>
+                        <p class="flex-item colorGreen"><b>Peso: </b> ${
+                          item.x_peso
+                        } kg</p>
+                        <p class="flex-item colorGreen"><b>Emissão Média: </b> ${
+                          item.x_emissoMdiaKgDeCOH
+                        } Kg DE CO2 por hora</p>
+                        <p class="flex-item colorGreen"><b>Local de utilização: </b> ${
+                          item.localUtility
+                        }</p>
+                        <p class="flex-item colorGreen"><b>Tempo de aluguel: </b> ${
+                          item.timeToLocale
+                        } ${item.typeToLocale}</p>
+                        <p class="flex-item colorGreen"><b>Quantidade: </b> ${
+                          item.quantity
+                        }</p>
                     </td>
                 </tr>
             </table>
@@ -960,23 +1060,6 @@ export function heavyEquipmentLayout (budget_data: any) {
   });
 
   html_base_layout += `
-                                <span><b class="colorOrange fontWeight">Outros serviços selecionados</b></span>
-                
-                                <div class="groupItems">
-                                    <div class="d-inline-block w-100 flex-wrap clsGroupItem pa-0">
-                                        <img width="64px" height="64px" class="itemImgOthersServices itemImgTruck" src="https://hml-nova-mills.mills.com.br/email/assets/iconTruck.png" />
-                                        <div class="d-inline-block text-left clsGroupInfo">
-                                            <span class="d-block"><b class="colorGreen">Frete Mills - Serviço de Entrega e Devolução de Equipamentos</b></span>
-                                            <span class="d-block colorGreen">Belo Horizonte, Minas Gerais</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                
-                        </div>
-                
-                        <br />
-                
                         <div class="clsFooterInfo">
                             <p>
                                 Precisa de ajuda? 
@@ -1021,5 +1104,112 @@ export function heavyEquipmentLayout (budget_data: any) {
         </html>
     `;
 
+  return html_base_layout;
+}
+
+export function adminHeavyLayout(budget_data: any) {
+    let html_base_layout = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+        .mills_logo {
+            width: 116px;
+            background-color: #F37021;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+        .title {
+            color: #F37021;
+        }
+        </style>
+        </head>
+        <body>
+        <main>
+            <p>
+            <img class="mills_logo" src="https://hml-nova-mills.mills.com.br/email/assets/iconMills.png" />
+            <h1 class="title">Solicitação de reserva</h1>
+            <b>Nome: ${budget_data.personalInformations.nome}</b>
+            <br>
+            <b>E-mail: ${budget_data.personalInformations.email}</b>
+            <br>
+            <b>Telefone: ${budget_data.personalInformations.telefone}</b>
+            <br>
+            <b>CNPJ: ${budget_data.personalInformations.cnpj}</b>
+            <br>
+            <b>Comentários: ${budget_data.personalInformations.additionalComments}</b>
+            </p>
+            <p>
+            <h1 class="title">Detalhes do carrinho:</h1>
+            ${budget_data.items.map((item: any) => {
+                return `
+                    <b>${item.displayName}</b>
+                    <br>
+                    <b>Local de utilização: ${item.localUtility}</b>
+                    <br>
+                    <b>Período: ${item.timeToLocale} ${item.typeToLocale}</b>
+                    <br>
+                    <b>Quantidade: ${item.quantity}</b>
+                    <br>
+                    <br>
+                `
+            }).join("")}
+            </p>
+            ------------------------------------
+            <p>
+            <b>Origem: Mídia</b>
+            <br>
+            <b>Formulário: Carrinho de orçamento</b>
+            </p>
+        </main>
+        </body>
+        </html>
+    `;
+
     return html_base_layout;
-};
+}
+
+export function quickBudgetLayout(budget_data: any) {
+  let html_base_layout = `
+    <!DOCTYPE html>
+      <html>
+      <head>
+      <style>
+        .mills_logo {
+          width: 116px;
+          background-color: #F37021;
+          padding: 6px 10px;
+          border-radius: 6px;
+        }
+        .title {
+          color: #F37021;
+        }
+      </style>
+      </head>
+      <body>
+        <main>
+          <p>
+            <img class="mills_logo" src="https://hml-nova-mills.mills.com.br/email/assets/iconMills.png" />
+            <h1 class="title">Fale conosco!</h1>
+            <b>Nome: ${budget_data.name}</b>
+            <br>
+            <b>E-mail: ${budget_data.email}</b>
+            <br>
+            <b>Telefone: ${budget_data.phone}</b>
+            ${budget_data.cnpj ? `<br><b>CNPJ: ${budget_data.cnpj}</b>` : ``}
+            <br>
+            <b>Comentários: ${budget_data.comment}</b>
+          </p>
+          ------------------------------------
+          <p>
+            <b>Origem: Mídia</b>
+            <br>
+            <b>Formulário: Fale com um especialista</b>
+          </p>
+        </main>
+      </body>
+      </html>  
+  `;
+
+  return html_base_layout;
+}

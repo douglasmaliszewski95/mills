@@ -16,26 +16,31 @@ import dnaBottom from "@/assets/colored-dna-bottom.svg";
 import _ from "lodash";
 import { getImage } from "@/services/hooks/getImage";
 import SearchCMS from "@/dtos/SearchCMS";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Freight() {
   const [content, setContent] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
   const getContent = useCallback(async () => {
     const images = await getImage("frete");
     const imagesHeavy = await getImage("frete_pesados");
-    const texts =await getText("frete");
+    const texts = await getText("frete");
 
-    const differentialsAux = images?.[
-      "icon_differential_service"
-    ]?.map((icon: SearchCMS) => ({
-      id: icon?.description,
-      title: icon?.fields?.content_title,
-      description: icon?.fields?.content_text,
-      alt: icon?.fields?.alt_attribute,
-      image: getImageSrc(icon?.fields),
-    }));
+    const differentialsAux = images?.["icon_differential_service"]?.map(
+      (icon: SearchCMS) => ({
+        id: icon?.description,
+        title: icon?.fields?.content_title,
+        description: icon?.fields?.content_text,
+        alt: icon?.fields?.alt_attribute,
+        image: getImageSrc(icon?.fields),
+      })
+    );
 
     const differentials = [
       differentialsAux?.find(
@@ -51,13 +56,15 @@ export default function Freight() {
 
     const aboutCarousel = [
       imagesHeavy?.["heavy_machinery_benefits_freight"]?.find(
-        (image: SearchCMS) => image.description === "maquinas pesadas carrosel frete"
+        (image: SearchCMS) =>
+          image.description === "maquinas pesadas carrosel frete"
       ),
       images?.["benefits_freight"]?.find(
         (image: SearchCMS) => image.description === "carrossel frete comodidade"
       ),
       images?.["benefits_freight"]?.find(
-        (image: SearchCMS) => image.description === "carrossel frete produtividade"
+        (image: SearchCMS) =>
+          image.description === "carrossel frete produtividade"
       ),
       images?.["benefits_freight"]?.find(
         (image: SearchCMS) =>
@@ -78,9 +85,7 @@ export default function Freight() {
       simpleInformation: texts?.["running_routine"]?.[0],
     };
     setContent(formattedData);
-  },
-    [isMobile]
-  );
+  }, [isMobile]);
 
   useEffect(() => {
     getContent();
@@ -92,7 +97,9 @@ export default function Freight() {
       <main className="h-full bg-white w-full">
         <Banner
           backgroundImage={
-            isMobile ? content?.banner?.fields.native.links[0].href : content?.banner?.mobileObj?.fields.native.links[0].href
+            isMobile
+              ? content?.banner?.fields.native.links[0].href
+              : content?.banner?.mobileObj?.fields.native.links[0].href
           }
           title={content?.banner?.fields?.content_title ?? ""}
           linkList={[

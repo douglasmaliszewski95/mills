@@ -27,7 +27,9 @@ export const LoginButton = () => {
             <p className=" text-green-800 text-xs font-normal">
               Olá, acesse o Portal do Cliente
             </p>
-            <Button className="w-44">Fazer login</Button>
+            <a href="https://cliente.mills.com.br/" className="w-44">
+              <Button className="w-44">Fazer login</Button>
+            </a>
           </Menubar.Content>
         </Menubar.Portal>
       </Menubar.Menu>

@@ -10,14 +10,23 @@ import Button from "@/components/shared/Button/Button";
 import OurServices from "@/components/Cart/Step02/OurServices/OurServices";
 import { InputSelector } from "@/components/shared/InputSelector/InputSelector";
 import { NumberInput } from "@/components/Home/NumberInput/NumberInput";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import MultiSelect from "@/components/shared/MultiSelect/MultiSelect";
+import { updateParagraphs } from "@/utils/texts";
+import _ from "lodash";
+import { getCMSContent } from "@/components/Generators/content";
+import { transformContentToMobile } from "@/utils/content";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { getImageSrc } from "@/utils/images";
+import { InputStateSelector } from "@/components/shared/InputSelector/InputStateSelector";
+import { getStates, getCities } from "@brazilian-utils/brazilian-utils";
 
 export default function StepTwo() {
   const router = useRouter();
-  const { banner } = useGetCMSAssemblyStructure();
   const [customServices, setCustomServices] = useState<any>(null);
+  const [states, setStates] = useState(getStates());
+  const [citites, setCities] = useState(getCities("SP"));
   const [paymentFlow, setPaymentFlow] = useState<string>("rentalLight");
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -29,6 +38,38 @@ export default function StepTwo() {
     setPaymentFlow(flow);
     setCustomServices(customServices ? JSON.parse(customServices) : undefined);
   }, []);
+
+  const { isMobile } = useScreenWidth();
+  const [banner, setBanner] = useState<any>();
+  const [contentBase, setContentBase] = useState<any>();
+
+  const formatData = useCallback(
+    (contentAux: any) => {
+      const content = isMobile
+        ? transformContentToMobile(contentAux)
+        : contentAux;
+
+      setBanner(content?.["banner_request_quote"]?.[0]);
+    },
+    [isMobile]
+  );
+
+  useEffect(() => {
+    const getContent = async () => {
+      if (_.isEmpty(contentBase)) {
+        const contentAux = await getCMSContent("solicitar_orcamento");
+        setContentBase(contentAux);
+        formatData(contentAux);
+      } else {
+        formatData({ ...contentBase });
+      }
+    };
+    getContent();
+  }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner]);
 
   useEffect(() => {
     if (customServices === undefined) {
@@ -55,8 +96,6 @@ export default function StepTwo() {
       );
     }
   }, [customServices]);
-
-  const STATE_OPTIONS = ["SP", "MG"];
 
   const options = [
     { id: "Ancinho frontal", label: "Ancinho frontal" },
@@ -119,6 +158,8 @@ export default function StepTwo() {
         "customServices",
         JSON.stringify(updatedCustomServices)
       );
+
+      setCities(getCities(value));
     }
   };
 
@@ -176,8 +217,8 @@ export default function StepTwo() {
               },
               { name: "Solicitar orçamento", href: "#" },
             ]}
-            title={"Solicitar orçamento"}
-            backgroundImage={banner?.src}
+            title={banner?.fields?.content_title}
+            backgroundImage={getImageSrc(banner?.fields)}
           />
           <div className="flex flex-col items-center ">
             <div className="my-8">
@@ -223,14 +264,15 @@ export default function StepTwo() {
                     }
                     checked={customServices?.shipping?.checked}
                   >
+                    {/* Inicio */}
                     <div className="flex gap-10 tablet:flex-col">
                       <div className="grow max-w-[300px]">
                         <label className="text-sm text-green-800 mb-3">
                           Para qual estado ?
                         </label>
-                        <InputSelector
+                        <InputStateSelector
                           name="state"
-                          options={STATE_OPTIONS}
+                          options={states}
                           watch={(value: any) =>
                             customServices?.shipping?.state === ""
                               ? "Selecione um estado"
@@ -255,10 +297,10 @@ export default function StepTwo() {
                         </label>
                         <InputSelector
                           name="city"
-                          options={STATE_OPTIONS}
+                          options={citites}
                           watch={(value: any) =>
                             customServices?.shipping?.city === ""
-                              ? "Selecione um estado"
+                              ? "Selecione uma cidade"
                               : customServices?.shipping?.city
                           }
                           setValue={(name, value) =>
@@ -270,7 +312,7 @@ export default function StepTwo() {
                           }
                           placeholder={
                             customServices?.shipping?.city === ""
-                              ? "Selecione um estado"
+                              ? "Selecione uma cidade"
                               : customServices?.shipping?.city
                           }
                           disabled={
@@ -279,10 +321,12 @@ export default function StepTwo() {
                         />
                       </div>
                     </div>
+                    {/* Fim */}
                   </OurServices>
                   {paymentFlow === "rentalLight" && (
                     <>
                       <OurServices
+                        href="/treinamento"
                         title="Treinamento Operação Mills: Certificação Nacional"
                         tooltipText="O operador estará devidamente habilitado para manusear o equipamento, seguindo normas vigentes como NR 18, NBR 16776 e NR 35. Certificado com validade nacional."
                         onClick={() =>
@@ -311,6 +355,7 @@ export default function StepTwo() {
                         </div>
                       </OurServices>
                       <OurServices
+                        href="/treinamento"
                         title="Treinamento Operação IPAF: Certificação Nacional"
                         tooltipText="Treinamento especializado para as categorias 3A e 3B, permitindo o manuseio de todos os modelos e fabricantes. Certificado com validade internacional."
                         onClick={() =>
@@ -339,7 +384,8 @@ export default function StepTwo() {
                         </div>
                       </OurServices>
                       <OurServices
-                        title="Treinamento Carga e Desgarga de Plataformas"
+                        href="/treinamento"
+                        title="Treinamento Carga e Descarga de Plataformas"
                         tooltipText="Instrução em procedimentos corretos de segurança para a carga, descarga e fixação de plataformas, antes ou depois do transporte rodoviário."
                         onClick={() =>
                           handleAddOrChangeCustomServices(
@@ -374,6 +420,7 @@ export default function StepTwo() {
                         </div>
                       </OurServices>
                       <OurServices
+                        href="/treinamento"
                         title="Treinamento: Uso do cinto de segurança e inspeção"
                         tooltipText="Instrução para o usuário inspecionar, selecionar e usar corretamente o cinto e outros equipamentos com segurança quando operando uma plataforma de acesso em altura."
                         onClick={() =>
@@ -431,7 +478,7 @@ export default function StepTwo() {
                               options={options}
                               selectedOptions={
                                 customServices?.accessoriesAndImplements
-                                  ?.backhoeLoader
+                                  ?.backhoeLoader ?? []
                               }
                               onChange={handleMultiSelectChange}
                             />
@@ -447,7 +494,7 @@ export default function StepTwo() {
                               options={miniOptions}
                               selectedOptions={
                                 customServices?.accessoriesAndImplements
-                                  ?.smallLoader
+                                  ?.smallLoader ?? []
                               }
                               onChange={handleMultiSelectChangeSmallLoader}
                             />

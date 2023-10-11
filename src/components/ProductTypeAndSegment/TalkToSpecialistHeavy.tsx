@@ -5,17 +5,18 @@ import Button from "../shared/Button/Button";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { useGetCMSShared } from "@/services/hooks/useGetCMSShared";
 import { Section } from "../shared/Section/Section";
+import { TalkToSpecialistModal } from "../shared/TalkToSpecialistModal/TalkToSpecialistModal";
 
 interface SpecialistHeavy {
-    title: string;
-    text: string;
-    link: string
-    buttonText: string;
-    image: string;
+  title: string;
+  text: string;
+  link: string;
+  buttonText: string;
+  image: string;
 }
 
 export const TalkToSpecialistHeavy: React.FC<SpecialistHeavy> = (props) => {
-    const {buttonText,link,text,title, image} = props;
+  const { buttonText, link, text, title, image } = props;
   const { isMobile } = useScreenWidth();
 
   return (
@@ -31,10 +32,25 @@ export const TalkToSpecialistHeavy: React.FC<SpecialistHeavy> = (props) => {
             <h3 className="font-semibold w-[55%] tablet:w-full text-3xl tablet:w-full tablet:text-base tablet:mb-5">
               {title}
             </h3>
-            <p className="w-[40%] tablet:w-full text-base font-normal tablet:my-0 my-4 tablet:text-xs">{text}</p>
-            <a href={link ? link : ''} className="tablet:mt-2 flex w-[25%] bg-orange-500 tablet:w-full font-semibold items-center justify-center text-sm rounded-3xl h-[37px]">
-              {buttonText ? buttonText : 'Fale com um especialista'}
-            </a>
+            <p className="w-[40%] tablet:w-full text-base font-normal tablet:my-0 my-4 tablet:text-xs">
+              {text}
+            </p>
+            {link ? (
+              <a
+                href={link ? link : ""}
+                className="tablet:mt-2 flex w-[25%] bg-orange-500 tablet:w-full font-semibold items-center justify-center text-sm rounded-3xl h-[37px]"
+              >
+                {buttonText ? buttonText : "Fale com um especialista"}
+              </a>
+            ) : (
+              <TalkToSpecialistModal>
+                <Button className="w-[260px]">
+                  <p className="text-sm font-semibold">
+                    {buttonText ?? "Fale com um especlista"}
+                  </p>
+                </Button>
+              </TalkToSpecialistModal>
+            )}
           </div>
         </div>
       </div>

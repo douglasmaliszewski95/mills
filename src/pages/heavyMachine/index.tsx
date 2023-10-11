@@ -13,13 +13,20 @@ import { BannerCarousel } from "@/components/Home/BannerCarousel/BannerCarousel"
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Header } from "@/components/shared/Header/Header";
 import { RentalElevatingPlatforms } from "@/components/Home/RentalElevatingPlatforms/RentalElevatingPlatforms";
-import { useGetCMSHeavyHome } from "@/services/hooks/useGetCMSHeavyHome";
+
 import { FindMachines } from "@/components/HeavyMachines/components/FindMachines/FIndMachines";
 import { HeavySegments } from "@/components/HeavyMachines/components/HeavySegments/HeavySegments";
+import { updateParagraphs } from "@/utils/texts";
+import { useCallback, useEffect } from "react";
+import { getCMSHeavyHome } from "@/services/hooks/useGetCMSHeavyHome";
+import { GetServerSideProps } from "next";
 
-export default function HeavyMachine() {
-  const content = useGetCMSHeavyHome();
-  console.log(content?.segments);
+export default function HeavyMachine({ content }: any) {
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+  
+
   return (
     <>
       <Header />
@@ -66,3 +73,34 @@ export default function HeavyMachine() {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async () => {
+  const {
+    bannersResult,
+    ourProducts,
+    bannerRentalLiftingPlatforms,
+    ourServices,
+    successHistory,
+    successHistoryTexts,
+    millsMagazine,
+    segments,
+    bannerNumbers,
+    textNumbers,
+    groupedArray,
+  } = await getCMSHeavyHome();
+  const contentResponse = {
+    bannersResult,
+    ourProducts,
+    bannerRentalLiftingPlatforms,
+    ourServices,
+    successHistory,
+    successHistoryTexts,
+    millsMagazine,
+    segments,
+    bannerNumbers,
+    textNumbers,
+    groupedArray,
+  };
+  return {
+    props: { content: contentResponse || [] },
+  };
+};

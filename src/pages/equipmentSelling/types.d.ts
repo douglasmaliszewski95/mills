@@ -9,6 +9,8 @@ export interface TransportContent {
   fifthAbout: ImageCMS;
   sixthAbout: ImageCMS;
   seventhAbout: ImageCMS;
+  eighthAbout: ImageCMS;
   advantages: Item[];
+  equipments: TextCMS;
   knowMore: TextCMS;
 }

@@ -15,7 +15,7 @@ export const AcknowledgmentsCards: React.FC<AcknowledgmentsCardsProps> = (
       >
         <img src={src} className="h-[64.38px] w-[64.38px]" />
       </div>
-      <h1 className="text-lg font-bold mt-6">{cardTitle}</h1>
+      <h3 className="text-lg font-bold mt-6">{cardTitle}</h3>
       <p className="text-base font-normal mt-2 tablet:text-center tablet:h-[150px]">
         {cardDescription}
       </p>

@@ -3,6 +3,7 @@ import { Section } from "../shared/Section/Section";
 import { AboutSmallImageProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import dnaTop from "@/assets/dna-top-white.svg";
+import { DnaBottom } from "@/assets/DnaBottom";
 
 export const AboutSmallImage: React.FC<AboutSmallImageProps> = (props) => {
   const {
@@ -14,7 +15,7 @@ export const AboutSmallImage: React.FC<AboutSmallImageProps> = (props) => {
     imageFirst = false,
     imagePadding = "",
   } = props;
-  const { isDesktop } = useScreenWidth();
+  const { isDesktop, isMobile } = useScreenWidth();
 
   return (
     <Section
@@ -25,16 +26,21 @@ export const AboutSmallImage: React.FC<AboutSmallImageProps> = (props) => {
           : "tablet:flex-col"
       }`}
     >
-      {!imageFirst &&
+      <div className="relative flex justify-end">
+        <div className={isMobile ? "relative bottom-[-25px] right-[30px]" : "absolute top-[145px] right-[5px]"}>
+          <DnaBottom width={isMobile ? "320" : "650"} height={isMobile ? "70" : "100"} color="#FFFFFF" />
+        </div>
+      </div>      
+      {/* {!imageFirst &&
         (isDesktop ? (
           <div className="absolute top-3 right-3">
             <DnaTop width="620" color="white" opacity="0.30" />
           </div>
         ) : (
           <div>
-            <img src={dnaTop.src} className="absolute left-12" />
+            <img src={dnaTop.src} className="absolute left-12 tablet:left-0" />
           </div>
-        ))}
+        ))} */}      
       <div
         className={`basis-1/2 tablet:basis-0 pr-20 tablet:pr-0 ${
           imageFirst ? "tablet:mt-10" : "tablet:mt-[90px]"
@@ -50,7 +56,7 @@ export const AboutSmallImage: React.FC<AboutSmallImageProps> = (props) => {
         className={`basis-1/2 tablet:basis-0 flex items-center justify-center tablet:mt-4 mb-7 tablet:mb-0 ${imagePadding}`}
       >
         <img src={image} alt={alt} />
-      </div>
+      </div>      
     </Section>
   );
 };

@@ -19,6 +19,7 @@ import { getImage } from "@/services/hooks/getImage";
 import _ from "lodash";
 import { getCMSContent } from "@/components/Generators/content";
 import { transformContentToMobile } from "@/utils/content";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Search() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -31,6 +32,8 @@ export default function Search() {
   const [selectedFilters, setSelectedFilters] = useState<Refinement[]>([]);
 
   const { isDesktop, isMobile } = useScreenWidth();
+
+  const productSearchCode = process.env.NEXT_PUBLIC_EQUIPMENT_SELLING;
 
   const mapFilters = () => {
     const newState: Refinement[] = refinementCrumbs.map(
@@ -119,7 +122,7 @@ export default function Search() {
   };
 
   const onSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(`?N=2637220749&Ntt=${term}`);
+    const response = await searchRequest(`?N=${productSearchCode}&Ntt=${term}`);
     const formattedResponse = await response.json();
     if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
@@ -129,7 +132,7 @@ export default function Search() {
   const initialSearch = useCallback(async (term: string) => {
     const response = await searchRequest(term);
     const formattedResponse = await response.json();
-    if (!!formattedResponse.error) return;
+    if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
     setFilters(formattedResponse.filters);
   }, []);
@@ -139,8 +142,8 @@ export default function Search() {
     const params = new URLSearchParams(queryString);
     const searchTerm = params.get("productName");
     _.isEmpty(searchTerm)
-    ? initialSearch("?N=2637220749")
-    : onSearch(searchTerm || "?N=2637220749");
+      ? initialSearch(`?N=${productSearchCode}`)
+      : onSearch(searchTerm ?? `?N=${productSearchCode}`);
   }, []);
 
   const formatData = useCallback(
@@ -149,7 +152,7 @@ export default function Search() {
         ? transformContentToMobile(contentAux)
         : contentAux;
 
-      setContent(responsiveContent?.banner_search_parts?.[0]);
+      setContent(responsiveContent?.["banner_search_equipment"]?.[0]);
     },
     [isMobile]
   );
@@ -158,7 +161,7 @@ export default function Search() {
     const getContent = async () => {
       if (isMobile === undefined) return;
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("venda_pecas_busca");
+        const contentAux = await getCMSContent("venda_equipamentos_busca");
         setContentBase({ contentAux });
         formatData({ contentAux });
       } else {
@@ -168,12 +171,16 @@ export default function Search() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [contentBase, content]);
+
   return isFiltersOpen && !isDesktop ? (
     <FilterBar
       filters={filters}
       refinementCrumbs={refinementCrumbs}
       onSearch={onSearch}
-      baseUrl="/vendas-seminovos-novos/busca"
+      baseUrl="/vendas-de-maquinas/busca"
       submitFilters={submitFilters}
       onSelectFilter={onSelectFilter}
       setIsFiltersOpen={setIsFiltersOpen}
@@ -191,11 +198,11 @@ export default function Search() {
             },
             {
               name: "Venda de equipamentos",
-              href: "/vendas-equipamentos",
+              href: "/vendas-de-maquinas",
             },
             {
               name: "Buscar equipamento",
-              href: "/vendas-seminovos-novos/busca",
+              href: "/vendas-de-maquinas/busca",
             },
           ]}
           title={content?.fields.content_title}
@@ -209,12 +216,12 @@ export default function Search() {
               onSearch={onSearch}
               onSelectFilter={onSelectFilter}
               clearFilters={clearFilters}
-              baseUrl="/vendas-seminovos-novos/busca"
+              baseUrl="/vendas-de-maquinas/busca"
             />
           )}
           <ProductList
             products={products}
-            itemType="Equipamentos"
+            itemType={null}
             selectedFilters={selectedFilters}
             onRemoveFilter={onSelectFilter}
             setIsFiltersOpen={setIsFiltersOpen}

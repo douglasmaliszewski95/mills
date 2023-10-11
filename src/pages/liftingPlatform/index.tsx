@@ -11,22 +11,32 @@ import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import { ProductOCC } from "@/dtos/Products";
 import { useCallback, useEffect, useState } from "react";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function LiftingPlatform() {
   const [content, setContent] = useState<any>();
   const getContent = useCallback(async () => {
-    const images = await getImage("plataformas_elevatorias");
-    const texts = await getText("plataformas_elevatorias");
-    const findSegments = await getImage("shared");
-    const pantograficaTesoura = await fetch(
-      `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=plataforma_pantografica_ou_tesoura`
-    ).then((res) => res.json());
-    const articulada = await fetch(
-      `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=lanca_articulada`
-    ).then((res) => res.json());
-    const telescopica = await fetch(
-      `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=plataforma_aerea_de_lanca_telescopica`
-    ).then((res) => res.json());
+    const [
+      images,
+      texts,
+      findSegments,
+      pantograficaTesoura,
+      articulada,
+      telescopica
+    ]: any = await Promise.all([
+      getImage("plataformas_elevatorias"),
+      getText("plataformas_elevatorias"),
+      getImage("shared"),
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=plataforma_pantografica_ou_tesoura`
+      ).then((res) => res.json()),
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=lanca_articulada`
+      ).then((res) => res.json()),
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_GRAPHQL}/api/platforms?collection=plataforma_aerea_de_lanca_telescopica`
+      ).then((res) => res.json()) 
+    ]);
 
     let graySegments: any = [];
     let filterSegments: any = [];
@@ -85,10 +95,10 @@ export default function LiftingPlatform() {
 
     const productsCarousels = [
       {
-        id: texts.scissors_antographic_text[0].id,
-        title: texts.scissors_antographic_text[0].fields.title,
-        href: texts.scissors_antographic_text[0].fields.hrefButton?.[0],
-        paragraphs: texts.scissors_antographic_text[0].fields.text_field,
+        id: texts.scissors_antographic_text?.[0].id,
+        title: texts.scissors_antographic_text?.[0].fields.title,
+        href: texts.scissors_antographic_text?.[0].fields.hrefButton?.[0],
+        paragraphs: texts.scissors_antographic_text?.[0].fields.text_field,
         backgroundColor: "bg-beige-200",
         products: pantograficaTesoura.products.map((item: ProductOCC) => {
           return {
@@ -96,6 +106,8 @@ export default function LiftingPlatform() {
             image: item.fullImageURLs,
             model: item.id,
             description: item.displayName,
+            route: item.route,
+            type: item.type,
             specs: [
               {
                 name: "Altura de Trabalho",
@@ -119,10 +131,10 @@ export default function LiftingPlatform() {
         whiteButton: false,
       },
       {
-        id: texts.articulated_text[0].id,
-        title: texts.articulated_text[0].fields.title,
-        href: texts.articulated_text[0].fields.hrefButton?.[0],
-        paragraphs: texts.articulated_text[0].fields.text_field,
+        id: texts.articulated_text?.[0].id,
+        title: texts.articulated_text?.[0].fields.title,
+        href: texts.articulated_text?.[0].fields.hrefButton?.[0],
+        paragraphs: texts.articulated_text?.[0].fields.text_field,
         backgroundColor: "bg-orange-500",
         products: articulada.products.map((item: ProductOCC) => {
           return {
@@ -130,6 +142,8 @@ export default function LiftingPlatform() {
             image: item.fullImageURLs,
             model: item.id,
             description: item.displayName,
+            route: item.route,
+            type: item.type,
             specs: [
               {
                 name: "Altura de Trabalho",
@@ -153,10 +167,10 @@ export default function LiftingPlatform() {
         whiteButton: true,
       },
       {
-        id: texts.telescopic_boom_text[0].id,
-        title: texts.telescopic_boom_text[0].fields.title,
-        href: texts.telescopic_boom_text[0].fields.hrefButton?.[0],
-        paragraphs: texts.telescopic_boom_text[0].fields.text_field,
+        id: texts.telescopic_boom_text?.[0].id,
+        title: texts.telescopic_boom_text?.[0].fields.title,
+        href: texts.telescopic_boom_text?.[0].fields.hrefButton?.[0],
+        paragraphs: texts.telescopic_boom_text?.[0].fields.text_field,
         backgroundColor: "bg-beige-200",
         products: telescopica.products.map((item: ProductOCC) => {
           return {
@@ -164,6 +178,8 @@ export default function LiftingPlatform() {
             image: item.fullImageURLs,
             model: item.id,
             description: item.displayName,
+            route: item.route,
+            type: item.type,
             specs: [
               {
                 name: "Altura de Trabalho",
@@ -198,8 +214,8 @@ export default function LiftingPlatform() {
         } || null,
       rentalText:
         {
-          title: texts.location[0]?.fields.title,
-          description: texts.location[0]?.fields.text_field,
+          title: texts.location?.[0].fields.title,
+          description: texts.location?.[0].fields.text_field,
         } || null,
       icons: filterIcons || null,
       section:
@@ -217,6 +233,10 @@ export default function LiftingPlatform() {
   useEffect(() => {
     getContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   return (
     <>
@@ -249,11 +269,13 @@ export default function LiftingPlatform() {
           <ProductCarousel
             key={productCarousel.id}
             href={productCarousel.href ?? "#"}
+            route={productCarousel.route}
             variant={
               productCarousel.backgroundColor === "bg-orange-500"
                 ? "white"
                 : undefined
             }
+            type={productCarousel.type}
             {...productCarousel}
           />
         ))}

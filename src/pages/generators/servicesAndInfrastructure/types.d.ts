@@ -13,6 +13,7 @@ export interface InfrastructureContent {
 
 export interface InfrastructureContentText {
   individuals: Individuals;
-  products: string[];
+  products: TextCMS;
   sellParts: string;
+  link?: string;
 }

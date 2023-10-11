@@ -17,7 +17,7 @@ export const SellParts: React.FC<SellPartsProps> = (props) => {
       containerClass="inline-flex items-center"
     >
       <div className="absolute right-3 overflow-hidden bottom-3">
-        <img src={dnaBottom.src} className="tablet:max-w-[148%]" />
+        <img src={dnaBottom.src} className="tablet:max-w-[100%]" />
       </div>
       <div className="flex items-center tablet:flex-col tablet:gap-8 w-full">
         <h5 className="basis-1/2 text-white text-2xl pr-12 tablet:pr-4 font-semibold tablet:text-base">

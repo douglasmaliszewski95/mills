@@ -3,23 +3,57 @@ import { getText } from "@/services/hooks/getText";
 import { getBlogPosts } from "@/services/hooks/getBlogPosts";
 import { ImageCMS } from "@/types";
 
-export const getCMSHomeImage = async () => {
-  const content: any = await getImage("home_leves");
-  const text: any = await getText("home_leves");
-  const historyContent: any = await getImage("shared");
-  const blogPosts: any = await getBlogPosts();
+const sortOurProducts = (ourProducts: ImageCMS[]) => {
+  const ourProductsAux = [
+    ourProducts?.find(
+      (image: ImageCMS) => image.description === "ourproducts elevatorias"
+    ),
+    ourProducts?.find(
+      (image: ImageCMS) => image.description === "ourproducts pesadas"
+    ),
+    ourProducts?.find(
+      (image: ImageCMS) => image.description === "ourproducts escoramentos"
+    ),
+    ourProducts?.find(
+      (image: ImageCMS) => image.description === "ourproducts compressores"
+    ),
+    ourProducts?.find(
+      (image: ImageCMS) => image.description === "ourproducts geradores"
+    ),
+  ];
 
-  const bannersResult = content?.banner_carousel?.map((banner: any) => {
+  return ourProductsAux;
+};
+
+export const getCMSHomeImage = async () => {
+  const [content, text, historyContent, blogPosts]: any = await Promise.all([
+    getImage("home_leves"),
+    getText("home_leves"),
+    getImage("shared"),
+    getBlogPosts(),
+  ]);
+
+  const banners = content?.banner_carousel?.sort(
+    (a: ImageCMS, b: ImageCMS) =>
+      (Number(a?.fields?.content_order) || 0) -
+      (Number(b?.fields?.content_order) || 0)
+  );
+
+  const bannersResult = banners?.map((banner: any) => {
     return {
       src: banner.fields.native.links[0].href,
-      srcMobile: banner.mobileObj.fields.native.links[0].href,
+      srcMobile: banner.mobileObj?.fields.native.links[0].href ?? "",
       title: banner.fields?.content_title,
-      buttonTitle: "Ver modelos",
+      buttonTitle: banner.fields?.button_text ?? "Ver modelos",
+      href: banner.fields?.href_attribute ?? "",
       id: banner.id,
+      alt: banner.fields?.alt_attribute ?? "",
     };
   });
 
-  const ourProducts = content?.ourproducts
+  const ourProductsAux = sortOurProducts(content?.ourproducts);
+
+  const ourProducts = ourProductsAux
     ?.map((product: any) => {
       return {
         image: product.fields.native.links[0].href,
@@ -28,14 +62,14 @@ export const getCMSHomeImage = async () => {
           ? product.mobileObj.fields.native.links[0].href
           : product.fields.native.links[0].href,
         title: product.fields.content_title,
-        href: product.fields.alt_attribute ?? "#",
+        href: product.fields.href_attribute ?? "#",
       };
     })
     .sort((a: any, b: any) => a.order - b.order);
 
   const groupedByContentOrder: any = {};
 
-  historyContent.icon_types_segments?.forEach((segment: any) => {
+  historyContent?.icon_types_segments?.forEach((segment: any) => {
     const contentOrder = segment.fields.content_order;
 
     if (!groupedByContentOrder[contentOrder]) {
@@ -46,7 +80,7 @@ export const getCMSHomeImage = async () => {
   });
 
   const uniqueDescriptions: any = {};
-  historyContent.icon_types_segments?.forEach((obj: any) => {
+  historyContent?.icon_types_segments?.forEach((obj: any) => {
     const description = obj.description;
     if (!uniqueDescriptions[description]) {
       uniqueDescriptions[description] = [];
@@ -79,7 +113,7 @@ export const getCMSHomeImage = async () => {
       hoverImage: hoverImage,
       title: segmentGroup[0]?.fields.content_title,
       content_order: segmentGroup[0]?.fields.content_order,
-      href: segmentGroup[0]?.fields.alt_attribute ?? "#",
+      href: segmentGroup[0]?.fields.href_attribute,
     };
   });
   segments.sort((a, b) => a.content_order - b.content_order);
@@ -97,7 +131,7 @@ export const getCMSHomeImage = async () => {
       id: services.id,
       title: services.fields.content_title,
       article: services.fields.content_text,
-      href: services.fields.alt_attribute ?? "#",
+      href: services.fields.href_attribute ?? "#",
     };
   });
 
@@ -130,25 +164,27 @@ export const getCMSHomeImage = async () => {
     hrefButton: text?.historias_de_sucesso?.[0].fields.hrefButton[0],
   };
 
-  let filterPosts: any = [];
-  for (let i = 0; i < blogPosts?.item?.length; i++) {
-    if (filterPosts.length === 9) break;
-    else {
-      filterPosts.push({
-        image: null,
-        alt: null,
-        category: blogPosts.item[i].category[0]._cdata,
-        title: blogPosts.item[i].title._text,
-        date: new Date(blogPosts.item[i].pubDate._text).toLocaleDateString(),
-        link: blogPosts.item[i].link._text,
-      });
-    }
-  }
+  // let filterPosts: any = [];
+  // for (let i = 0; i < blogPosts?.item?.length; i++) {
+  //   if (filterPosts.length === 9) break;
+  //   else {
+  //     filterPosts.push({
+  //       image: null,
+  //       alt: null,
+  //       category: blogPosts.item[i].category[0]._cdata,
+  //       title: blogPosts.item[i].title._text,
+  //       date: new Date(blogPosts.item[i].pubDate._text).toLocaleDateString(),
+  //       link: blogPosts.item[i].link._text,
+  //     });
+  //   }
+  // }
 
   const millsMagazine = {
-    title: text?.revista_mills?.[0].fields.title || "",
-    text: text?.revista_mills?.[0].fields.text_field[0] || "",
-    posts: filterPosts,
+    title: text?.revista_mills?.[0].fields.title ?? "",
+    text: text?.revista_mills?.[0].fields.text_field[0] ?? "",
+    href: text?.revista_mills?.[0].fields.hrefButton ?? "#",
+    buttonTitle: text?.revista_mills?.[0].fields.buttonText,
+    posts: blogPosts,
   };
 
   return {

@@ -11,6 +11,7 @@ import { InformationWithButton } from "@/components/shared/InformationWithButton
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const MotorGrader = () => {
@@ -21,6 +22,10 @@ const MotorGrader = () => {
   const [secondAbout, setSecondAbout] = useState<any>();
   const [thirdAbout, setThirdAbout] = useState<any>();
   const [fourthAbout, setFourthAbout] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent, firstAbout, secondAbout, sharedContent]);
 
   const { isMobile } = useScreenWidth();
 
@@ -105,7 +110,10 @@ const MotorGrader = () => {
           description={secondAbout?.fields?.content_text}
           link={secondAbout?.fields?.href_attribute}
           orientation="inverted"
-          buttonTitle="Fale com um especialista"
+          buttonTitle={
+            secondAbout?.fields?.buttonText ?? "Fale com um especialista"
+          }
+          isTalkToSpecialist
         />
 
         <InformationWithLines
@@ -148,7 +156,7 @@ const MotorGrader = () => {
           <InformationWithButton
             buttonColor="bg-orange-500"
             buttonTextColor=""
-            buttonLink=""
+            buttonLink={sharedContent?.truck_rental[0]?.fields?.href_attribute}
             description=""
             title={sharedContent?.truck_rental[0]?.fields?.content_title}
             image={getImageSrc(

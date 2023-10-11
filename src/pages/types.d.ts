@@ -4,6 +4,8 @@ interface Banner {
   srcMobile: string;
   title: string;
   buttonTitle: string;
+  href?: string;
+  alt?: string;
 }
 
 interface Card {

@@ -15,6 +15,7 @@ import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { Header } from "@/components/shared/Header/Header";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function InstallationAndMaintenance() {
   const router = useRouter();
@@ -23,17 +24,24 @@ export default function InstallationAndMaintenance() {
   const [banner, setBanner] = useState<any>();
   const [segments, setSegments] = useState<any>();
   const [texts, setTexts] = useState<any>();
+  const [segmentsTitle, setSegmentsTitle] = useState<string>("");
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner, segments, texts]);
 
   const getContent = useCallback(async () => {
     const images = await getImage("instalacao_manutencao_predial");
     const texts = await getText("instalacao_manutencao_predial");
     setBanner(images.banner[0]);
     setSegments(images.segments);
-    setTexts(
-      texts.segments_text?.find(
+    setTexts({
+      segments: texts?.segments_text?.find(
         (x: any) => x.fields.content_page === "instalacao_manutencao_predial"
-      )
-    );
+      ),
+      customerReviews: texts?.customer_reviews?.[0],
+    });
+    setSegmentsTitle(texts?.icon_segments_text[0]?.fields?.title);
   }, []);
 
   useEffect(() => {
@@ -67,8 +75,8 @@ export default function InstallationAndMaintenance() {
         {segments && (
           <RightImgWithLeftButtons
             img={segments[0]?.fields.native.links[0].href}
-            headerText={texts?.fields.title}
-            textCards={texts?.fields.text_field}
+            headerText={texts?.segments?.fields.title}
+            textCards={texts?.segments?.fields.text_field}
             buttonProps={infosToShow?.sectionWithRightImage?.buttonProps}
             width={
               infosToShow?.sectionWithRightImage?.textCards.length >= 8
@@ -94,8 +102,8 @@ export default function InstallationAndMaintenance() {
           />
         )}
 
-        <Benefits />
-        <Opinion />
+        <Benefits headerText={segmentsTitle} />
+        <Opinion content={texts?.customerReviews} />
         <Platforms />
 
         <ExpertRecommendation />

@@ -13,10 +13,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   onChange,
 }) => {
   const handleOptionChange = (id: string) => {
-    const updatedSelectedOptions = selectedOptions.includes(id)
-      ? selectedOptions.filter((option) => option !== id)
-      : [...selectedOptions, id];
-
+    const finalList = selectedOptions ?? [];
+    const updatedSelectedOptions = finalList?.includes(id)
+      ? finalList.filter((option) => option !== id)
+      : [...finalList, id];
     onChange(updatedSelectedOptions);
   };
 
@@ -28,7 +28,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             className="flex flex-row gap-1 overflow-auto max-w-[323px]"
             style={{ marginBottom: "-20px" }}
           >
-            {selectedOptions.map((selectedOption) => (
+            {selectedOptions?.map((selectedOption) => (
               <span
                 key={selectedOption}
                 className="px-2.5 py-1 text-xs border-orange-500 rounded border"
@@ -40,7 +40,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           </div>
           <Listbox.Button className="relative h-[25px] max-w-[323px] w-full border-b-green-800 border-b-[1px] text-start cursor-pointer text-green-800/40 text-xs">
             <span className="block truncate">
-              {selectedOptions.length === 0 ? "Selecionar" : ""}
+              {selectedOptions?.length === 0 ? "Selecionar" : ""}
             </span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <svg
@@ -82,11 +82,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                       <input
                         type="checkbox"
                         className={`form-checkbox h-5 w-5 mr-2 ${
-                          checked || selectedOptions.includes(option.id)
+                          checked || selectedOptions?.includes(option.id)
                             ? "bg-orange-500 border-transparent"
                             : "border-gray-300"
                         }`}
-                        checked={checked || selectedOptions.includes(option.id)}
+                        checked={
+                          checked || selectedOptions?.includes(option.id)
+                        }
                         readOnly
                       />
                       <span className={`${checked ? "font-semibold" : ""}`}>

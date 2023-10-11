@@ -11,11 +11,16 @@ import { About } from "@/components/shared/About/About";
 import { transformContentToMobile } from "@/utils/content";
 import { PortContent } from "./types";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
+import { updateParagraphs } from "@/utils/texts";
 
 function Port() {
   const [content, setContent] = useState<PortContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -92,6 +97,7 @@ function Port() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
         />
         <CategoryCarousel
           title="Na Mills você encontra diversos modelos"
@@ -121,6 +127,7 @@ function Port() {
           color={isMobile ? "green-800" : "white"}
           buttonVariant={isMobile ? "default" : "whiteOutline"}
           forceImageDisplayOnMobile
+          isTalkToSpecialist
         />
         <MachinesAndPlatforms />
       </main>

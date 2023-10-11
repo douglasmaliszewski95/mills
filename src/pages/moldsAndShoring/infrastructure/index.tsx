@@ -15,8 +15,9 @@ import { transformContentToMobile } from "@/utils/content";
 import { ConstructionSlideShow } from "@/components/Category/ConstructionSlideShow/ConstructionSlideShow";
 import { transformCMSArrayToObject } from "@/utils/transformCMSArrayToObject";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Item } from "@/components/Category/AboutRental/types";
+import { updateParagraphs } from "@/utils/texts";
 
 function Infrastructure() {
   const [content, setContent] = useState<InfrastructureContent>();
@@ -108,6 +109,10 @@ function Infrastructure() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
+
   return (
     <>
       <Header />
@@ -163,7 +168,7 @@ function Infrastructure() {
         {content?.constructionCards && (
           <ConstructionSlideShow cards={content?.constructionCards} />
         )}
-        {/* <ExpertRecommendation /> */}
+        <ExpertRecommendation />
         <MachinesAndPlatforms />
       </main>
       <Footer />

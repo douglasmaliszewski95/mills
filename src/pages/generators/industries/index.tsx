@@ -12,12 +12,13 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { transformContentToMobile } from "@/utils/content";
 import _ from "lodash";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { GeneratorCarrousel } from "@/components/Category/GeneratorCarrousel/GeneratorCarrousel";
 import { SellParts } from "@/components/Category/SellParts/SellParts";
 import { Card } from "../types";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
 import { useRouter } from "next/router";
+import { updateParagraphs } from "@/utils/texts";
 
 const Generators: React.FC = () => {
   const [content, setContent] = useState<IndustriesContent>();
@@ -25,6 +26,10 @@ const Generators: React.FC = () => {
   const [isCompressors, setIsCompressors] = useState(false);
   const router = useRouter();
   const { isMobile } = useScreenWidth();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, textContent]);
 
   const getContent = async () => {
     const contentAux: any = await getCMSContent(
@@ -39,8 +44,9 @@ const Generators: React.FC = () => {
     const text = await getCMSText("shared");
 
     const formattedText = {
-      products: text?.aluguel[0]?.fields?.["text_field"] || [""],
+      products: contentTextShared?.["rent_models_text"]?.[0],
       sellParts: contentTextShared?.["vendemos_pecas"][0]?.fields?.["title"],
+      link: contentTextShared?.["vendemos_pecas"][0]?.fields?.hrefButton[0]
     };
 
     const sharedContent: any = await getCMSContent("shared");
@@ -140,7 +146,7 @@ const Generators: React.FC = () => {
           hasButton={false}
           forceImageDisplayOnMobile
         />
-        <SellParts text={textContent?.sellParts} />
+        <SellParts text={textContent?.sellParts} href={textContent?.link} />
         <About
           title={fourthAbout?.content_title || ""}
           description={fourthAbout?.content_text || ""}
@@ -158,9 +164,10 @@ const Generators: React.FC = () => {
         )}
         {!_.isEmpty(textContent?.products) && (
           <GeneratorCarrousel
-            title="
-          A Mills oferece o aluguel de compressores e geradores, de modo a otimizar o tempo da sua equipe de funcionários, diminuir a sua preocupação quanto a manutenções e ser uma opção mais viável financeiramente."
-            products={textContent?.products || []}
+            title={textContent?.products?.fields?.title}
+            description={textContent?.products?.fields?.subtitle}
+            products={textContent?.products?.fields?.text_field ?? []}
+            link={textContent?.products?.fields?.hrefButton}
           />
         )}
         <ExpertRecommendation />

@@ -26,7 +26,7 @@ export const MultipleBrands: React.FC<MultipleBrandsProps> = (props) => {
       <p className="text-green-800 text-lg max-w-[48%] mb-16 tablet:text-xs tablet:mb-8 tablet:max-w-full">
         {subtitle}
       </p>
-      <div className="flex justify-between tablet:flex-col tablet:gap-8 tablet:items-center tablet:px-12">
+      <div className="flex justify-between items-end tablet:flex-col tablet:gap-8 tablet:items-center tablet:px-12">
         {brands?.map((image: ImageCMS) => (
           <DynamicImage
             key={image?.description}

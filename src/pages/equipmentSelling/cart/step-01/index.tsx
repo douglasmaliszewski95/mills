@@ -1,6 +1,5 @@
 import { Footer } from "@/components/shared/Footer/Footer";
 import { Banner } from "@/components/shared/Banner/Banner";
-import { useGetCMSAssemblyStructure } from "@/services/hooks/useGetCMSAssemblyStructure";
 import { Header } from "@/components/shared/Header/Header";
 import { Steppers } from "@/components/Cart/Steppers/Steppers";
 import { CartList } from "@/components/Cart/CartList/CartList";
@@ -12,14 +11,19 @@ import _ from "lodash";
 import { transformContentToMobile } from "@/utils/content";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { useCallback, useEffect, useState } from "react";
+import { updateParagraphs } from "@/utils/texts";
+import { getImageSrc } from "@/utils/images";
 
 export default function StepOne() {
   const router = useRouter();
-  const { banner } = useGetCMSAssemblyStructure();
   const { isMobile } = useScreenWidth();
 
   const [content, setContent] = useState<any>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const formatData = useCallback(
     ({ contentAux }: any) => {
@@ -27,7 +31,7 @@ export default function StepOne() {
         ? transformContentToMobile(contentAux)
         : contentAux;
 
-      setContent(responsiveContent);
+      setContent(responsiveContent?.banner_search_parts?.[0]);
     },
     [isMobile]
   );
@@ -36,7 +40,7 @@ export default function StepOne() {
     const getContent = async () => {
       if (isMobile === undefined) return;
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("pecas_carrinho");
+        const contentAux = await getCMSContent("venda_pecas_busca");
         setContentBase({ contentAux });
         formatData({ contentAux });
       } else {
@@ -58,19 +62,19 @@ export default function StepOne() {
             },
             {
               name: "Venda de peças",
-              href: "/vendas-seminovos-novos",
+              href: "/pecas",
             },
             {
               name: "Buscar peça",
-              href: "/vendas-seminovos-novos/busca",
+              href: "/vendas-de-maquinas/busca",
             },
             {
               name: "Solicitar orçamento",
-              href: "/vendas-seminovos-novos/busca/carrinho/passo-01",
+              href: "/vendas-de-maquinas/carrinho/passo-01",
             },
           ]}
           title={"Solicitar orçamento"}
-          backgroundImage={banner?.src}
+          backgroundImage={getImageSrc(content?.fields)}
         />
         <div className="flex flex-col items-center ">
           <div className="my-8">
@@ -91,13 +95,13 @@ export default function StepOne() {
               ]}
             />
           </div>
-          <CartList isSimpleCard />
+          <CartList buttonTitle="+ Adicionar nova máquina" isSimpleCard />
           <div className="container">
             <div className="flex justify-end mt-7 tablet:mx-5">
               <Button
                 className="w-[258px] tablet:w-full"
                 onClick={() =>
-                  router.push("/vendas-seminovos-novos/carrinho/passo-02")
+                  router.push("/vendas-de-maquinas/carrinho/passo-02")
                 }
               >
                 Avançar

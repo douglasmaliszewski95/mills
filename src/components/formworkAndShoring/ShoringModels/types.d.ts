@@ -6,6 +6,7 @@ interface ShoringModelsProps {
   textOnCenter?: boolean;
   theme?: "white";
   buttonTitle?: string;
+  href?: string;
 }
 
 export { ShoringCardProps, ShoringModelsProps };

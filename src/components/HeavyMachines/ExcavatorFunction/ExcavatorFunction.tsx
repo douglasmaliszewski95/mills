@@ -37,7 +37,7 @@ export const ExcavatorFunction: React.FC<ExcavatorFunctionProps> = (props) => {
             imagePos === "top" ? "tablet:pt-20" : "tablet:pt-0"
           }`}
         >
-          <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+          <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
           <p className="text-lg font-normal tablet:text-xs">{description}</p>
         </div>
         {hasImage && (
@@ -84,7 +84,7 @@ export const ExcavatorFunction: React.FC<ExcavatorFunctionProps> = (props) => {
         }  tablet:py-4 tablet:my-4 tablet:h-[600px]`}
       >
         <div className="w-[50%] tablet:w-[80%] flex flex-col gap-2 tablet:gap-4 tablet:pt-20">
-          <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+          <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
           <p className="text-lg font-normal tablet:text-xs">{description}</p>
         </div>
         {hasImage && (

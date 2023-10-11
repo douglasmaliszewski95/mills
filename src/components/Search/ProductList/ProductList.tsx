@@ -43,7 +43,7 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
     <div className="tablet:px-[18px] w-full">
       <div className="flex flex-wrap gap-2 h-fit mb-2">
         {selectedFilters?.length > 0
-          ? selectedFilters.map((filter) => (
+          ? selectedFilters.map((filter, index: number) => (
               <div
                 key={filter.label}
                 className="h-fit flex border-[1px] border-orange-500 rounded pl-3 pr-1 py-1 gap-1 justify-between"
@@ -64,9 +64,9 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
             )}
       </div>
       <h3 className="text-green-800 tablet:text-xs mb-6 tablet:mb-4">{`(${
-        resultsQuantity || "Nenhuma"
+        resultsQuantity || "Nenhum"
       } ${
-        isMultipleProducts ? `${type}s encontradas` : `${type} encontrada`
+        isMultipleProducts ? `itens encontrados` : `item encontrado`
       })`}</h3>
       {isMobile && (
         <button
@@ -78,22 +78,19 @@ export const ProductList: React.FC<ProductListProps> = (props) => {
         </button>
       )}
       <div className="w-full grid grid-cols-3 gap-4 tablet:grid-cols-1">
-        {productsWithPagination?.map((product) =>
+        {productsWithPagination?.map((product, index: number) =>
           minimalistCards ? (
             <MinimalistProductCard
-              key={product?.displayName}
+              key={product?.id}
               itemType={itemType}
               product={product}
-              baseUrl={
-                type === "peça"
-                  ? "pecas"
-                  : type === "equipamento"
-                  ? "vendas-seminovos-novos"
-                  : "formas-e-escoramentos"
-              }
             />
           ) : (
-            <ProductCard key={product?.displayName} product={product} />
+            <ProductCard
+              key={product?.id}
+              itemType={itemType}
+              product={product}
+            />
           )
         )}
       </div>

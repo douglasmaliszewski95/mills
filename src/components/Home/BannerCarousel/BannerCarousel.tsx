@@ -20,34 +20,39 @@ export const BannerCarousel: React.FC<BannerCarouselProps> = (props) => {
         prevArrow={!isMobile && <PrevArrow width={isMobile ? 20 : undefined} />}
       >
         {banners &&
-          banners.map(({ src, title, buttonTitle, id, srcMobile }) => (
-            <div key={id}>
-              <div
-                style={{
-                  backgroundImage: `url(${isMobile ? srcMobile : src})`,
-                }}
-                className="flex justify-center bg-no-repeat bg-cover font-ibm-font tablet:bg-center tablet:bg-cover"
-              >
-                <div className="bg-gradient-to-t from-black to-transparent w-full flex justify-center">
-                  <div className="container">
-                    <div className="flex flex-col items-center justify-center h-[440px] px-20 tablet:px-4 tablet:h-[350px]">
-                      <div className="tablet:pt-11">
-                        <h1 className="text-4xl font-semibold text-white mb-9 tablet:text-base">
-                          {title ?? null}
-                        </h1>
-                        <Button
-                          className="max-w-[248px] w-full tablet:max-w-full"
-                          size="large"
-                        >
-                          {buttonTitle}
-                        </Button>
+          banners.map(
+            ({ src, title, buttonTitle, id, srcMobile, href, alt }, indx) => (
+              <div key={id}>
+                <div
+                  style={{
+                    backgroundImage: `url(${isMobile ? srcMobile : src})`,
+                  }}
+                  className="flex justify-center bg-no-repeat bg-cover font-ibm-font tablet:bg-center tablet:bg-cover"
+                  aria-label={alt}
+                >
+                  <div className="bg-gradient-to-t from-black to-transparent w-full flex justify-center">
+                    <div className="container">
+                      <div className="flex flex-col justify-center h-[440px] px-20 tablet:px-4 tablet:h-[350px]">
+                        <div className="tablet:pt-11">
+                          <p className="text-4xl font-semibold text-white mb-9 tablet:text-base">
+                            {title ?? ""}
+                          </p>
+                          <a href={href ?? "#"} className="max-w-[248px]">
+                            <Button
+                              className="max-w-[248px] w-full tablet:max-w-full"
+                              size="large"
+                            >
+                              {buttonTitle}
+                            </Button>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
       </Carousel>
     </div>
   );

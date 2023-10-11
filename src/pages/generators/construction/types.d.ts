@@ -6,6 +6,6 @@ export interface ConstructionContent {
 }
 
 export interface ConstructionContentText {
-  products: string[];
+  products: TextCMS;
   sellParts: string;
 }

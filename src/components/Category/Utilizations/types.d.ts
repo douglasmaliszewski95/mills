@@ -13,4 +13,5 @@ export interface UtilizationsProps {
   description: string;
   theme?: "orange";
   cards: Card[];
+  page?: string;
 }

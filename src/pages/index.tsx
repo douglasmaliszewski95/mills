@@ -13,48 +13,29 @@ import { BannerCarousel } from "@/components/Home/BannerCarousel/BannerCarousel"
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Header } from "@/components/shared/Header/Header";
 import { getCMSHomeImage } from "@/utils/content";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { updateParagraphs } from "@/utils/texts";
+import { GetServerSideProps } from "next";
+import { FindPlatform } from "@/components/Home/FindPlatform/FindPlatform";
 
-export default function Home() {
-  const [content, setContent] = useState<any>();
-  const getContent = useCallback(async () => {
-    const {
-      bannersResult,
-      ourProducts,
-      segments,
-      bannerNumbers,
-      ourServices,
-      successHistory,
-      textNumbers,
-      successHistoryTexts,
-      millsMagazine,
-    } = await getCMSHomeImage();
-    setContent({
-      bannersResult,
-      ourProducts,
-      segments,
-      bannerNumbers,
-      ourServices,
-      successHistory,
-      textNumbers,
-      successHistoryTexts,
-      millsMagazine,
-    });
-  }, []);
-
+export default function Home({ content }: any) {
   useEffect(() => {
-    getContent();
-  }, []);
+    updateParagraphs();
+  }, [content]);
 
   return (
     <>
-      <Header />
+    {console.log(process.env.NEXT_PUBLIC_API_GRAPHQL)} 
+  {console.log(process.env.MILLS_USER)}
+  {console.log(process.env.MILLS_SECRET)}
+      <Header theme="rentalLight" />
       <main className="h-full bg-white w-full">
         <div className="flex flex-col-reverse tablet:flex-col">
           <BannerCarousel banners={content?.bannersResult} />
           <RequestQuote />
         </div>
         <MeetOurProducts theme="rentalLight" cards={content?.ourProducts} />
+        <FindPlatform />
         <Segments
           bgColor="bg-gray-150"
           segments={content?.segments}
@@ -79,3 +60,37 @@ export default function Home() {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async () => {
+  const {
+    bannersResult,
+    ourProducts,
+    segments,
+    bannerNumbers,
+    ourServices,
+    successHistory,
+    textNumbers,
+    successHistoryTexts,
+    millsMagazine,
+  } = await getCMSHomeImage();
+
+  const content = {
+    bannersResult,
+    ourProducts,
+    segments,
+    bannerNumbers,
+    ourServices,
+    successHistory,
+    textNumbers,
+    successHistoryTexts,
+    millsMagazine,
+  };
+  console.log(process.env.NEXT_PUBLIC_API_GRAPHQL); 
+  console.log(process.env.MILLS_USER);
+  console.log(process.env.MILLS_SECRET);
+
+  return {
+    props: {
+      content: content || [],
+    },
+  };
+};

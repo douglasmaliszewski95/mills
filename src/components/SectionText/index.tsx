@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 import { SectionTextProps } from "./types";
 
 export const SectionText: React.FC<SectionTextProps> = (props) => {
-  const { title, text } = props;
+  const { title, text, topLine = false } = props;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -16,6 +16,9 @@ export const SectionText: React.FC<SectionTextProps> = (props) => {
 
   return (
     <section>
+      {topLine && (
+        <div className="border-t-[1px] border-green-800 opacity-50 mt-3" />
+      )}
       <div className="font-ibm-font py-7">
         <div className="flex pb-5">
           <p className="text-green-800 font-bold text-2xl">

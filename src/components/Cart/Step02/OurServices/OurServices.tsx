@@ -12,6 +12,7 @@ export default function OurServices({
   title,
   children,
   tooltipText,
+  href,
   checked = false,
   onClick,
 }: OurServicesProps) {
@@ -40,9 +41,9 @@ export default function OurServices({
                       src={exclamationIco}
                       alt="tooltip ico"
                     />
-                    <p className="desktop:hidden text-orange-500 text-xs italic">
+                    <a className="desktop:hidden text-orange-500 text-xs italic" href={href ?? ""}>
                       Saiba mais
-                    </p>
+                    </a>
                   </button>
                 </Tooltip.Trigger>
 
@@ -52,9 +53,9 @@ export default function OurServices({
                     sideOffset={5}
                     align="start"
                   >
-                    <p className="text-green-800">{tooltipText}</p>
+                    <p className="text-green-800 text-[10px] leading-relaxed">{tooltipText}</p>
                     <br />
-                    <a className="text-orange-500 mt-2">Saiba mais</a>
+                    <a className="text-orange-500 mt-2" href={href ?? ""}>Saiba mais</a>
                   </Tooltip.Content>
                 </Tooltip.Portal>
               </Tooltip.Root>

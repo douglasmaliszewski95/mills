@@ -15,7 +15,7 @@ export const ImplementsComponent: React.FC<ImplementsComponentProps> = (
       containerClass={`flex ${orientation === 'normal' ? 'flex-row' : 'flex-row-reverse'} tablet:flex-col-reverse tablet:gap-6 gap-10`}
     >
       <div className="w-[50%] tablet:w-full text-green-800 flex flex-col justify-center tablet:px-4">
-        <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+        <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
         <div
           className={`flex ${isMobile ? "flex-col my-6" : "flex-wrap mt-6"} gap-4 `}
         >

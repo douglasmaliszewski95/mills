@@ -4,21 +4,11 @@ import { OpinionProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { useCallback, useEffect, useState } from "react";
 import { getText } from "@/services/hooks/getText";
-import { HtmlRenderer } from "../HtmlRender/htmlRender";
 
-export const Opinion = ({ theme = "rentalLight" }: OpinionProps) => {
+export const Opinion = ({ content, theme = "rentalLight" }: OpinionProps) => {
   const { isMobile } = useScreenWidth();
-  const [texts, setTexts] = useState<any>();
+
   const themeStyle = theme === "rentalHeavy" ? "bg-green-800" : "bg-orange-500";
-  const getContent = useCallback(async () => {
-    const texts = await getText("shared");
-
-    setTexts(texts.our_clients[0]);
-  }, []);
-
-  useEffect(() => {
-    getContent();
-  }, []);
 
   return (
     <section className={`flex justify-cente text-white ${themeStyle} `}>
@@ -39,13 +29,13 @@ export const Opinion = ({ theme = "rentalLight" }: OpinionProps) => {
           </div>
           <div className="max-w-[444px]">
             <p className="text-lg font-semibold mb-2 tablet:text-sm">
-              {texts?.fields.title}
+              {content?.fields?.title}
             </p>
             <span className="italic text-sm tablet:text-[10px]">
-              {texts?.fields.subtitle[0]}
+              {content?.fields?.subtitle?.[0]}
             </span>
             <p className="font-normal mt-4 tablet:text-xs">
-              <HtmlRenderer htmlContent={texts?.fields.text_field[0]} />
+              {content?.fields?.text_field?.[0]}
             </p>
           </div>
         </div>

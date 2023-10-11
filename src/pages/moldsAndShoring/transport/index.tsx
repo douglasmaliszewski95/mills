@@ -15,8 +15,10 @@ import { transformContentToMobile } from "@/utils/content";
 import { ConstructionSlideShow } from "@/components/Category/ConstructionSlideShow/ConstructionSlideShow";
 import { transformCMSArrayToObject } from "@/utils/transformCMSArrayToObject";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Item } from "@/components/Category/AboutRental/types";
+import { updateParagraphs } from "@/utils/texts";
+import { CustomExpertRecommendation } from "@/components/shared/CustomExpertRecommendation/CustomExpertRecommendation";
 
 function Sanitation() {
   const [content, setContent] = useState<TransportContent>();
@@ -91,6 +93,7 @@ function Sanitation() {
         ),
         differentials,
         constructionCards,
+        talkToSpecialist: responsiveContent?.["banner_especialista"]?.[0],
       };
       setContent(formattedData);
     },
@@ -101,7 +104,7 @@ function Sanitation() {
     const getContent = async () => {
       if (_.isEmpty(contentBase)) {
         const contentAux = await getCMSContent(
-          "formas-escoramentos-transporte"
+          "formas-escoramentos-transporte-e-mobilidade"
         );
         const contentSharedAux = await getCMSContent("shared");
         const contentText = await getText("formas_e_escoramentos");
@@ -113,6 +116,10 @@ function Sanitation() {
     };
     getContent();
   }, [formatData]);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
 
   return (
     <>
@@ -201,7 +208,7 @@ function Sanitation() {
             theme="orange-500"
           />
         )}
-        <ExpertRecommendation />
+        <CustomExpertRecommendation content={content?.talkToSpecialist} />
         <MachinesAndPlatforms />
       </main>
       <Footer />

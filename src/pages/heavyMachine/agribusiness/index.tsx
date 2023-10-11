@@ -14,6 +14,7 @@ import { AboutRental } from "@/components/Category/AboutRental/AboutRental";
 import { AgribusinessContent } from "./types";
 import { SimpleBanner } from "@/components/SimpleBanner/SimpleBanner";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
+import { updateParagraphs } from "@/utils/texts";
 
 function Agribusiness() {
   const [content, setContent] = useState<AgribusinessContent>();
@@ -81,6 +82,10 @@ function Agribusiness() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   return (
     <>
       <Header />
@@ -110,6 +115,7 @@ function Agribusiness() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
         />
         <About
           title={content?.secondAbout?.fields?.content_title ?? ""}

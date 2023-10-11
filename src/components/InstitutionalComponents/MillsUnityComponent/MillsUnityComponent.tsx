@@ -19,7 +19,7 @@ export const MillsUnityComponent: React.FC<MillsUnityComponentProps> = (
   return (
     <Section containerClass="flex flex-row gap-16 tablet:px-4">
       <div className="w-[45%] tablet:w-full tablet:py-10 py-28 text-green-800">
-        <h1 className="text-2xl font-semibold mb-8">{title}</h1>
+        <h3 className="text-2xl font-semibold mb-8">{title}</h3>
 
         <div className={className}>
           <div className="bg-green-800 rounded-md w-[47px] h-[44px] flex items-center justify-center">
@@ -54,14 +54,7 @@ export const MillsUnityComponent: React.FC<MillsUnityComponentProps> = (
             />
           </div>
           <p className="w-[55%] tablet:w-[70%]">
-            Se preferir,{" "}
-            <a
-              className="text-orange-500 decoration-solid underline"
-              href={email}
-            >
-              clique aqui
-            </a>{" "}
-            e envie-nos uma mensagem{" "}
+            {email}
           </p>
         </div>
       </div>

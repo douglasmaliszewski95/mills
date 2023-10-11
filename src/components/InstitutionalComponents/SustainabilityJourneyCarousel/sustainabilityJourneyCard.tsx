@@ -12,9 +12,9 @@ export const SustainabilityJourneyCard: React.FC<
         className="object-cover w-[570px] tablet:w-full h-[401px] tablet:h-[215px] rounded-lg"
       />
       <div className="w-[48%] flex tablet:relative flex-col text-green-800 tablet:w-full tablet:h-[260px]">
-        <h1 className="font-semibold text-2xl w-[60%] tablet:w-[90%] tablet:text-base tablet:mt-4">
+        <h3 className="font-semibold text-2xl w-[60%] tablet:w-[90%] tablet:text-base tablet:mt-4">
           {title}
-        </h1>
+        </h3>
         <p className="font-normal text-lg pt-2 w-[80%] tablet:w-full tablet:text-xs">
           {text}
         </p>

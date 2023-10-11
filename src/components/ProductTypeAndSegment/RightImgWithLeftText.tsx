@@ -15,7 +15,7 @@ export const RightImgWithLeftText: React.FC<RightImgWithLeftTextProps> = ({
   reverse = false,
   variant = "inverted",
   theme,
-  bgWidth = "w-[564px]"
+  bgWidth = "w-[564px]",
 }) => {
   const { isMobile } = useScreenWidth();
   return (
@@ -31,7 +31,13 @@ export const RightImgWithLeftText: React.FC<RightImgWithLeftTextProps> = ({
           isMobile ? "mb-10" : ""
         } ${reverse === false ? "tablet:flex-col" : "tablet:flex-col-reverse"}`}
       >
-        <div className={`flex flex-col max-w-[482px] whitespace-pre-line ${theme === "rentalHeavy" ? "pt-10" : "pt-20"} gap-10 w-1/2 tablet:w-full tablet:px-4 ${reverse === false ? "tablet:pt-6" : "tablet:pt-15"} tablet:pb-9`}>
+        <div
+          className={`flex flex-col max-w-[482px] whitespace-pre-line ${
+            theme === "rentalHeavy" ? "pt-10" : "pt-20"
+          } gap-10 w-1/2 tablet:w-full tablet:px-4 ${
+            reverse === false ? "tablet:pt-6" : "tablet:pt-15"
+          } tablet:pb-9`}
+        >
           <h3 className="font-semibold text-2xl tablet:text-base">
             {headerText}
           </h3>
@@ -39,14 +45,14 @@ export const RightImgWithLeftText: React.FC<RightImgWithLeftTextProps> = ({
             <p className="tablet:text-xs tablet:font-normal">{text}</p>
           </div>
           {buttonProps && (
-            <Button
-              variant={variant}
-              className="max-w-[265px] py-3 font-semibold tablet:max-w-full "
-            >
-              <a href={buttonProps.link} target="blank">
+            <a href={buttonProps.link} target="blank" className="max-w-[265px]">
+              <Button
+                variant={variant}
+                className="w-full py-3 font-semibold tablet:max-w-full "
+              >
                 {buttonProps?.text}
-              </a>
-            </Button>
+              </Button>
+            </a>
           )}
         </div>
         <div

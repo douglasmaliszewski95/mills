@@ -12,11 +12,11 @@ export const PositiveImpactsCarousel: React.FC<PositiveImpactsCarouselProps> = (
   props
 ) => {
   const { cards = [], title = "" } = props;
-  const { isMobile } = useScreenWidth()
+  const { isMobile } = useScreenWidth();
 
   return (
-    <Section containerClass="tablet:px-4" sectionClass="bg-gray-50">
-      <h1 className="text-2xl font-semibold text-green-800 tablet:text-base">{title}</h1>
+    <Section containerClass="tablet:px-4 mt-8" sectionClass="bg-gray-50">
+      <h3 className="text-2xl font-semibold text-green-800 tablet:text-base">{title}</h3>
       <Carousel
         className="mb-24 tablet:mt-2"
         hasDots={true}
@@ -36,6 +36,8 @@ export const PositiveImpactsCarousel: React.FC<PositiveImpactsCarouselProps> = (
             id={card.id}
             src={card.src}
             title={card.title}
+            btnTitle={card.btnTitle}
+            link={card.link}
           />
         ))}
       </Carousel>

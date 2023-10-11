@@ -8,7 +8,7 @@ import { About } from "@/components/shared/About/About";
 import { CompressorsContent, CompressorsContentText } from "./types";
 import { getImageSrc } from "@/utils/images";
 import { GeneratorCarrousel } from "@/components/Category/GeneratorCarrousel/GeneratorCarrousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
 import { transformContentToMobile } from "@/utils/content";
 import { Banner } from "@/components/shared/Banner/Banner";
@@ -16,6 +16,7 @@ import { Applications } from "@/components/Category/Applications/Applications";
 import { Advantages } from "@/components/Category/Advantages/Advantages";
 import { MainApplications } from "@/components/Category/MainApplications/MainApplications";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
+import { updateParagraphs } from "@/utils/texts";
 
 const Compressors = () => {
   const [content, setContent] = useState<CompressorsContent>();
@@ -23,10 +24,17 @@ const Compressors = () => {
   const { isMobile } = useScreenWidth();
 
   const getContent = async () => {
-    const contentAux = await getCMSContent("compressores_ar");
-    const contentShared = await getCMSContent("shared");
-
-    const contentTextShared = await getCMSText("shared");
+    const [
+      contentAux,
+      contentShared,
+      contentTextShared,
+      contentTextAux
+    ]: any = await Promise.all([
+      getCMSContent("compressores_ar"),
+      getCMSContent("shared"),
+      getCMSText("shared"),
+      getCMSText("compressores_ar")
+    ]);
 
     const responsiveContent: any = isMobile
       ? transformContentToMobile(contentAux)
@@ -42,7 +50,7 @@ const Compressors = () => {
     };
 
     const formattedText = {
-      products: contentTextShared?.["aluguel"][0]?.fields?.["text_field"],
+      products: contentTextAux?.["rent_text"]?.[0],
       sellParts: contentTextShared?.["vendemos_pecas"][0]?.fields?.["title"],
     };
 
@@ -75,6 +83,10 @@ const Compressors = () => {
     content?.[`${baseMainApplicationName}ordinarios.jpg`],
     content?.[`${baseMainApplicationName}industriais.jpg`],
   ];
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentText]);
 
   return (
     <>
@@ -125,8 +137,9 @@ const Compressors = () => {
           theme="beige-200"
         />
         <GeneratorCarrousel
-          title="Você precisa alugar compressores de ar para a sua empresa? Conte com a Mills!"
-          products={contentText?.products || []}
+          title={contentText?.products?.fields?.title}
+          products={contentText?.products?.fields?.text_field ?? []}
+          link={contentText?.products?.fields?.hrefButton ?? "#"}
           hasDna
         />
         <ExpertRecommendation />

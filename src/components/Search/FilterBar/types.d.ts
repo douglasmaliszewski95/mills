@@ -9,4 +9,5 @@ export interface FilterBarProps {
   onSearch: (term: string) => void;
   onSelectFilter: (label: string, link: string) => void;
   setIsFiltersOpen?: (isOpen: boolean) => void;
+  page?: string;
 }

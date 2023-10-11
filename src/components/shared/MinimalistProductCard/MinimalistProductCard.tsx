@@ -1,23 +1,24 @@
-/* eslint-disable @next/next/no-img-element */
 import { MinimalistProductCardProps } from "./types";
 import Button from "@/components/shared/Button/Button";
-import Link from "next/link";
 import { ImageOCC } from "../ImageOCC/ImageOCC";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import { ProductOCC } from "@/types";
+import { useState } from "react";
+import { DeleteCartModal } from "../DeleteCartModal/DeleteCartModal";
 
 export const MinimalistProductCard: React.FC<MinimalistProductCardProps> = (
   props
 ) => {
   const router = useRouter();
   const {
-    product: { id, thumbImageURLs, displayName },
-    baseUrl,
+    product: { thumbImageURLs, displayName },
     itemType = "Pecas",
   } = props;
 
-  const addToCart = async (product: any) => {
+  const [deleteCartProducts, setDeleteCartProducts] = useState<any>([]);
+
+  const addToCart = async (product: any, confirmed?: boolean) => {
     const storedItems =
       localStorage.getItem("items") ?? ""
         ? JSON.parse(localStorage.getItem("items") ?? "")
@@ -31,7 +32,8 @@ export const MinimalistProductCard: React.FC<MinimalistProductCardProps> = (
       storedItems.push({
         ...product,
         quantity: 1,
-        paymentFlow: localStorage.getItem("paymentFlow"),
+        paymentFlow:
+          itemType === "Pecas" ? itemType : localStorage.getItem("paymentFlow"),
       });
     }
 
@@ -39,8 +41,24 @@ export const MinimalistProductCard: React.FC<MinimalistProductCardProps> = (
       (item: ProductOCC) => item?.type === itemType
     );
 
-    localStorage.setItem("items", JSON.stringify(filteredItems));
-    router.push(`/${baseUrl}/carrinho/passo-01`);
+    const deleteCart = filteredItems.length !== storedItems.length;
+
+    if (deleteCart) {
+      setDeleteCartProducts(filteredItems);
+    } else {
+      confirmCart(filteredItems);
+    }
+  };
+
+  const confirmCart = (products: any) => {
+    localStorage.setItem("items", JSON.stringify(products));
+    if (itemType === "Pecas") {
+      router.push(`/pecas/carrinho/passo-01`);
+    } else if (itemType === null) {
+      router.push(`/vendas-de-maquinas/carrinho/passo-01`);
+    } else {
+      router.push(`/carrinho/passo-01`);
+    }
   };
 
   return (
@@ -63,6 +81,12 @@ export const MinimalistProductCard: React.FC<MinimalistProductCardProps> = (
       <Button size="full" onClick={() => addToCart(props.product)}>
         Incluir no orçamento
       </Button>
+      {!_.isEmpty(deleteCartProducts) && (
+        <DeleteCartModal
+          onConfirm={() => confirmCart(deleteCartProducts)}
+          onClose={() => setDeleteCartProducts([])}
+        />
+      )}
     </div>
   );
 };

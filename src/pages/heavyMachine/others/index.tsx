@@ -14,14 +14,19 @@ import { AboutRental } from "@/components/Category/AboutRental/AboutRental";
 import { OthersContent } from "./types";
 import { SimpleBanner } from "@/components/SimpleBanner/SimpleBanner";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { OtherSegments } from "@/components/HeavySegments/OtherSegments/OtherSegments";
 import { Slideshow } from "@/components/shared/Slideshow/Slideshow";
 import { SegmentsSlideshow } from "@/components/HeavySegments/SegmentsSlideshow/SegmentsSlideshow";
+import { updateParagraphs } from "@/utils/texts";
 
 function Others() {
   const [content, setContent] = useState<OthersContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isDesktop, isMobile } = useScreenWidth();
 
@@ -154,6 +159,7 @@ function Others() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
           forceImageDisplayOnMobile
           theme="beige-100"
           buttonVariant="outlined"
@@ -180,6 +186,7 @@ function Others() {
             content?.secondAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
           orientation="inverted"
           theme="green-800"
           color="white"

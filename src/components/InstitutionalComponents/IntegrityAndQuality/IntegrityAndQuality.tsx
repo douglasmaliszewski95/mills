@@ -47,7 +47,7 @@ export const IntegrityAndQuality: React.FC<IntegrityAndQualityProps> = (
               const text = desc.split(" || ")[1];
               return (
                 <div className="text-green-800 text-base my-6 tablet:text-xs" key={index}>
-                  <h1 className="font-semibold">{title}</h1>
+                  <h3 className="font-semibold">{title}</h3>
                   <p className="font-normal">{text}</p>
                 </div>
               );
@@ -71,9 +71,9 @@ export const IntegrityAndQuality: React.FC<IntegrityAndQualityProps> = (
         containerClass="tablet:px-4 tablet:py-8 py-24"
       >
         <div className="w-[65%] tablet:w-full text-green-800">
-          <h1 className="text-2xl font-semibold tablet:w-full w-[70%] tablet:text-base tablet:font-bold">
+          <h3 className="text-2xl font-semibold tablet:w-full w-[70%] tablet:text-base tablet:font-bold">
             {title}
-          </h1>
+          </h3>
           <p className="text-lg font-normal mt-4 tablet:w-full w-[95%] tablet:text-xs">
             {description}
           </p>

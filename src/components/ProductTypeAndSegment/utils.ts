@@ -317,6 +317,7 @@ export const maintenance = {
     text: "Reunindo os serviços de inspeções, reparos e vistorias periódicas a manutenção predial é capaz de promover o conforto, segurança e higiene. Em resumo, esse serviço aumenta a vida útil dos sistemas de uma construção. Por outro lado, a ausência de manutenção predial pode ocasionar prejuízos econômicos e riscos para a segurança dos usuários da edificação.",
     buttonProps: {
       text: "Ver modelos",
+      link: "/plataformas-elevatorias/busca",
     },
   },
   sectionWithRightImage: {
@@ -335,6 +336,7 @@ export const maintenance = {
     ],
     buttonProps: {
       text: "Ver modelos",
+      link: "/plataformas-elevatorias/busca",
     },
   },
   benefits: {
@@ -441,6 +443,7 @@ export const organization = {
     ],
     buttonProps: {
       text: "Ver modelos",
+      link: "/plataformas-elevatorias/busca",
     },
   },
   benefits: {
@@ -533,7 +536,7 @@ export const assemblyStructureMock = {
     headerText:
       "Com a Mills, você pode alugar plataformas elevatórias e realizar:",
     textCards: [
-      "Montagem de palcos para show, festivais, teatro e carnaval ",
+      "Montagem de palcos para show, festivais, teatro e carnaval",
       "Montagem de estrutura para cenário",
       "Desmontagem de estruturas com segurança",
       "Montagem de telões em eventos de entretenimento e cinema",
@@ -542,6 +545,10 @@ export const assemblyStructureMock = {
       "Auxiliar na montagem de pórticos para grandes eventos",
       "Auxiliar na montagem de arquibancadas (que podem ser pré-fabricadas ou não)",
     ],
+    buttonProps: {
+      text: "Ver modelos",
+      link: "/plataformas-elevatorias/busca",
+    },
   },
   talkToSpecialist: {
     headerText:

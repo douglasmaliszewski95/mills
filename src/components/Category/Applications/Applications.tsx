@@ -7,8 +7,6 @@ export const Applications: React.FC<ApplicationsProps> = (props) => {
   const { title, cards } = props;
   const router = useRouter();
 
-  console.log("router", router);
-
   return (
     <Section sectionClass="bg-beige-200 pt-12 pb-[68px] tablet:pb-8 tablet:pt-6 tablet:px-4">
       <h3 className="text-green-800 text-2xl font-semibold mb-10 tablet:mb-5 tablet:text-base">
@@ -18,7 +16,7 @@ export const Applications: React.FC<ApplicationsProps> = (props) => {
         {cards.map(({ fields }, index) => (
           <a
             key={index}
-            href={`${router.asPath}${fields?.content_text}` ?? ""}
+            href={`${router.asPath}${fields?.href_attribute}` ?? ""}
             className="cursor-pointer basis-1/3 tablet:basis-0 bg-no-repeat bg-cover rounded-lg h-[318px] aspect-square"
             style={{ backgroundImage: `url(${getImageSrc(fields)})` }}
           >

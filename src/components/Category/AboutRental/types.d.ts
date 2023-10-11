@@ -15,6 +15,7 @@ export interface AboutRentalProps {
   theme?: "orange-500" | "white" | "gray-50";
   textColor?: string;
   iconFont?: "base";
+  hasDna?: boolean;
   largeDescription?: boolean;
   forceTitleDisplay?: boolean;
 }

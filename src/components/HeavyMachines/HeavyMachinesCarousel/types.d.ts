@@ -3,4 +3,5 @@ export interface HeavyMachinesCarouselProps {
   buttonTitle: string;
   products: string[];
   description?: string;
+  isTalkToSpecialist?: boolean;
 }

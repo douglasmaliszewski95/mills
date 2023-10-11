@@ -9,6 +9,7 @@ import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import Button from "@/components/shared/Button/Button";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function AccessoriesAndImplements() {
   const { isMobile } = useScreenWidth();
@@ -99,6 +100,10 @@ export default function AccessoriesAndImplements() {
   useEffect(() => {
     getContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   return (
     <>

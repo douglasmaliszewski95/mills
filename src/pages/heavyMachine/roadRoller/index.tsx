@@ -10,7 +10,7 @@ import { getImageSrc } from "@/utils/images";
 import { About } from "@/components/shared/About/About";
 import { transformContentToMobile } from "@/utils/content";
 import { RoadRollerContent } from "./types";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { AboutWrapCards } from "@/components/shared/AboutWrapCards/AboutWrapCards";
 import { getText } from "@/services/hooks/getText";
 import { TalkToSpecialistHeavy } from "@/components/ProductTypeAndSegment/TalkToSpecialistHeavy";
@@ -18,10 +18,15 @@ import { HeavyMachinesCarousel } from "@/components/HeavyMachines/HeavyMachinesC
 import { InformationWithButton } from "@/components/shared/InformationWithButton/InformationWithButton";
 import { InformationWithLines } from "@/components/HeavyMachines/InformationWithLines/InformationWithLines";
 import { CarouselTabs } from "@/components/shared/CarouselTabs/CarouselTabs";
+import { updateParagraphs } from "@/utils/texts";
 
 function RoadRoller() {
   const [content, setContent] = useState<RoadRollerContent>();
   const [contentBase, setContentBase] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const { isMobile } = useScreenWidth();
 
@@ -105,7 +110,6 @@ function RoadRoller() {
           "maquinas_pesadas_rolo_compactador"
         );
         const contentText = await getText("maquinas_pesadas_rolo_compactador");
-        console.log("contentText", contentText);
         const contentShared = await getCMSContent("shared");
         setContentBase({ contentAux, contentText, contentShared });
         formatData({ contentAux, contentText, contentShared });
@@ -141,10 +145,8 @@ function RoadRoller() {
           description={content?.firstAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.firstAbout?.fields)}
           alt={content?.firstAbout?.fields?.alt_attribute ?? ""}
-          buttonTitle={
-            content?.firstAbout?.fields?.buttonText ??
-            "Fale com um especialista"
-          }
+          link={content?.firstAbout?.fields?.href_attribute ?? "#"}
+          buttonTitle={content?.firstAbout?.fields?.buttonText ?? "Ver modelos"}
         />
         <About
           title={content?.secondAbout?.fields?.content_title ?? ""}
@@ -162,6 +164,7 @@ function RoadRoller() {
           description={content?.carousel?.fields?.text_field?.[0]}
           buttonTitle={content?.carousel?.fields?.buttonText?.[0]}
           products={content?.carousel?.fields?.subtitle}
+          isTalkToSpecialist
         />
         <InformationWithLines
           title={content?.secondInformation?.fields?.text_field?.[0]}

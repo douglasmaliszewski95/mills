@@ -18,6 +18,8 @@ import { getCMSContent } from "@/components/Generators/content";
 import _ from "lodash";
 import { transformContentToMobile } from "@/utils/content";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { updateParagraphs } from "@/utils/texts";
+import { getImageSrc } from "@/utils/images";
 
 const schema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório"),
@@ -46,6 +48,10 @@ export default function StepTwo() {
   const { banner } = useGetCMSAssemblyStructure();
   const { isMobile } = useScreenWidth();
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner]);
+
   const {
     register,
     handleSubmit,
@@ -63,7 +69,7 @@ export default function StepTwo() {
         ? transformContentToMobile(contentAux)
         : contentAux;
 
-      setContent(responsiveContent);
+      setContent(responsiveContent?.banner_search_parts?.[0]);
     },
     [isMobile]
   );
@@ -72,7 +78,7 @@ export default function StepTwo() {
     const getContent = async () => {
       if (isMobile === undefined) return;
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("pecas_carrinho");
+        const contentAux = await getCMSContent("venda_pecas_busca");
         setContentBase({ contentAux });
         formatData({ contentAux });
       } else {
@@ -90,7 +96,7 @@ export default function StepTwo() {
     };
     localStorage.setItem("customInfos", JSON.stringify(dataWithRandomNumber));
 
-    router.push("/vendas-seminovos-novos/carrinho/orcamento-finalizado");
+    router.push("/vendas-de-maquinas/carrinho/orcamento-finalizado");
   };
 
   return (
@@ -106,7 +112,7 @@ export default function StepTwo() {
             { name: "Solicitar orçamento", href: "#" },
           ]}
           title={"Solicitar orçamento"}
-          backgroundImage={banner?.src}
+          backgroundImage={getImageSrc(content?.fields)}
         />
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -244,10 +250,19 @@ export default function StepTwo() {
                         {...register("concordancia")}
                         className="h-4 w-4 mr-2"
                       />
-                      Declaro que li e concordo com o Termo de Política de
-                      Privacidade e Cookies da Mills e dou consentimento para
-                      receber e-mails com informações sobre produtos e serviços
-                      e contato comercial.
+                      <p className="align-top text-sm text-green-800 tablet:text-[10px]">
+                        Declaro que li e concordo com o{" "}
+                        <a
+                          href="/politica-de-privacidade"
+                          target="_blank"
+                          className="underline underline-offset-2 text-orange-500"
+                        >
+                          Termo de Política de Privacidade e Cookies
+                        </a>{" "}
+                        da Mills e dou consentimento para receber e-mails com
+                        informações sobre produtos e serviços e contato
+                        comercial.
+                      </p>
                     </label>
                     {errors.concordancia && (
                       <p className="text-red-800 font-normal text-xs italic mt-1">
@@ -263,7 +278,7 @@ export default function StepTwo() {
             <div className="flex justify-between mt-7 tablet:flex-col-reverse tablet:items-center tablet:gap-5">
               <a
                 className="flex items-center w-[55px]"
-                href="/vendas-seminovos-novos/carrinho/passo-02"
+                href="/vendas-de-maquinas/carrinho/passo-02"
               >
                 <Image
                   src={largeOrangeChevronLeft}

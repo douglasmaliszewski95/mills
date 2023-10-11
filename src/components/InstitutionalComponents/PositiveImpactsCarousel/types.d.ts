@@ -3,7 +3,8 @@ interface PositiveImpactsCarouselCardsProps {
     description: string;
     src: string;
     id: number
-    link?: string;
+    link: string;
+    btnTitle: string;
 }
 
 interface PositiveImpactsCarouselProps {

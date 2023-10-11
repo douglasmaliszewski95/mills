@@ -1,3 +1,5 @@
+import { TextCMS } from "@/types";
+
 export interface RightImgWithLeftButtonsProps {
   img: string;
   headerText: string;
@@ -32,6 +34,7 @@ export interface LeftImgWithRightTextProps {
   hideImageInMobileMode?: true | false;
   reverse?: true | false;
   paddingBottom?: string;
+  isTalkToSpecialist?: boolean;
 }
 
 export interface DividerTextProps {
@@ -49,6 +52,7 @@ export interface OpinionProps {
   paragraphText?: string;
   spanText?: string;
   testimonial?: string;
+  content?: TextCMS;
   theme?: "rentalHeavy" | "rentalLight";
 }
 
@@ -81,4 +85,5 @@ interface ButtonProps {
 interface LiftingPlatformsProps {
   headerText: string;
   textCards?: string[];
+  buttonProps?: ButtonProps;
 }

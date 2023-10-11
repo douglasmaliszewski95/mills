@@ -3,6 +3,7 @@ import { LeftImgWithRightTextProps } from "../ProductTypeAndSegment/types";
 import Button from "../shared/Button/Button";
 
 import LeftImgWithRightTextAndBgImage from "@/assets/img/LeftImgWithRightTextAndBgImage.png";
+import { TalkToSpecialistModal } from "../shared/TalkToSpecialistModal/TalkToSpecialistModal";
 
 export const LeftImgWithRightTextAndBg: React.FC<LeftImgWithRightTextProps> = ({
   img,
@@ -11,6 +12,7 @@ export const LeftImgWithRightTextAndBg: React.FC<LeftImgWithRightTextProps> = ({
   buttonProps,
   variant = "orange",
   bgImage = false,
+  isTalkToSpecialist = false,
 }) => {
   const { isMobile } = useScreenWidth();
   return (
@@ -36,14 +38,24 @@ export const LeftImgWithRightTextAndBg: React.FC<LeftImgWithRightTextProps> = ({
           <p className="text-lg tablet:text-xs whitespace-pre-line">
             {paragraphText}
           </p>
-          {buttonProps && (
-            <Button
-              variant={variant === "green" ? "inverted" : "default"}
-              className="max-w-[265px]"
-            >
-              {buttonProps?.text}
-            </Button>
-          )}
+          {buttonProps &&
+            (isTalkToSpecialist ? (
+              <TalkToSpecialistModal>
+                <Button
+                  variant={variant === "green" ? "inverted" : "default"}
+                  className="max-w-[265px]"
+                >
+                  <p className="font-semibold text-sm">{buttonProps?.text}</p>
+                </Button>
+              </TalkToSpecialistModal>
+            ) : (
+              <Button
+                variant={variant === "green" ? "inverted" : "default"}
+                className="max-w-[265px]"
+              >
+                {buttonProps?.text}
+              </Button>
+            ))}
         </div>
         <div
           style={{ backgroundImage: `url(${img})` }}

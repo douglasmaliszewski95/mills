@@ -7,12 +7,20 @@ import parse from "html-react-parser";
 import { getText } from "@/services/hooks/getText";
 import { SectionText } from "@/components/SectionText";
 import { useCallback, useEffect, useState } from "react";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function PrivacyPolicy() {
   const [content, setContent] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   const getContent = useCallback(async () => {
-    const images = await getImage("politica_de_privacidade");
-    const text = await getText("politica_privacidade");
+    const [images, text]: any = await Promise.all([
+      getImage("politica_de_privacidade"),
+      getText("politica_privacidade")
+    ]);    
 
     const banner = {
       img: images?.banner_privacy_policy?.[0].fields.native.links[0].href || "",
@@ -21,6 +29,7 @@ export default function PrivacyPolicy() {
 
     const privacyPolicyText =
       text?.politica_privacidade?.[0].fields.text_field[0] || "";
+      
     const whoWeAre = {
       title: text?.who_we_are?.[0].fields.title || "",
       text: text?.who_we_are?.[0].fields.text_field[0] || "",
@@ -59,6 +68,7 @@ export default function PrivacyPolicy() {
     const cookiesPolicy = {
       title: text?.cookies_policy?.[0].fields.title || "",
       text: text?.cookies_policy?.[0].fields.text_field[0] || "",
+      topLine: true
     };
 
     const cookies = {
@@ -141,7 +151,7 @@ export default function PrivacyPolicy() {
             </div>
             {content?.listTexts.map((item: any, index: number) => {
               return (
-                <SectionText key={index} title={item.title} text={item.text} />
+                <SectionText key={index} title={item.title} text={item.text} topLine={item.topLine} />
               );
             })}
           </div>

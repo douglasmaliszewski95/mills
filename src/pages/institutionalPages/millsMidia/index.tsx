@@ -1,5 +1,5 @@
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { MillsNewsComponent } from "@/components/InstitutionalComponents/MillsNewsComponent/MillsNewsComponent";
 import { Pagination } from "@/components/InstitutionalComponents/MillsNewsComponent/Pagination";
 import { SearchNewsComponent } from "@/components/InstitutionalComponents/MillsNewsComponent/SearchNewsComponent";
@@ -13,6 +13,7 @@ import { InformationWithButton } from "@/components/shared/InformationWithButton
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { usDateFunc } from "@/utils/format-day-time";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { isEmpty } from "lodash";
 import { Fragment, useCallback, useEffect, useState } from "react";
 
@@ -36,8 +37,7 @@ const MillsMidia = () => {
       
       let portalSrc =  ''
       portaisImages.map((portal : any) => {
-        if(title.toLowerCase() === portal?.fields?.content_title.toLowerCase()) {
-         
+        if(title?.toLowerCase() === portal?.fields?.content_title?.toLowerCase()) {         
           portalSrc = portal?.fields?.native?.links[0]?.href
         }
       })
@@ -59,7 +59,7 @@ const MillsMidia = () => {
     const formattedPosts = postsArray.sort((a: any, b: any) => {
       const data1: any = usDateFunc(a.data);
       const data2: any = usDateFunc(b.data);
-      return data1 - data2;
+      return data2 - data1;
     });
 
     setFixedPosts(formattedPosts);
@@ -79,6 +79,10 @@ const MillsMidia = () => {
 
     getPageContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
 
   const formatRooms = () => {
     let formattedRooms: RoomProps[] = [];
@@ -164,7 +168,7 @@ const MillsMidia = () => {
           postNewArr.sort((a: any, b: any) => {
             const data1: any = usDateFunc(a.data);
             const data2: any = usDateFunc(b.data);
-            return data1 - data2;
+            return data2 - data1;
           })
         );
         setCurrentPage(1);
@@ -174,7 +178,7 @@ const MillsMidia = () => {
         fixedPosts?.sort((a: any, b: any) => {
           const data1: any = usDateFunc(a.data);
           const data2: any = usDateFunc(b.data);
-          return data1 - data2;
+          return data2 - data1;
         })
       );
       setCurrentPage(1);

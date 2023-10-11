@@ -11,7 +11,7 @@ export const CompareTwoProducts: React.FC<CompareTwoProductsProps> = (
       sectionClass="bg-white"
       containerClass="flex flex-col gap-6 tablet:px-4 text-green-800 py-10 tablet:py-4"
     >
-      <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+      <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
       <div className="flex flex-row-reverse gap-24 tablet:gap-10 tablet:flex-col-reverse ">
         {products.map((prd: ProductsProps, index: number) => (
           <div
@@ -19,9 +19,9 @@ export const CompareTwoProducts: React.FC<CompareTwoProductsProps> = (
             key={index}
           >
             <img src={prd.img} height="153px" width="212px" />
-            <h1 className="text-lg font-semibold my-4 tablet:text-base">
+            <h4 className="text-lg font-semibold my-4 tablet:text-base">
               {prd.title}
-            </h1>
+            </h4>
             <p className="text-base font-normal tablet:text-xs">
               {prd.description}
             </p>

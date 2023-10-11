@@ -16,6 +16,7 @@ import { transformCMSArrayToObject } from "@/utils/transformCMSArrayToObject";
 import { getText } from "@/services/hooks/getText";
 import { AboutCarousel } from "@/components/Category/AboutCarousel/AboutCarousel";
 import _ from "lodash";
+import { updateParagraphs } from "@/utils/texts";
 
 function MoldsAndShoring() {
   const [content, setContent] = useState<MoldsContent>();
@@ -96,9 +97,15 @@ function MoldsAndShoring() {
   useEffect(() => {
     const getContent = async () => {
       if (_.isEmpty(contentBase)) {
-        const contentAux = await getCMSContent("formas");
-        const contentSharedAux = await getCMSContent("shared");
-        const contentText = await getText("formas_e_escoramentos");
+        const [
+          contentAux,
+          contentSharedAux,
+          contentText
+        ]: any = await Promise.all([
+          getCMSContent("formas"),
+          getCMSContent("shared"),
+          getText("formas_e_escoramentos")
+        ]);        
         setContentBase({ contentAux, contentSharedAux, contentText });
         formatData({ contentAux, contentSharedAux, contentText });
       } else {
@@ -108,12 +115,16 @@ function MoldsAndShoring() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
+
   return (
     <>
       <Header />
       <main>
         <Banner
-          title={content?.banner?.fields?.content_title || ""}
+          title={content?.banner?.fields?.content_title ?? ""}
           backgroundImage={getImageSrc(content?.banner?.fields)}
           linkList={[
             {
@@ -123,10 +134,10 @@ function MoldsAndShoring() {
           ]}
         />
         <About
-          title={content?.firstAbout?.fields?.content_title || ""}
-          description={content?.firstAbout?.fields?.content_text || ""}
+          title={content?.firstAbout?.fields?.content_title ?? ""}
+          description={content?.firstAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.firstAbout?.fields)}
-          alt={content?.firstAbout?.fields?.alt_attribute || ""}
+          alt={content?.firstAbout?.fields?.alt_attribute ?? ""}
           orientation="inverted"
           hideImage={isMobile}
           link={content?.firstAbout?.fields?.href_attribute ?? "#"}
@@ -143,7 +154,10 @@ function MoldsAndShoring() {
         <AboutCarousel
           content={content?.shoring}
           theme="beige-200"
-          tooltipText={content?.shoring?.fields?.subtitle?.[0]}
+          tooltipText={
+            content?.shoring?.fields?.subtitle?.[0] ??
+            "A Associação Brasileira de Cimento Portland (ABCP) define o escoramento como uma estrutura provisória que possui em sua composição um conjunto de elementos com o intuito de apoiar as fôrmas de lajes e vigas. Ele é capaz, portanto, de suportar as cargas atuantes, o peso próprio do concreto, movimentação de operários e equipamentos. Este peso é transmitido para a estrutura anterior ou para o piso, até que essa estrutura se torne autoportante, podendo ser metálico ou de madeira."
+          }
         />
         <AboutCarousel content={content?.specialSystems} />
         {content?.differentials && (
@@ -156,14 +170,18 @@ function MoldsAndShoring() {
           <ConstructionSlideShow cards={content?.constructionCards} />
         )}
         <About
-          title={content?.secondAbout?.fields?.content_title || ""}
-          description={content?.secondAbout?.fields?.content_text || ""}
+          title={content?.secondAbout?.fields?.content_title ?? ""}
+          description={content?.secondAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.secondAbout?.fields)}
-          alt={content?.secondAbout?.fields?.alt_attribute || ""}
+          alt={content?.secondAbout?.fields?.alt_attribute ?? ""}
           orientation="inverted"
           theme="orange-500"
           color="white"
-          buttonTitle="Fale com um especialista"
+          buttonTitle={
+            content?.secondAbout?.fields?.buttonText ??
+            "Fale com um especialista"
+          }
+          isTalkToSpecialist
         />
       </main>
       <Footer />

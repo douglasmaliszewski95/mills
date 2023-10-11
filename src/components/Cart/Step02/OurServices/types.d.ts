@@ -3,5 +3,6 @@ export interface OurServicesProps {
   children: React.Children;
   tooltipText?: string;
   checked?: boolean;
+  href?: string;
   onClick?: () => void;
 }

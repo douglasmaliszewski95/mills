@@ -33,9 +33,13 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (inputValue === "") return;
-
-      router.push(`/plataformas-elevatorias/busca?productName=${inputValue}`);
-      onSearch(inputValue);
+      if (window?.location.pathname.includes("maquinas-pesadas") ) {
+        router.push(`/maquinas-pesadas/busca?productName=${inputValue}`);
+        onSearch(inputValue);
+      } else {
+        router.push(`/plataformas-elevatorias/busca?productName=${inputValue}`);
+        onSearch(inputValue);
+      }
     },
     [inputValue]
   );
@@ -68,7 +72,7 @@ export const SearchInput: React.FC<SearchInputProps> = (props) => {
           onChange={(e) => setInputValue(e.target.value)}
           autoFocus
           onBlur={handleOnBlur}
-          className="relative box-border px-3 w-full h-[24px] bg-orange-500 outline-none text-white border-b-[1px] border-white text-sm"
+          className={`relative box-border px-3 w-full h-[24px] ${window?.location.pathname.includes("maquinas-pesadas") ? "bg-green-800" : "bg-orange-500"} outline-none text-white border-b-[1px] border-white text-sm`}
         />
         {recommendations.length > 0 && (
           <div

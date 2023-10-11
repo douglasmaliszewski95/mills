@@ -2,20 +2,20 @@ import Link from "next/link";
 import { BannerProps } from "./types";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 
-export const Banner: React.FC<BannerProps> = (props) => {
-  const {
-    breadcrumb,
-    title,
-    backgroundImage,
-    blur = "",
-    linkList,
-    height,
-    subTitle,
-    buttonLink = "",
-    buttonTitle = "",
-    width = "w-full",
-  } = props;
-
+export const Banner = ({
+  breadcrumb,
+  title,
+  backgroundImage,
+  blur = "",
+  linkList,
+  height,
+  subTitle,
+  buttonLink = "",
+  buttonTitle = "",
+  width = "w-full",
+  mapsButton,
+  className = "",
+}: BannerProps) => {
   const { isMobile } = useScreenWidth();
 
   return (
@@ -24,17 +24,17 @@ export const Banner: React.FC<BannerProps> = (props) => {
         style={{
           backgroundImage: `url(${backgroundImage})`,
         }}
-        className="flex bg-no-repeat bg-cover w-full tablet:flex-col tablet:py-0"
+        className={`flex bg-no-repeat bg-cover w-full tablet:flex-col tablet:py-0 ${className}`}
       >
         <div
           className={`flex justify-center items-center flex-col bg-black/60 w-full h-60 ${
-            height ? `tablet:h-[${height}]` : "tablet:h-40"
+            height ? `tablet:h-[${height}]` : "tablet:h-40 "
           }`}
         >
           <div className="container justify-start tablet:flex-col tablet:px-4">
             <ul className="flex gap-1 text-white mb-4 tablet:mb-6">
               {linkList?.map((link: any, index: number) => (
-                <li key={link.name} className="flex gap-1 tablet:text-[10px]">
+                <li key={index} className="flex gap-1 tablet:text-[10px]">
                   <Link href={link?.href || ""}>{link?.name}</Link>
                   {index < linkList.length - 1 && <p> {">"} </p>}
                 </li>
@@ -47,11 +47,11 @@ export const Banner: React.FC<BannerProps> = (props) => {
               </h4>
             )}
 
-            <h1
+            <p
               className={`mb-6 text-white text-3xl ${width} tablet:font-bold tablet:w-full font-bold tablet:text-lg`}
             >
               {title ?? null}
-            </h1>
+            </p>
             {buttonLink && buttonTitle && !isMobile && (
               <a
                 href={buttonLink}
@@ -60,6 +60,7 @@ export const Banner: React.FC<BannerProps> = (props) => {
                 {buttonTitle}
               </a>
             )}
+            <div>{mapsButton}</div>
           </div>
         </div>
       </div>

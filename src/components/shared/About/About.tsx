@@ -10,6 +10,7 @@ import { LargePrevArrow } from "../Arrows/LargePrevArrow/LargePrevArrow";
 import { DnaTop } from "@/assets/DnaTop";
 import { DnaTopResponsive } from "@/assets/DnaTopResponsive";
 import { DnaBottomResponsive } from "@/assets/DnaBottomResponsive";
+import { TalkToSpecialistModal } from "../TalkToSpecialistModal/TalkToSpecialistModal";
 
 export const About: React.FC<AboutProps | any> = (props) => {
   const {
@@ -27,6 +28,7 @@ export const About: React.FC<AboutProps | any> = (props) => {
     link = "",
     forceDnaOnMobile = false,
     forceImageDisplayOnMobile = false,
+    isTalkToSpecialist = false,
     dnaColor,
     type = "banner",
     imagePadding = "",
@@ -35,6 +37,7 @@ export const About: React.FC<AboutProps | any> = (props) => {
     textFullLength = false,
     mobileImageFirst = false,
     costumizedButtonClass,
+    onClick = null,
   } = props;
 
   const { isDesktop, isMobile } = useScreenWidth();
@@ -71,6 +74,15 @@ export const About: React.FC<AboutProps | any> = (props) => {
           <DnaBottom color={dnaColor} />
         </div>
       )}
+      {showDna && !isMobile && !dnaOnTop && !imageFirst && (
+        <div
+          className={`absolute ${
+            imageFirst ? "right-3" : "left-0 w-full"
+          } bottom-3`}
+        >
+          <DnaBottom color={dnaColor} />
+        </div>
+      )}
       <div
         className={`basis-1/2 ${
           dnaOnTop && isMobile
@@ -85,7 +97,7 @@ export const About: React.FC<AboutProps | any> = (props) => {
             className={`absolute ${
               dnaOnTop
                 ? `${isMobile ? "top-0 right-0 flex justify-end" : "top-3"}`
-                : "bottom-3"
+                : "bottom-2"
             } ${
               (imageFirst && isDesktop) || forceDnaOnMobile
                 ? "right-3"
@@ -101,17 +113,19 @@ export const About: React.FC<AboutProps | any> = (props) => {
                   height="10"
                 />
               ) : (
-                <DnaTop color={dnaColor} width="615" height="20" />
+                <DnaTop color={dnaColor} width="615" height="88" />
               )
-            ) : forceDnaOnMobile ? (
+            ) : forceDnaOnMobile && (
               <DnaBottomResponsive
-                sizePercentage={32}
+                sizePercentage={40}
                 color={dnaColor}
-                width="190"
+                width="270"
               />
-            ) : (
-              <DnaBottom color={dnaColor} />
-            )}
+            )
+            // ) : (
+            //   <DnaBottom color={dnaColor} width="0"/>
+            // )
+          }
           </div>
         )}
         <h2
@@ -139,12 +153,21 @@ export const About: React.FC<AboutProps | any> = (props) => {
             </p>
           ))}
         </div>
-
-        {hasButton && (
+        {isTalkToSpecialist && (
+          <TalkToSpecialistModal>
+            <Button
+              className={`max-w-[264px] w-full relative z-10 mt-7 tablet:max-w-[992px] ${costumizedButtonClass}`}
+              variant={theme === "orange-500" ? "inverted" : buttonVariant}
+            >
+              <p className="py-[2px] text-sm font-semibold">{buttonTitle}</p>
+            </Button>
+          </TalkToSpecialistModal>
+        )}
+        {hasButton && !isTalkToSpecialist && (
           <a
-            href={link}
+            href={onClick ?? link}
             target="blank"
-            className={`z-10 max-w-[264px] tablet:max-w-full ${
+            className={`${dnaColor && "z-10"} max-w-[264px] tablet:max-w-full ${
               dnaColor && isDesktop && "mb-16"
             }`}
           >
@@ -153,6 +176,7 @@ export const About: React.FC<AboutProps | any> = (props) => {
                 <Button
                   className={`max-w-[264px] w-full mt-7 tablet:max-w-[992px] ${costumizedButtonClass}`}
                   variant={theme === "orange-500" ? "inverted" : buttonVariant}
+                  onClick={onClick}
                 >
                   <p className="py-[2px] text-sm font-semibold">
                     {buttonTitle}
@@ -208,9 +232,9 @@ export const About: React.FC<AboutProps | any> = (props) => {
                 key={card?.title}
               >
                 <div className="w-full tablet:h-full tablet:flex tablet:flex-col tablet:justify-end font-semibold text-white tablet:px-[18px] tablet:pb-8">
-                  <h1 className="text-2xl tablet:text-base tablet:px-16">
+                  <h3 className="text-2xl tablet:text-base tablet:px-16">
                     {card.title}
-                  </h1>
+                  </h3>
                   <p className="text-lg tablet:text-xs tablet:px-16">
                     {card.description}
                   </p>

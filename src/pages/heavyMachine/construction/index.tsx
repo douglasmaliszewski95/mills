@@ -14,6 +14,7 @@ import { AboutRental } from "@/components/Category/AboutRental/AboutRental";
 import { ConstructionContent } from "./types";
 import { SimpleBanner } from "@/components/SimpleBanner/SimpleBanner";
 import { CategoryCarousel } from "@/components/shared/CategoryCarousel/CategoryCarousel";
+import { updateParagraphs } from "@/utils/texts";
 
 function Construction() {
   const [content, setContent] = useState<ConstructionContent>();
@@ -86,6 +87,10 @@ function Construction() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentBase]);
+
   return (
     <>
       <Header />
@@ -116,6 +121,7 @@ function Construction() {
             content?.firstAbout?.fields?.buttonText ??
             "Fale com um especialista"
           }
+          isTalkToSpecialist
         />
         <CategoryCarousel
           title="Na Mills você encontra diversos modelos"

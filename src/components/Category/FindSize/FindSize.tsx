@@ -4,10 +4,11 @@ import { FindSizeProps } from "./types";
 import { LargeNextArrow } from "@/components/shared/Arrows/LargeNextArrow/LargeNextArrow";
 import { LargePrevArrow } from "@/components/shared/Arrows/LargePrevArrow/LargePrevArrow";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { DnaBottom } from "@/assets/DnaBottom";
 
 export const FindSize: React.FC<FindSizeProps> = (props) => {
   const { title, slides } = props;
-  const { isDesktop } = useScreenWidth();
+  const { isDesktop, isMobile } = useScreenWidth();
 
   return (
     <Section
@@ -17,6 +18,11 @@ export const FindSize: React.FC<FindSizeProps> = (props) => {
       <div className="basis-1/2 tablet:basis-0 h-full flex items-center">
         <h3 className="text-white text-4xl font-semibold mb-6 tablet:mb-0 tablet:text-base">
           {title ?? null}
+          <div className="relative flex justify-end">
+            <div className={isMobile ? "absolute top-[395px] left-[-110px]" : "absolute top-[150px] left-[-100px]"}>
+              <DnaBottom width={isMobile ? "400" : "650"} height={isMobile ? "50" : "88"} color="#FFFFFF" />
+            </div>
+          </div>
         </h3>
       </div>
       <div className="basis-1/2 tablet:basis-0 px-6 max-w-[50%] tablet:max-w-full tablet:px-0 h-full">

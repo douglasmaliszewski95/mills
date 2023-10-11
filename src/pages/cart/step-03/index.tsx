@@ -7,13 +7,21 @@ import { Steppers } from "@/components/Cart/Steppers/Steppers";
 import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import Image from "next/image";
 import Button from "@/components/shared/Button/Button";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import InputMask from "react-input-mask";
 import { useRouter } from "next/router";
 import { generateRandomSequence } from "@/utils/generateRandomSequence";
+import { updateParagraphs } from "@/utils/texts";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
+import { transformContentToMobile } from "@/utils/content";
+import { getCMSContent } from "@/components/Generators/content";
+import _ from "lodash";
+import { getImageSrc } from "@/utils/images";
+import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
+import { v4 as uuidv4 } from "uuid";
 
 const schema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório"),
@@ -39,16 +47,45 @@ const schema = yup.object().shape({
 
 export default function StepThree() {
   const router = useRouter();
-  const { banner } = useGetCMSAssemblyStructure();
-  const [customInfos, setCustomInfos] = useState<any>(null);
+
+  const { isMobile } = useScreenWidth();
+  const [banner, setBanner] = useState<any>();
+  const [contentBase, setContentBase] = useState<any>();
+
+  const formatData = useCallback(
+    (contentAux: any) => {
+      const content = isMobile
+        ? transformContentToMobile(contentAux)
+        : contentAux;
+
+      setBanner(content?.["banner_request_quote"]?.[0]);
+    },
+    [isMobile]
+  );
+
+  useEffect(() => {
+    const getContent = async () => {
+      if (_.isEmpty(contentBase)) {
+        const contentAux = await getCMSContent("solicitar_orcamento");
+        setContentBase(contentAux);
+        formatData(contentAux);
+      } else {
+        formatData({ ...contentBase });
+      }
+    };
+    getContent();
+  }, [formatData]);
   const [isClient, setIsClient] = useState(false);
+
+  const { currentSiteTheme } = useContext(currentSiteThemeContext);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   useEffect(() => {
-    const customInfos = localStorage.getItem("customInfos");
-    setCustomInfos(customInfos ? JSON.parse(customInfos) : undefined);
-  }, []);
+    updateParagraphs();
+  }, [banner]);
 
   const {
     register,
@@ -58,15 +95,41 @@ export default function StepThree() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (values: any) => {
     const randomNumber = generateRandomSequence();
+
+    const items =
+      localStorage.getItem("items") ?? ""
+        ? JSON.parse(localStorage.getItem("items") ?? "")
+        : [];
+
     const dataWithRandomNumber = {
-      ...data,
+      ...values,
       randomNumber: randomNumber,
     };
+
     localStorage.setItem("customInfos", JSON.stringify(dataWithRandomNumber));
 
-    router.push("/carrinho/orcamento-finalizado");
+    const data = {
+      budgetId: uuidv4(),
+      orderType: currentSiteTheme,
+      personalInformations: values,
+      items,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+
+    const response = await fetch("/api/checkout", options);
+
+    if (response.ok) {
+      router.push("/carrinho/orcamento-finalizado");
+    }
   };
 
   return (
@@ -82,8 +145,8 @@ export default function StepThree() {
               },
               { name: "Solicitar orçamento", href: "#" },
             ]}
-            title={"Solicitar orçamento"}
-            backgroundImage={banner?.src}
+            title={banner?.fields?.content_title}
+            backgroundImage={getImageSrc(banner?.fields)}
           />
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -220,18 +283,19 @@ export default function StepThree() {
                   </div>
 
                   <div className="flex justify-center mt-6">
-                    <div className="flex flex-col w-[668px]">
-                      <label className="flex align-top gap-4 text-sm text-green-800 tablet:text-[10px]">
-                        <input
+                    <div className="flex flex-row w-[668px]">
+                    <input
                           type="checkbox"
                           {...register("concordancia")}
-                          className="h-4 w-4 mr-2"
+                          className="h-6 w-8 mr-2"
                         />
-                        Declaro que li e concordo com o Termo de Política de
-                        Privacidade e Cookies da Mills e dou consentimento para
+                      <p className="align-top text-sm text-green-800 tablet:text-[10px]">
+                        
+                        Declaro que li e concordo com o <a href="/politica-de-privacidade" target="_blank" className="underline underline-offset-2 text-orange-500">Termo de Política de
+                        Privacidade e Cookies</a> da Mills e dou consentimento para
                         receber e-mails com informações sobre produtos e
                         serviços e contato comercial.
-                      </label>
+                      </p>
                       {errors.concordancia && (
                         <p className="text-red-800 font-normal text-xs italic mt-1">
                           {errors.concordancia.message}

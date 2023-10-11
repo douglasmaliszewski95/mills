@@ -19,7 +19,7 @@ export const GraderFunc: React.FC<GraderFuncProps> = (props) => {
         sectionClass="bg-gray-50"
         containerClass="flex flex-col tablet:px-4 text-green-800 gap-6 py-16 tablet:py-6 tablet:gap-2 "
       >
-        <h1 className="text-2xl font-semibold tablet:text-base">{title}</h1>
+        <h3 className="text-2xl font-semibold tablet:text-base">{title}</h3>
         <p className="text-lg font-normal w-[60%] tablet:w-full tablet:text-xs">
           {description}
         </p>
@@ -30,9 +30,9 @@ export const GraderFunc: React.FC<GraderFuncProps> = (props) => {
                 src={square.src}
                 className="tablet:w-[17px] tablet:h-[17px]"
               />
-              <h1 className="text-lg w-[70%] tablet:w-full desktop:text-center tablet:text-sm">
+              <h4 className="text-lg w-[70%] tablet:w-full desktop:text-center tablet:text-sm">
                 {square.title}
-              </h1>
+              </h4>
             </div>
           ))}
         </div>

@@ -12,11 +12,20 @@ import { Carousel } from "@/components/shared/Carousel/Carousel";
 import { LargeNextArrow } from "@/components/shared/Arrows/LargeNextArrow/LargeNextArrow";
 import { LargePrevArrow } from "@/components/shared/Arrows/LargePrevArrow/LargePrevArrow";
 import dnaBottom from "@/assets/dna-bottom.svg";
+import dnaTop from '@/assets/dna-top-orange.svg'
 import { useCallback, useEffect, useState } from "react";
+import { DnaTop } from "@/assets/DnaTop";
+import { updateParagraphs } from "@/utils/texts";
+import { TalkToSpecialistModal } from "@/components/shared/TalkToSpecialistModal/TalkToSpecialistModal";
 
 export default function Telemetry() {
   const { isMobile, isDesktop } = useScreenWidth();
   const [content, setContent] = useState<any>();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   const getContent = useCallback(async () => {
     const images = await getImage("telemetria_pesados");
     const texts = await getText("telemetria_pesados");
@@ -24,95 +33,112 @@ export default function Telemetry() {
     const benefits = {
       title: texts?.["heavy_machinery_telemetry_text"]?.[0].fields.title,
       text: texts?.["heavy_machinery_telemetry_text"]?.[0].fields.text_field[0],
-      cards: texts?.["heavy_machinery_telemetry_benefits"]?.[0].fields.subtitle.map((card: any, index: number) => {
+      cards: texts?.[
+        "heavy_machinery_telemetry_benefits"
+      ]?.[0].fields.subtitle.map((card: any, index: number) => {
         return {
           cardTitle: card,
-          cardText: texts?.["heavy_machinery_telemetry_benefits"]?.[0].fields.text_field[index]
-        }
-      })
+          cardText:
+            texts?.["heavy_machinery_telemetry_benefits"]?.[0].fields
+              .text_field[index],
+        };
+      }),
     };
 
     const telemetryData = {
       title: texts?.["heavy_machinery_telemetry_data_text"]?.[0].fields.title,
-      text: texts?.["heavy_machinery_telemetry_data_text"]?.[0].fields.text_field[0],
-      telemetryTypes: texts?.["heavy_machinery_telemetry_data"]?.[0].fields.subtitle.map((telemetry: any, index: number) => {
+      text: texts?.["heavy_machinery_telemetry_data_text"]?.[0].fields
+        .text_field[0],
+      telemetryTypes: texts?.[
+        "heavy_machinery_telemetry_data"
+      ]?.[0].fields.subtitle.map((telemetry: any, index: number) => {
         return {
           title: telemetry,
-          text: texts?.["heavy_machinery_telemetry_data"]?.[0].fields.text_field[index]
-        }
-      })
+          text: texts?.["heavy_machinery_telemetry_data"]?.[0].fields
+            .text_field[index],
+        };
+      }),
     };
 
     const telemetryWork = images?.["icon_heavy_telemetry"]?.map((item: any) => {
       return {
         img: item.fields.native.links[0].href,
-        text: item.fields.content_text
-      }
+        text: item.fields.content_text,
+      };
     });
 
     const banner = {
       img: images?.["banner_heavy_telemetry"]?.[0].fields.native.links[0].href,
       title: images?.["banner_heavy_telemetry"]?.[0].fields.content_title,
-      mobileImg: images?.["banner_heavy_telemetry"]?.[0].mobileObj.fields.native.links[0].href
+      mobileImg:
+        images?.["banner_heavy_telemetry"]?.[0].mobileObj.fields.native.links[0]
+          .href,
     };
 
     const catalog = {
       img: images?.["heavy_telemetry_catalog"]?.[0].fields.native.links[0].href,
       title: images?.["heavy_telemetry_catalog"]?.[0].fields.content_title,
-      mobileImg: images?.["heavy_telemetry_catalog"]?.[0].mobileObj.fields.native.links[0].href
+      mobileImg:
+        images?.["heavy_telemetry_catalog"]?.[0].mobileObj.fields.native
+          .links[0].href,
+      btnText:  images?.["heavy_telemetry_catalog"]?.[0]?.fields.button_text,
+      btnLink: images?.["heavy_telemetry_catalog"]?.[0]?.fields.href_attribute
     };
 
-    const firstAbout = images?.["heavy_telemetry"]?.find(
-      (item: any) => item.description.includes("telemetria01")
+    const firstAbout = images?.["heavy_telemetry"]?.find((item: any) =>
+      item.description.includes("telemetria01")
     );
 
-    const secondAbout = images?.["heavy_telemetry"]?.find(
-      (item: any) => item.description.includes("telemetria02")
+    const secondAbout = images?.["heavy_telemetry"]?.find((item: any) =>
+      item.description.includes("telemetria02")
     );
 
-    const thirdAbout = images?.["heavy_telemetry"]?.find(
-      (item: any) => item.description.includes("telemetria03")
+    const thirdAbout = images?.["heavy_telemetry"]?.find((item: any) =>
+      item.description.includes("telemetria03")
     );
 
-    const fourthAbout = images?.["heavy_telemetry"]?.find(
-      (item: any) => item.description.includes("telemetria04")
+    const fourthAbout = images?.["heavy_telemetry"]?.find((item: any) =>
+      item.description.includes("telemetria04")
     );
 
     setContent({
       banner: banner || null,
       catalog: catalog || null,
       benefits: benefits || null,
-      telemetryInfo: texts?.["heavy_machinery_telemetry_info"]?.[0].fields.title || "",
+      telemetryInfo:
+        texts?.["heavy_machinery_telemetry_info"]?.[0].fields.title || "",
       telemetryWork: telemetryWork || null,
       telemetryData: telemetryData || null,
-      firstAbout: {
-        title: firstAbout?.fields?.content_title,
-        description: firstAbout?.fields?.content_text,
-        image: firstAbout?.fields?.native.links[0].href,
-        alt: firstAbout?.fields?.alt_attribute,
-        mobileImg: firstAbout?.mobileObj?.fields?.native.links[0].href || ""
-      } || null,
-      secondAbout: {
-        title: secondAbout?.fields?.content_title,
-        description: secondAbout?.fields?.content_text,
-        image: secondAbout?.fields?.native.links[0].href,
-        alt: secondAbout?.fields?.alt_attribute,
-        mobileImg: secondAbout?.mobileObj?.fields?.native.links[0].href || ""
-      } || null,
+      firstAbout:
+        {
+          title: firstAbout?.fields?.content_title,
+          description: firstAbout?.fields?.content_text,
+          image: firstAbout?.fields?.native.links[0].href,
+          alt: firstAbout?.fields?.alt_attribute,
+          mobileImg: firstAbout?.mobileObj?.fields?.native.links[0].href || "",
+        } || null,
+      secondAbout:
+        {
+          title: secondAbout?.fields?.content_title,
+          description: secondAbout?.fields?.content_text,
+          image: secondAbout?.fields?.native.links[0].href,
+          alt: secondAbout?.fields?.alt_attribute,
+          mobileImg: secondAbout?.mobileObj?.fields?.native.links[0].href || "",
+        } || null,
       thirdAbout: {
         title: thirdAbout?.fields?.content_title,
         description: thirdAbout?.fields?.content_text,
         image: thirdAbout?.fields?.native.links[0].href,
         alt: thirdAbout?.fields?.alt_attribute,
-        mobileImg: thirdAbout?.mobileObj?.fields?.native.links[0].href || ""
+        mobileImg: thirdAbout?.mobileObj?.fields?.native.links[0].href || "",
       },
       fourthAbout: {
         title: fourthAbout?.fields?.content_title,
         description: fourthAbout?.fields?.content_text,
         image: fourthAbout?.fields?.native.links[0].href,
         alt: fourthAbout?.fields?.alt_attribute,
-        mobileImg: fourthAbout?.mobileObj?.fields?.native.links[0].href || ""
-      }
+        mobileImg: fourthAbout?.mobileObj?.fields?.native.links[0].href || "",
+      },
     });
   }, []);
 
@@ -122,7 +148,7 @@ export default function Telemetry() {
   return (
     <>
       <Header theme="rentalHeavy" />
-      <main className="h-full bg-white w-full">
+      <main className="h-full bg-white w-full ">
         <Banner
           backgroundImage={
             isMobile ? content?.banner?.mobileImg : content?.banner?.img
@@ -139,14 +165,25 @@ export default function Telemetry() {
         <About
           title={content?.firstAbout?.title}
           description={content?.firstAbout?.description}
-          image={isMobile ? content?.firstAbout?.mobileImg : content?.firstAbout?.image}
+          image={
+            isMobile
+              ? content?.firstAbout?.mobileImg
+              : content?.firstAbout?.image
+          }
           alt={content?.firstAbout?.alt}
-          buttonTitle="Falar com um especialista"
+          buttonTitle={
+            content?.firstAbout?.butonText ?? "Falar com um especialista"
+          }
+          isTalkToSpecialist
         />
         <About
           title={content?.secondAbout?.title}
           description={content?.secondAbout?.description}
-          image={isMobile ? content?.secondAbout?.mobileImg : content?.secondAbout?.image}
+          image={
+            isMobile
+              ? content?.secondAbout?.mobileImg
+              : content?.secondAbout?.image
+          }
           alt={content?.secondAbout?.alt}
           orientation="inverted"
           hasButton={false}
@@ -156,14 +193,22 @@ export default function Telemetry() {
         <About
           title={content?.thirdAbout?.title}
           description={content?.thirdAbout?.description}
-          image={isMobile ? content?.thirdAbout?.mobileImg : content?.thirdAbout?.image}
+          image={
+            isMobile
+              ? content?.thirdAbout?.mobileImg
+              : content?.thirdAbout?.image
+          }
           alt={content?.thirdAbout?.alt}
-          buttonTitle="Falar com um especialista"
+          buttonTitle={
+            content?.thirdAbout?.buttonText ?? "Falar com um especialista"
+          }
           theme="gray-800"
+          forceImageDisplayOnMobile={true}
+          isTalkToSpecialist
         />
         <section
           className="flex justify-center h-full text-green-800 bg-white bg-no-repeat bg-right-top"
-        // style={{ backgroundImage: isMobile ? "" : `url(${bgImg.src})` }}
+          // style={{ backgroundImage: isMobile ? "" : `url(${bgImg.src})` }}
         >
           <div className="flex justify-between container tablet:flex-col">
             <div
@@ -201,37 +246,46 @@ export default function Telemetry() {
             </h5>
           </div>
         </Section>
-        <section className="flex justify-center bg-gray-50 tablet:px-3">
+        <section className="flex justify-center bg-gray-50 tablet:px-3 ">
+          {isDesktop && (
+            <div className="absolute right-3 overflow-hidden">
+              <img src={dnaTop.src} className="tablet:max-w-[148%] mt-2" />
+            </div>
+          )}
           <div className="container py-10">
             <div className="py-5">
               <h3 className="pb-5 text-green-800 font-semibold text-2xl tablet:text-base">
                 {content?.telemetryData?.title}
               </h3>
-              <p className="text-green-800">
+              <p className="text-green-800 w-[50%] tablet:w-full">
                 {content?.telemetryData?.text}
               </p>
             </div>
             <div className="flex py-10 justify-between tablet:flex-col">
-              {content?.telemetryData?.telemetryTypes.map((telemetry: any, index: number) => {
-                return <div key={index} className="bg-white p-10 w-[48%] tablet:w-full tablet:mb-3">
-                  <h3 className="pb-5 text-green-800 font-semibold text-lg tablet:text-base">
-                    {telemetry.title}
-                  </h3>
-                  <p className="text-green-800">
-                    {telemetry.text}
-                  </p>
-                </div>
-              })}
+              {content?.telemetryData?.telemetryTypes.map(
+                (telemetry: any, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      className="bg-white p-10 w-[48%] tablet:w-full tablet:mb-3"
+                    >
+                      <h3 className="pb-5 text-green-800 font-semibold text-lg tablet:text-base">
+                        {telemetry.title}
+                      </h3>
+                      <p className="text-green-800">{telemetry.text}</p>
+                    </div>
+                  );
+                }
+              )}
             </div>
           </div>
         </section>
         <section className="flex justify-center text-white">
           <div
             style={{
-              backgroundImage: `url(${isMobile
-                ? content?.catalog?.mobileImg
-                : content?.catalog?.img
-                })`,
+              backgroundImage: `url(${
+                isMobile ? content?.catalog?.mobileImg : content?.catalog?.img
+              })`,
             }}
             className="flex bg-no-repeat bg-cover w-full tablet:flex-col tablet:py-0"
           >
@@ -240,9 +294,19 @@ export default function Telemetry() {
                 <h3 className="font-semibold w-[900px] text-3xl mb-6 tablet:w-full tablet:text-base tablet:mb-5">
                   {content?.catalog?.title}
                 </h3>
-                <Button className="py-3 w-[251px] tablet:w-full">
-                  Ver catálogo
-                </Button>
+                {isMobile ? (
+                  <TalkToSpecialistModal>
+                    <Button className="py-2 w-full">
+                      <p className="font-semibold text-sm">
+                        Fale com um especialista
+                      </p>
+                    </Button>
+                  </TalkToSpecialistModal>
+                ) : (
+                <a href={content?.catalog?.btnLink} target="_blank">
+                  <Button className="py-3 w-[251px]">{content?.catalog?.btnText}</Button>
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -260,7 +324,7 @@ export default function Telemetry() {
             </h4>
           </div>
           <div className="basis-1/2 tablet:basis-0 px-6 max-w-[50%] tablet:max-w-full tablet:px-0 h-full">
-            <div className="px-6 bg-white h-full tablet:rounded">
+            <div className="bg-white h-full tablet:rounded">
               <Carousel
                 className="h-full"
                 hasDots={false}
@@ -282,7 +346,7 @@ export default function Telemetry() {
                     key={index}
                     className="h-[506px] tablet:min-h-[380px] tablet:h-min"
                   >
-                    <div className="px-20 tablet:px-7 h-full flex flex-col justify-center tablet:min-h-[380px] tablet:py-2">
+                    <div className="pl-[50px] pr-[50px] tablet:px-7 h-full flex flex-col justify-center tablet:min-h-[380px] tablet:py-2">
                       <p className="text-[200px] tablet:text-[100px] font-semibold text-green-800 leading-[200px] tablet:leading-[100px]">
                         {index + 1}
                       </p>
@@ -302,16 +366,22 @@ export default function Telemetry() {
         <About
           title={content?.fourthAbout?.title}
           description={content?.fourthAbout?.description}
-          image={isMobile ? content?.fourthAbout?.mobileImg : content?.fourthAbout?.image}
+          image={
+            isMobile
+              ? content?.fourthAbout?.mobileImg
+              : content?.fourthAbout?.image
+          }
           alt={content?.fourthAbout?.alt}
           hasButton={false}
           forceImageDisplayOnMobile={true}
+          theme="gray-50"
+          dnaColor="green-800"
         />
         <MachinesAndPlatforms />
       </main>
       <Footer />
     </>
-  )
+  );
 }
 
 // export async function getStaticProps() {

@@ -15,7 +15,7 @@ import { transformContentToMobile } from "@/utils/content";
 import { Item } from "@/components/Category/AboutRental/types";
 import { InfiniteCards } from "@/components/Rental/InfiniteCards/InfiniteCards";
 import { DifferentPages } from "@/components/Rental/DifferentPages/DifferentPages";
-
+import { updateParagraphs } from "@/utils/texts";
 function PlatformRental() {
   const [content, setContent] = useState<TransportContent>();
   const [contentBase, setContentBase] = useState<any>();
@@ -101,6 +101,10 @@ function PlatformRental() {
     getContent();
   }, [formatData]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   return (
     <>
       <Header />
@@ -122,6 +126,11 @@ function PlatformRental() {
           description={content?.firstAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.firstAbout?.fields)}
           alt={content?.firstAbout?.fields?.alt_attribute ?? ""}
+          buttonTitle={
+            content?.firstAbout?.fields?.buttonText ??
+            "Fale com um especialista"
+          }
+          isTalkToSpecialist
         />
         <About
           title={content?.secondAbout?.fields?.content_title ?? ""}
@@ -132,7 +141,8 @@ function PlatformRental() {
           orientation="inverted"
           theme="orange-500"
           color="white"
-          dnaColor="#ffffff"
+          dnaColor="white"
+          forceDnaOnMobile={isMobile ? true : false}
         />
         {content?.advantages && (
           <AboutRental
@@ -140,6 +150,7 @@ function PlatformRental() {
             items={content?.advantages}
             theme="white"
             textColor="green-800"
+            hasDna={false}
           />
         )}
         <InfiniteCards
@@ -173,8 +184,12 @@ function PlatformRental() {
           description={content?.fifthAbout?.fields?.content_text ?? ""}
           image={getImageSrc(content?.fifthAbout?.fields)}
           alt={content?.fifthAbout?.fields?.alt_attribute ?? ""}
-          buttonTitle="Fale com um especialista"
+          buttonTitle={
+            content?.fifthAbout?.fields?.buttonText ??
+            "Fale com um especialista"
+          }
           forceImageDisplayOnMobile
+          isTalkToSpecialist
         />
       </main>
       <Footer />

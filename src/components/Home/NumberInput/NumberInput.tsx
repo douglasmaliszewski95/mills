@@ -3,13 +3,18 @@ import minusSign from "@/assets/minus-sign.svg";
 import plusSign from "@/assets/plus-sign.svg";
 import { trashIco } from "@/assets";
 import { NumberInputProps } from "./types";
+import {  watchCart } from "@/services/hooks/useCurrentSiteTheme";
 import { onlyNumbersRegex } from "@/utils/regex";
+import { useContext } from "react";
 
 export const NumberInput: React.FC<NumberInputProps> = (props) => {
   const { value, setValue, showTrash = false, wFull = false } = props;
-
+  const {setWatch, watch} = useContext(watchCart)
   const increment = () => setValue(value + 1);
-  const decrement = () => value > 0 && setValue(value - 1);
+  const decrement = () => {
+    value === 1 && setWatch(watch + 1)
+    value > 0 && setValue(value - 1)
+  };
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onlyNumbersRegex.test(e.target.value)) {

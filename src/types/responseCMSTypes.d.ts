@@ -219,4 +219,5 @@ interface FieldsProps {
   ];
   fileType: string;
   content_area: string;
+  href_attribute: string;
 }

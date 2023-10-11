@@ -2,6 +2,12 @@ import { ProductOCC } from "@/types";
 
 export interface MinimalistProductCardProps {
   product: ProductOCC;
-  baseUrl: string;
-  itemType?: "Equipamentos" | "Pecas";
+  itemType?:
+    | "Equipamentos"
+    | "Pecas"
+    | "Seminovos"
+    | "MaquinasPesadas"
+    | "Compressores"
+    | "Geradores"
+    | null;
 }

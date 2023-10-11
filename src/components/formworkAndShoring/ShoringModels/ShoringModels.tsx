@@ -17,6 +17,7 @@ export const ShoringModels: React.FC<ShoringModelsProps> = (props) => {
     textOnCenter = false,
     theme = "green-800",
     buttonTitle = "Ver modelos",
+    href = "/pecas/busca"
   } = props;
   const { isMobile } = useScreenWidth();
   const [products, setProducts] = useState<ProductOCC[]>([]);
@@ -94,13 +95,12 @@ export const ShoringModels: React.FC<ShoringModelsProps> = (props) => {
     <>
       <Section sectionClass={`bg-${theme} pt-10 tablet:px-[18px]`}>
         <div className={`text-${theme === "white" ? "green-800" : "white"}`}>
-          <h1
-            className={`font-semibold text-2xl tablet:text-base ${
-              textOnCenter && "w-full text-center"
-            }`}
+          <h3
+            className={`font-semibold text-2xl tablet:text-base ${textOnCenter && "w-full text-center"
+              }`}
           >
             {title}
-          </h1>
+          </h3>
           <div className="flex flex-row mt-5">
             <Carousel
               className="w-full absolute"
@@ -122,9 +122,11 @@ export const ShoringModels: React.FC<ShoringModelsProps> = (props) => {
           </div>
 
           <div className="w-full flex items-center justify-center py-10 font-semibold text-sm">
-            <Button className="w-[251.14px] h-[37px] tablet:w-full">
-              {buttonTitle}
-            </Button>
+            <a href={href}>
+              <Button className="w-[251.14px] h-[37px] tablet:w-full">
+                {buttonTitle}
+              </Button>
+            </a>
           </div>
         </div>
       </Section>

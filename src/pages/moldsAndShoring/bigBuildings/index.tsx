@@ -12,6 +12,8 @@ import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { ConstructionSlideShow } from "@/components/Category/ConstructionSlideShow/ConstructionSlideShow";
 import { ImageCMS } from "@/types";
 import { isEmpty } from "lodash";
+import { updateParagraphs } from "@/utils/texts";
+import { CustomExpertRecommendation } from "@/components/shared/CustomExpertRecommendation/CustomExpertRecommendation";
 
 export default function BigBuildings() {
   const [pageContent, setPageContent] = useState<any>();
@@ -115,6 +117,10 @@ export default function BigBuildings() {
     getContent();
   }, []);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent]);
+
   return (
     <Fragment>
       <Header />
@@ -134,7 +140,6 @@ export default function BigBuildings() {
           title={pageContent?.formas_e_escoramentos[0]?.fields?.content_title}
           theme="white"
           color="green-800"
-          hasButton={true}
           orientation="inverted"
           description={
             pageContent?.formas_e_escoramentos[0]?.fields?.content_text
@@ -143,7 +148,9 @@ export default function BigBuildings() {
             pageContent?.formas_e_escoramentos[0]?.fields?.native?.links[0]
               ?.href
           }
-          link={pageContent?.formas_e_escoramentos[0]?.href_attribute ?? "#"}
+          link={
+            pageContent?.formas_e_escoramentos[0]?.fields?.href_attribute ?? "#"
+          }
           buttonTitle={
             pageContent?.formas_e_escoramentos[0]?.buttonText ?? "Ver modelos"
           }
@@ -178,7 +185,9 @@ export default function BigBuildings() {
           <ConstructionSlideShow cards={formattPresentConstructions() || []} />
         )}
 
-        <ExpertRecommendation />
+        <CustomExpertRecommendation
+          content={pageContent?.banner_especialista?.[1]}
+        />
       </main>
       <Footer />
     </Fragment>

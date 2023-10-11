@@ -13,10 +13,15 @@ import { ShoringModels } from "@/components/formworkAndShoring/ShoringModels/Sho
 import { MultipleBrands } from "@/components/Parts/MultipleBrands/MultipleBrands";
 import { AboutSmallImage } from "@/components/AboutSmallImage/AboutSmallImage";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function PartsSale() {
   const [content, setContent] = useState<any>();
   const { isMobile } = useScreenWidth();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const getContent = useCallback(async () => {
     const images = await getImage("pesados_venda_pecas");
@@ -26,12 +31,10 @@ export default function PartsSale() {
 
     const brands = [
       contentAux?.["logo_brands_consolidated"]?.find(
-        (image: any) =>
-          image?.description === "logo brand venda de pecas JLG"
+        (image: any) => image?.description === "logo brand venda de pecas JLG"
       ),
       contentAux?.["logo_brands_consolidated"]?.find(
-        (image: any) =>
-          image?.description === "logo brand venda de pecas genie"
+        (image: any) => image?.description === "logo brand venda de pecas genie"
       ),
       contentAux?.["logo_brands_consolidated"]?.find(
         (image: any) =>
@@ -46,27 +49,40 @@ export default function PartsSale() {
     const formattedData = {
       banner: images?.["heavy_machinery_banner_parts"]?.[0],
       firstAbout: {
-        title: images?.["heavy_machinery_parts_variety"]?.[0].fields.content_title,
-        description: images?.["heavy_machinery_parts_variety"]?.[0].fields.content_text,
-        image: images?.["heavy_machinery_parts_variety"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_variety"]?.[0].fields.alt_attribute,
-        btnText: images?.["heavy_machinery_parts_variety"]?.[0].fields.button_text,
-        href: images?.["heavy_machinery_parts_variety"]?.[0].fields.href_attribute
+        title:
+          images?.["heavy_machinery_parts_variety"]?.[0].fields.content_title,
+        description:
+          images?.["heavy_machinery_parts_variety"]?.[0].fields.content_text,
+        image:
+          images?.["heavy_machinery_parts_variety"]?.[0].fields.native.links[0]
+            .href,
+        alt: images?.["heavy_machinery_parts_variety"]?.[0].fields
+          .alt_attribute,
+        btnText:
+          images?.["heavy_machinery_parts_variety"]?.[0].fields.button_text,
+        href: images?.["heavy_machinery_parts_variety"]?.[0].fields
+          .href_attribute,
       },
       secondAbout: {
-        title: images?.["heavy_machinery_parts_available"]?.[0].fields.content_title,
-        image: images?.["heavy_machinery_parts_available"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_available"]?.[0].fields.alt_attribute,
+        title:
+          images?.["heavy_machinery_parts_available"]?.[0].fields.content_title,
+        image:
+          images?.["heavy_machinery_parts_available"]?.[0].fields.native
+            .links[0].href,
+        alt: images?.["heavy_machinery_parts_available"]?.[0].fields
+          .alt_attribute,
       },
-      benefits: images?.["heavy_machinery_parts_benefits"]?.sort(
-        (a: any, b: any) => a?.fields.content_order - b?.fields.content_order
-      ).map((item: SearchCMS) => {
-        return {
-          title: item.fields.content_title,
-          image: item.fields.native.links[0].href,
-          alt: item.fields.alt_attribute
-        }
-      }),
+      benefits: images?.["heavy_machinery_parts_benefits"]
+        ?.sort(
+          (a: any, b: any) => a?.fields.content_order - b?.fields.content_order
+        )
+        .map((item: SearchCMS) => {
+          return {
+            title: item.fields.content_title,
+            image: item.fields.native.links[0].href,
+            alt: item.fields.alt_attribute,
+          };
+        }),
       platformParts: contentText?.["platform_parts_text"]?.[0],
       brands,
       brandsText: contentText?.["consolidated_brands_text"]?.[0],
@@ -77,39 +93,67 @@ export default function PartsSale() {
       ),
       rent: {
         title: texts?.["heavy_machinery_parts_rent"]?.[0].fields.title,
-        btnText: texts?.["heavy_machinery_parts_rent"]?.[0].fields.buttonText[0],
-        href: texts?.["heavy_machinery_parts_rent"]?.[0].fields.hrefButton[0]
+        btnText:
+          texts?.["heavy_machinery_parts_rent"]?.[0].fields.buttonText[0],
+        href: texts?.["heavy_machinery_parts_rent"]?.[0].fields.hrefButton[0],
       },
       contact: {
         title: texts?.["heavy_machinery_parts_contact"]?.[0].fields.title,
-        btnText: texts?.["heavy_machinery_parts_contact"]?.[0].fields.buttonText[0],
-        href: texts?.["heavy_machinery_parts_contact"]?.[0].fields.hrefButton[0]
+        btnText:
+          texts?.["heavy_machinery_parts_contact"]?.[0].fields.buttonText[0],
+        href: texts?.["heavy_machinery_parts_contact"]?.[0].fields
+          .hrefButton[0],
       },
       thirdAbout: {
-        title: images?.["heavy_machinery_parts_analysis"]?.[0].fields.content_title,
-        description: images?.["heavy_machinery_parts_analysis"]?.[0].fields.content_text,
-        image: images?.["heavy_machinery_parts_analysis"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_analysis"]?.[0].fields.alt_attribute,
+        title:
+          images?.["heavy_machinery_parts_analysis"]?.[0].fields.content_title,
+        description:
+          images?.["heavy_machinery_parts_analysis"]?.[0].fields.content_text,
+        image:
+          images?.["heavy_machinery_parts_analysis"]?.[0].fields.native.links[0]
+            .href,
+        alt: images?.["heavy_machinery_parts_analysis"]?.[0].fields
+          .alt_attribute,
       },
       fourthAbout: {
-        title: images?.["heavy_machinery_parts_warranty"]?.[0].fields.content_title,
-        image: images?.["heavy_machinery_parts_warranty"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_warranty"]?.[0].fields.alt_attribute,
+        title:
+          images?.["heavy_machinery_parts_warranty"]?.[0].fields.content_title,
+        image:
+          images?.["heavy_machinery_parts_warranty"]?.[0].fields.native.links[0]
+            .href,
+        alt: images?.["heavy_machinery_parts_warranty"]?.[0].fields
+          .alt_attribute,
       },
       fifthAbout: {
-        title: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.content_title,
-        description: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.content_text,
-        image: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.alt_attribute,
-        btnText: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.button_text,
-        href: images?.["heavy_machinery_parts_maintenance"]?.[0].fields.href_attribute
+        title:
+          images?.["heavy_machinery_parts_maintenance"]?.[0].fields
+            .content_title,
+        description:
+          images?.["heavy_machinery_parts_maintenance"]?.[0].fields
+            .content_text,
+        image:
+          images?.["heavy_machinery_parts_maintenance"]?.[0].fields.native
+            .links[0].href,
+        alt: images?.["heavy_machinery_parts_maintenance"]?.[0].fields
+          .alt_attribute,
+        btnText:
+          images?.["heavy_machinery_parts_maintenance"]?.[0].fields.button_text,
+        href: images?.["heavy_machinery_parts_maintenance"]?.[0].fields
+          .href_attribute,
       },
       sixthAbout: {
-        title: images?.["heavy_machinery_parts_specialist"]?.[0].fields.content_title,
-        image: images?.["heavy_machinery_parts_specialist"]?.[0].fields.native.links[0].href,
-        alt: images?.["heavy_machinery_parts_specialist"]?.[0].fields.alt_attribute,
-        btnText: images?.["heavy_machinery_parts_specialist"]?.[0].fields.button_text,
-        href: images?.["heavy_machinery_parts_specialist"]?.[0].fields.href_attribute
+        title:
+          images?.["heavy_machinery_parts_specialist"]?.[0].fields
+            .content_title,
+        image:
+          images?.["heavy_machinery_parts_specialist"]?.[0].fields.native
+            .links[0].href,
+        alt: images?.["heavy_machinery_parts_specialist"]?.[0].fields
+          .alt_attribute,
+        btnText:
+          images?.["heavy_machinery_parts_specialist"]?.[0].fields.button_text,
+        href: images?.["heavy_machinery_parts_specialist"]?.[0].fields
+          .href_attribute,
       },
     };
 
@@ -125,7 +169,9 @@ export default function PartsSale() {
       <main className="h-full bg-white w-full">
         <Banner
           backgroundImage={
-            isMobile ? content?.banner?.fields.native.links[0].href : content?.banner?.mobileObj?.fields.native.links[0].href
+            isMobile
+              ? content?.banner?.fields.native.links[0].href
+              : content?.banner?.mobileObj?.fields.native.links[0].href
           }
           title={content?.banner?.fields?.content_title ?? ""}
           linkList={[
@@ -151,27 +197,33 @@ export default function PartsSale() {
           hasButton={false}
           theme="green-800"
           color="white"
-        // dnaColor="white"
+          // dnaColor="white"
         />
         <section
           className="flex justify-center h-full text-green-800 bg-white bg-no-repeat bg-right-top"
-        // style={{ backgroundImage: isMobile ? "" : `url(${bgImg.src})` }}
+          // style={{ backgroundImage: isMobile ? "" : `url(${bgImg.src})` }}
         >
           <div className="flex justify-between container tablet:flex-col">
             <div
               className={`flex flex-col py-20 gap-10 tablet:w-full tablet:px-4 tablet:pt-6 tablet:pb-9`}
             >
-              <h3 className="font-semibold text-2xl w-[50%] tablet:text-base">
-                Ao escolher a Mills como fornecedor de peças para plataformas elevatórias, você terá
+              <h3 className="font-semibold text-2xl w-[50%] tablet:text-base tablet:w-full">
+                Ao escolher a Mills como fornecedor de peças para plataformas
+                elevatórias, você terá
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 tablet:justify-center">
                 {content?.benefits?.map((item: any, index: any) => {
                   return (
                     <div
                       key={index}
                       className="flex flex-col items-center gap-4 w-[230px]"
                     >
-                      <img alt={item.alt} src={item.image} width={56} height={56} />
+                      <img
+                        alt={item.alt}
+                        src={item.image}
+                        width={56}
+                        height={56}
+                      />
                       <p className="text-center font-bold">{item.title}</p>
                     </div>
                   );
@@ -225,6 +277,7 @@ export default function PartsSale() {
           image={content?.thirdAbout?.image}
           alt={content?.thirdAbout?.alt}
           hasButton={false}
+          forceImageDisplayOnMobile={true}
         />
         <About
           title={content?.fourthAbout?.title}
@@ -234,7 +287,7 @@ export default function PartsSale() {
           hasButton={false}
           theme="green-800"
           color="white"
-        // dnaColor="white"
+          // dnaColor="white"
         />
         <About
           title={content?.fifthAbout?.title}
@@ -243,6 +296,7 @@ export default function PartsSale() {
           alt={content?.fifthAbout?.alt}
           buttonTitle={content?.fifthAbout?.btnText}
           link={content?.fifthAbout?.href}
+          forceImageDisplayOnMobile={true}
         />
         <About
           title={content?.sixthAbout?.title}
@@ -257,7 +311,7 @@ export default function PartsSale() {
         />
         <MachinesAndPlatforms />
       </main>
-      <Footer theme="rentalHeavy" />
+      <Footer />
     </>
-  )
+  );
 }

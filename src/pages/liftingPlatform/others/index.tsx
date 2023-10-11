@@ -15,6 +15,8 @@ import { useGetCMSOtherPage } from "@/services/hooks/useGetCMSOtherPage";
 import { Header } from "@/components/shared/Header/Header";
 import { AlwaysLeftImgWithRightText } from "@/components/ProductTypeAndSegment/AlwaysLeftImgWithRightText";
 import { AlwaysRightImgWithLeftText } from "@/components/ProductTypeAndSegment/AlwaysRightImgWithLeftText";
+import { updateParagraphs } from "@/utils/texts";
+import { useEffect } from "react";
 
 export default function Others() {
   const {
@@ -29,6 +31,21 @@ export default function Others() {
     millsHasTheSolution,
     otherTexts,
   } = useGetCMSOtherPage();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [
+    banner,
+    millsServices,
+    graffitiAndUrban,
+    harvestingMachines,
+    muralPainting,
+    verticalCemetery,
+    cheeseDrying,
+    movementOfPartsStock,
+    millsHasTheSolution,
+    otherTexts,
+  ]);
 
   return (
     <>
@@ -100,6 +117,7 @@ export default function Others() {
           headerText={millsHasTheSolution?.headerText}
           buttonProps={{ text: "Fale com um especialista" }}
           bgImage={true}
+          isTalkToSpecialist
         />
 
         <MachinesAndPlatforms />

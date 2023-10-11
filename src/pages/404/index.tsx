@@ -1,10 +1,11 @@
 import { Footer } from "@/components/shared/Footer/Footer";
 import { useCallback, useEffect, useState } from "react";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import Button from "@/components/shared/Button/Button";
 import { useRouter } from "next/router";
 import { getImage } from "@/services/hooks/getImage";
 import { Header } from "@/components/shared/Header/Header";
+import { updateParagraphs } from "@/utils/texts";
 
 const NotFoundPage = () => {
   const router = useRouter();
@@ -25,6 +26,10 @@ const NotFoundPage = () => {
   useEffect(() => {
     getContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   return (
     <>

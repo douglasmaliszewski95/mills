@@ -1,5 +1,5 @@
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { DownloadsComponent } from "@/components/InstitutionalComponents/DownloadsComponent/DownloadsComponent";
 import { DownloadsCardProps } from "@/components/InstitutionalComponents/DownloadsComponent/types";
 import { Banner } from "@/components/shared/Banner/Banner";
@@ -8,6 +8,7 @@ import { Header } from "@/components/shared/Header/Header";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useState, useEffect } from "react";
 
 export default function Downloads() {
@@ -23,6 +24,10 @@ export default function Downloads() {
   useEffect(() => {
     getPageContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent]);
 
   const formatDownloads = () => {
     let formattedDownloads: DownloadsCardProps[] = []

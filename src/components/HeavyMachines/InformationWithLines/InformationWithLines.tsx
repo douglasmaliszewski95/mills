@@ -15,14 +15,14 @@ export const InformationWithLines: React.FC<InformationWithLinesProps> = (
 
   return (
     <Section
-      sectionClass={`relative h-[192px] bg-${theme} relative`}
+      sectionClass={`relative h-[192px] bg-${theme}`}
       containerClass={`tablet:px-4 flex flex-row tablet:flex-col text-${
         isBeige ? "green-800" : "white"
       } h-full justify-center tablet:justify-evenly`}
     >
-      <h1 className="w-[50%] tablet:w-full text-2xl font-semibold tablet:text-base flex items-center">
+      <h3 className="w-[50%] tablet:w-full text-2xl font-semibold tablet:text-base flex items-center">
         {title}
-      </h1>
+      </h3>
       <div className="w-[50%] tablet:w-full flex items-center justify-center">
         {isBeige ? (
           <a href={buttonLink} className="w-[40%] tablet:w-full relative z-50">
@@ -41,10 +41,13 @@ export const InformationWithLines: React.FC<InformationWithLinesProps> = (
       </div>
       {isBeige ? (
         isMobile ? (
-          <div className="absolute bottom-0">
+          <div
+            className="absolute bottom-0 overflow-hidden"
+            style={{ maxWidth: "94vw" }}
+          >
             <DnaBottomResponsive
               sizePercentage={110}
-              width="700"
+              width="720"
               height="120"
               color="#F37021"
             />

@@ -20,6 +20,8 @@ import { getImage } from "@/services/hooks/getImage";
 import { truck } from "@/assets";
 import Button from "@/components/shared/Button/Button";
 import _ from "lodash";
+import { updateParagraphs } from "@/utils/texts";
+import { TalkToSpecialistModal } from "@/components/shared/TalkToSpecialistModal/TalkToSpecialistModal";
 
 export default function HeavyMachineSearch() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -28,19 +30,23 @@ export default function HeavyMachineSearch() {
   const [filters, setFilters] = useState<Filters[]>([]);
   const [refinementCrumbs, setRefinementCrumbs] = useState([]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
+
   const [selectedFilters, setSelectedFilters] = useState<Refinement[]>([]);
 
   const { isDesktop, isMobile } = useScreenWidth();
 
   const mapFilters = () => {
-    const newState: Refinement[] = refinementCrumbs.map(
-      (crumb: RefinementCrumbs) => {
+    const newState: Refinement[] = refinementCrumbs
+      .filter((crumb: RefinementCrumbs) => crumb.label !== "Pesados")
+      .map((crumb: RefinementCrumbs) => {
         return {
           link: crumb.removeAction.link,
           label: crumb.label,
         };
-      }
-    );
+      });
 
     setSelectedFilters(newState);
   };
@@ -54,11 +60,14 @@ export default function HeavyMachineSearch() {
   }, []);
 
   const onSelectFilter = async (label: string, link: string) => {
-    const response = await searchRequest(link);
+    const response = link === "?pageSize=150"
+      ? await initialSearchRequest("?N=3592201831")
+      : await initialSearchRequest(link);
     const formattedResponse = await response.json();
     setProducts(formattedResponse.products[0]);
-    const usedFilters = formattedResponse.refinementCrumbs.map(
-      (filter: RefinementCrumbs) => {
+    const usedFilters = formattedResponse.refinementCrumbs
+      .filter((crumb: RefinementCrumbs) => crumb.label !== "Pesados")
+      .map((filter: RefinementCrumbs) => {
         return {
           displayName: filter.displayName,
           refinements: [
@@ -68,8 +77,7 @@ export default function HeavyMachineSearch() {
             },
           ],
         };
-      }
-    );
+      });
 
     const repeatedMenu = formattedResponse.filters.map((used: Filters) => {
       const repeated = usedFilters.filter(
@@ -118,21 +126,38 @@ export default function HeavyMachineSearch() {
   const submitFilters = () => null;
 
   const searchRequest = (product: string) => {
+    const requestBody = {
+      category: "3592201831",
+      searchTerm: product,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    };
+
+    return fetch("/api/search", requestOptions);
+  };
+
+  const initialSearchRequest = (product: string) => {
     return fetch(`/api/search?productName=${product}`);
   };
 
   const onSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(`Ntt=${term}`);
+    const response = await searchRequest(term);
     const formattedResponse = await response.json();
-    if (!!formattedResponse.error) return;
+    if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
     setFilters(formattedResponse.filters);
   }, []);
 
   const initialSearch = useCallback(async (term: string) => {
-    const response = await searchRequest(term);
+    const response = await initialSearchRequest(term);
     const formattedResponse = await response.json();
-    if (!!formattedResponse.error) return;
+    if (formattedResponse.error) return;
     setProducts(formattedResponse.products[0]);
     setFilters(formattedResponse.filters);
   }, []);
@@ -146,14 +171,17 @@ export default function HeavyMachineSearch() {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
     const searchTerm = params.get("productName");
-    if (_.isEmpty(searchTerm)) {
-      if (_.isEmpty(queryString)) {
-        initialSearch("?N=3592201831")
-      } else {
-        initialSearch(queryString)  
-      }
+    const formHomeParams = params.get("localUtility");
+    const productSearchCode = process.env.NEXT_PUBLIC_HEAVY_MACHINES;
+
+    const searchParam = queryString
+      ? `?N=${productSearchCode}&${queryString.substring(1)}`
+      : `?N=${productSearchCode}`;
+
+    if (_.isEmpty(searchTerm)|| !_.isEmpty(formHomeParams)) {
+      initialSearch(searchParam);
     } else {
-      onSearch(searchTerm || "?N=3592201831")
+      onSearch(searchTerm ?? `?N=${productSearchCode}`);
     }
     getContent();
   }, []);
@@ -173,9 +201,7 @@ export default function HeavyMachineSearch() {
       <Header onSearch={onSearch} theme="rentalHeavy" />
       <main>
         <Banner
-          breadcrumb={
-            isDesktop ? "Home > Buscar máquina" : "Buscar máquina"
-          }
+          breadcrumb={isDesktop ? "Home > Buscar máquina" : "Buscar máquina"}
           title={content?.fields.content_title}
           backgroundImage={content?.fields.native.links[0].href}
         />
@@ -191,6 +217,7 @@ export default function HeavyMachineSearch() {
           )}
           <ProductList
             products={products}
+            itemType="MaquinasPesadas"
             selectedFilters={selectedFilters}
             onRemoveFilter={onSelectFilter}
             setIsFiltersOpen={setIsFiltersOpen}
@@ -198,18 +225,24 @@ export default function HeavyMachineSearch() {
         </Section>
         <ExpertRecommendation />
         <MachinesAndPlatforms />
-        <div className="flex justify-center w-full fixed bg-green-800 bottom-0 py-4 ">
+        <div className="flex justify-center w-full fixed bg-green-900 bottom-0 py-4">
           <div className="flex align-middle items-center justify-between container tablet:flex-col tablet:text-xs tablet:px-6 tablet:text-center">
             <div className="flex align-middle items-center gap-10 text-white ">
-              <img src={truck} alt="truck" className="tablet:hidden" />
-              <span className="max-w-[520px] tablet:max-w-full">
+              <img
+                src={truck.src}
+                alt="truck"
+                className="tablet:hidden max-h-[38px]"
+              />
+              <span className="max-w-[520px] tablet:max-w-full font-semibold">
                 Fale com um de nossos consultores para ver outras categorias,
                 marcas, modelos e acessórios disponíveis para consulta.
               </span>
             </div>
-            <Button className="py-3 px-14 tablet:mt-3">
-              Fale com um consultor
-            </Button>
+            <TalkToSpecialistModal>
+              <Button className="py-2 px-14 tablet:mt-3 w-[260px]">
+                <p className="text-sm font-semibold">Fale com um consultor</p>
+              </Button>
+            </TalkToSpecialistModal>
           </div>
         </div>
       </main>

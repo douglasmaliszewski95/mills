@@ -51,17 +51,7 @@ export const useGetCMSCases = async () => {
   const listCases = Object.values(groupingByTitle);
   listCases.sort((a: any, b: any) => a.contentOrder - b.contentOrder);
 
-  const customerReviews = {
-    title: text?.customer_reviews[0].fields.title,
-    listOfOpinions: text?.customer_reviews[0].fields.text_field?.map(
-      (item: any, index: number) => {
-        return {
-          text: item,
-          testimonial: text?.customer_reviews[0].fields.subtitle[index],
-        };
-      }
-    ),
-  };
+  const customerReviews = text?.customer_reviews?.[0];
 
   const changeInnovatePart = {
     src: content?.change_innovate_part[0].fields.native.links[0].href,

@@ -14,14 +14,16 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
       <div className="flex flex-col items-end w-full mb-6">
         <Image src={close} alt="Xis" onClick={() => setIsMenuOpen(false)} />
       </div>
-      <Button
-        variant="outlined"
-        size="full"
-        className="flex items-center justify-center gap-2 mb-6"
-      >
-        <PersonIco color="#F37021" width="16" height="16" />
-        <p className="py-1 text-sm">Fazer login</p>
-      </Button>
+      <a href="https://cliente.mills.com.br/">
+        <Button
+          variant="outlined"
+          size="full"
+          className="flex items-center justify-center gap-2 mb-6"
+        >
+          <PersonIco color="#F37021" width="16" height="16" />
+          <p className="py-1 text-sm">Fazer login</p>
+        </Button>
+      </a>
       {menuInfo.map((info) => (
         <>
           <h3

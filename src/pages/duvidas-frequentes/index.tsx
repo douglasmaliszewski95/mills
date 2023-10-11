@@ -1,7 +1,7 @@
 import { Header } from "@/components/shared/Header/Header";
 import { Banner } from "@/components/shared/Banner/Banner";
 import { RightImgWithLeftText } from "@/components/ProductTypeAndSegment/RightImgWithLeftText";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { Footer } from "@/components/shared/Footer/Footer";
 import { getImage } from "@/services/hooks/getImage";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
@@ -14,12 +14,26 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import closeIcon from "@/assets/close.svg";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { currentSiteThemeContext } from "@/services/hooks/useCurrentSiteTheme";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Faq() {
   const [content, setContent] = useState<any>();
+  const [filterQuestions, setFilterQuestions] = useState<any>(
+    content?.questions
+  );
+  const [filterCategories, setFilterCategories] = useState<any>([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const router = useRouter();
+  const { isMobile } = useScreenWidth();
+  const qtQuestions = Math.round(filterQuestions?.length / 2);
+
+  const { currentSiteTheme } = useContext(currentSiteThemeContext);
+
   const getContent = useCallback(async () => {
-    const images = await getImage("duvidas_frequentes");
-    const texts = await getText("faq");
+    const [images, texts]: any = await Promise.all([
+      getImage("duvidas_frequentes"),
+      getText("faq")
+    ]);    
     let categories: string[] = [];
 
     const banner = {
@@ -40,7 +54,7 @@ export default function Faq() {
         title: question.fields.title,
         text: question.fields.text_field[0],
         categories: question.fields.subtitle,
-        href: question.fields.hrefButton,
+        href: question.fields.hrefButton[0],
       };
     });
 
@@ -62,15 +76,9 @@ export default function Faq() {
     getContent();
   }, []);
 
-  const [filterQuestions, setFilterQuestions] = useState<any>(
-    content?.questions
-  );
-  const [filterCategories, setFilterCategories] = useState<any>([]);
-  const [inputValue, setInputValue] = useState("");
-  const router = useRouter();
-  const { isMobile } = useScreenWidth();
-
-  const { currentSiteTheme } = useContext(currentSiteThemeContext);
+  useEffect(() => {
+    updateParagraphs();
+  }, [content]);
 
   const handleQuestion = (question: string) => {
     router.push(question);
@@ -88,18 +96,20 @@ export default function Faq() {
         const getQuestions = content?.questions.filter((item: any) =>
           item.categories.includes(x)
         );
-        getQuestions.map((item: any) => {
-          result.push(item);
+        getQuestions?.map((item: any) => {
+          if (!result.find((x: any) => x.title === item.title))
+            result.push(item);
         });
       });
       setFilterQuestions(result);
-    } else if (searchInput) {
+    } else if (searchInput !== "") {
       let result: any[] = [];
       if (filterCategories.length > 0) {
         filterCategories.map((x: string) => {
           const getQuestions = content?.questions.filter((item: any) => item.categories.includes(x) && item.title.includes(searchInput));
-          getQuestions.map((item: any) => {
-            result.push(item);
+          getQuestions?.map((item: any) => {
+            if (!result.find((x: any) => x.title === item.title))
+              result.push(item);
           });
         });
       }
@@ -151,6 +161,7 @@ export default function Faq() {
             <div className="flex justify-between py-3 tablet:flex-col tablet:px-3">
               <input
                 type="text"
+                value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Ex.: Plataforma tesoura"
                 className="box-border w-[77%] h-[32px] outline-none bg-gray-50 border-green-800 border-b-[1px] text-sm tablet:w-full tablet:mb-5"
@@ -167,12 +178,12 @@ export default function Faq() {
             <label className="text-green-800 text-lg font-bold tablet:px-3">
               Busque por categorias
             </label>
-            <div className="flex justify-between py-3 tablet:flex-col tablet:px-3">
+            <div className="flex flex-wrap py-3 tablet:flex-col tablet:px-3">
               {content?.categories?.map((category: string, index: number) => {
                 return (
                   <div
                     key={index}
-                    className="flex justify-center border-[2px] border-orange-500 py-3 w-[24%] tablet:w-full tablet:mb-2"
+                    className="flex justify-center border-[2px] border-orange-500 py-3 mb-2 w-[24%] mr-2 tablet:w-full tablet:mb-2"
                   >
                     <button
                       onClick={() => filterFaqQuestions(category, "")}
@@ -188,7 +199,7 @@ export default function Faq() {
         </section>
         <section className="flex justify-center font-ibm-font">
           <div className="container justify-center py-5">
-            <div className="flex tablet:mb-5 tablet:px-3">
+            <div className="flex mb-5 tablet:mb-5 tablet:px-3">
               <div className="h-fit flex border-[1px] border-orange-500 rounded pl-3 pr-3 py-1 gap-1 justify-between">
                 <p className="text-green-800 text-xs">Todas</p>
               </div>
@@ -214,7 +225,7 @@ export default function Faq() {
                 [0, 1].map((columnIndex) => (
                   <div
                     key={columnIndex}
-                    className="max-w-[50%] w-full py-12 h-full tablet:max-w-[100%] tablet:pl-0 tablet:pt-0 tablet:pb-5"
+                    className="max-w-[50%] self-start w-full pb-12 h-full tablet:max-w-[100%] tablet:pl-0 tablet:pt-0 tablet:pb-5"
                   >
                     <ul
                       className={
@@ -224,7 +235,7 @@ export default function Faq() {
                       }
                     >
                       {filterQuestions
-                        ?.slice(columnIndex * 6, columnIndex * 6 + 6)
+                        ?.slice(columnIndex * qtQuestions, columnIndex * qtQuestions + qtQuestions)
                         .map(({ title, href }: any, index: number) => (
                           <li key={index} className="pb-7">
                             <div

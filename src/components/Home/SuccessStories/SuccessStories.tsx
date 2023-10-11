@@ -1,15 +1,10 @@
 import Button from "@/components/shared/Button/Button";
-
 import { Carousel } from "@/components/shared/Carousel/Carousel";
-import Image from "next/image";
-//import { stories } from "./utils";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { SuccessStoriesProps } from "./types";
-import { useRouter } from "next/router";
 
 export const SuccessStories: React.FC<SuccessStoriesProps> = (props) => {
   const { isMobile } = useScreenWidth();
-  const router = useRouter();
   const { stories, successHistoryTexts, theme } = props;
 
   return (
@@ -26,12 +21,14 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = (props) => {
           <p className="text-lg text-green-800 mb-9 tablet:text-xs max-w-[90%] tablet:max-w-full">
             {successHistoryTexts?.text}
           </p>
-          <Button
-            className="max-w-[264px] py-3 w-full tablet:hidden"
-            onClick={() => router.push(successHistoryTexts.hrefButton)}
-          >
-            {successHistoryTexts?.buttonText}
-          </Button>
+          <a className="max-w-[264px]" href={successHistoryTexts?.hrefButton}>
+            <Button
+              className="max-w-[264px] py-2 w-full tablet:hidden"
+              size="large"
+            >
+              {successHistoryTexts?.buttonText}
+            </Button>
+          </a>
         </div>
         <div className="max-w-[60%] w-full tablet:max-w-[275px]">
           <Carousel
@@ -66,10 +63,14 @@ export const SuccessStories: React.FC<SuccessStoriesProps> = (props) => {
           </Carousel>
         </div>
       </div>
-
-      <Button className="desktop:hidden my-8 tablet:mx-5 ">
-        Ver mais histórias
-      </Button>
+      <a
+        className="max-w-[full] desktop:hidden px-8"
+        href={successHistoryTexts.hrefButton}
+      >
+        <Button className="desktop:hidden my-8 w-full">
+          {successHistoryTexts?.buttonText}
+        </Button>
+      </a>
     </section>
   );
 };

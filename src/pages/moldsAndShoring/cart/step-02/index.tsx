@@ -18,6 +18,7 @@ import { getCMSContent } from "@/components/Generators/content";
 import _ from "lodash";
 import { transformContentToMobile } from "@/utils/content";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
+import Link from "next/link";
 
 const schema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório"),
@@ -261,7 +262,7 @@ export default function StepTwo() {
           </div>
           <div className="container">
             <div className="flex justify-between mt-7 tablet:flex-col-reverse tablet:items-center tablet:gap-5">
-              <a
+              <Link
                 className="flex items-center w-[55px]"
                 href="/formas-e-escoramentos/carrinho/passo-02"
               >
@@ -275,7 +276,7 @@ export default function StepTwo() {
                 <span className="font-semibold text-orange-500 ml-2">
                   Voltar
                 </span>
-              </a>
+              </Link>
               <Button className="w-[258px]" type="submit">
                 Enviar orçamento
               </Button>

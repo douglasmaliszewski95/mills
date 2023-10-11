@@ -3,7 +3,7 @@ import { PostCardProps } from "./types";
 import Button from "@/components/shared/Button/Button";
 
 export const PostCard: React.FC<PostCardProps> = (props) => {
-  const { image, alt, category, title, date, link } = props;
+  const { image, alt, category, title, date, link, theme } = props;
 
   return (
     <div className="flex flex-col max-w-[256px] mx-2 tablet:mx-4 tablet:max-w-[300px]">
@@ -11,10 +11,10 @@ export const PostCard: React.FC<PostCardProps> = (props) => {
       <div className="min-h-[160px] flex flex-col justify-between bg-white px-2 pt-2 pb-3 gap-1 rounded-b-md">
         <div>
           <p className="text-orange-500 text-xs mb-1">{category}</p>
-          <p className="text-orange-500 font-semibold text-sm leading-5 mb-1">
+          <p className={`${theme === "rentalHeavy" ? "text-green-800" : "text-orange-500"} font-semibold text-sm leading-5 mb-1`}>
             {title ?? null}
           </p>
-          <p className="text-xs text-orange-500">
+          <p className={`text-xs ${theme === "rentalHeavy" ? "text-green-800" : "text-orange-500"}`}>
             <i>{date}</i>
           </p>
         </div>

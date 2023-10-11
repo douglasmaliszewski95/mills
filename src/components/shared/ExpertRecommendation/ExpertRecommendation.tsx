@@ -2,6 +2,7 @@ import Button from "../Button/Button";
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { useGetCMSShared } from "@/services/hooks/useGetCMSShared";
 import Link from "next/link";
+import { TalkToSpecialistModal } from "../TalkToSpecialistModal/TalkToSpecialistModal";
 
 export const ExpertRecommendation = () => {
   const { isMobile } = useScreenWidth();
@@ -24,11 +25,13 @@ export const ExpertRecommendation = () => {
             <h3 className="font-semibold w-[665px] text-3xl mb-6 tablet:w-full tablet:text-base tablet:mb-5">
               {talkToSpecialist?.headerText}
             </h3>
-            <Link href="/" target="blank">
-              <Button className="py-3 w-[251px] tablet:w-full">
-                {talkToSpecialist?.buttonText}
+            <TalkToSpecialistModal>
+              <Button className="py-2 w-[251px] tablet:w-full">
+                <p className="text-sm font-semibold">
+                  {talkToSpecialist?.buttonText}
+                </p>
               </Button>
-            </Link>
+            </TalkToSpecialistModal>
           </div>
         </div>
       </div>

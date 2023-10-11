@@ -7,12 +7,14 @@ import { Utilizations } from "@/components/Category/Utilizations/Utilizations";
 import { FindSize } from "@/components/Category/FindSize/FindSize";
 import { OtherTypes } from "@/components/Category/OtherTypes/OtherTypes";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { useCallback, useEffect, useState } from "react";
 import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
 import { getImageSrc } from "@/utils/images";
 import parse from "html-react-parser";
+import { updateParagraphs } from "@/utils/texts";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
 
 const Pantographic: React.FC = () => {
   const [banner, setBanner] = useState<any>();
@@ -22,10 +24,20 @@ const Pantographic: React.FC = () => {
   const [guideTexts, setGuideTexts] = useState<any>();
   const [idealSize, setIdealSize] = useState<any>();
   const [utilization, setUtilization] = useState<any>();
+  const { isMobile } = useScreenWidth();
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [banner, section, segments, price, guideTexts, idealSize, utilization]);
 
   const getContent = useCallback(async () => {
-    const images = await getImage("pantografica_tesoura");
-    const texts = await getText("pantografica_tesoura");
+    const [
+      images,
+      texts
+    ]: any = await Promise.all([
+      getImage("pantografica_tesoura"),
+      getText("pantografica_tesoura")
+    ]);
 
     let filterSection = [];
     let filterSegments = [];
@@ -79,7 +91,7 @@ const Pantographic: React.FC = () => {
       <Header />
       <main>
         <Banner
-          backgroundImage={banner && getImageSrc(banner?.fields)}
+          backgroundImage={banner && getImageSrc(isMobile ? banner?.mobileObj?.fields : banner?.fields)}
           title={banner?.fields?.content_title ?? ""}
           linkList={[
             {
@@ -115,6 +127,7 @@ const Pantographic: React.FC = () => {
           cards={segments ? segments : []}
           title={utilization?.title || ""}
           description={utilization?.text || ""}
+          page="Tesoura"
         />
         <About
           image={price ? price.fields.native.links[0].href : ""}
@@ -123,6 +136,7 @@ const Pantographic: React.FC = () => {
           description={[price ? price?.fields.content_text : ""]}
           hasButton={false}
           orientation="inverted"
+          theme="gray-50"
         />
         <FindSize
           title={idealSize?.fields.title || ""}

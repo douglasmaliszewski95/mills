@@ -23,9 +23,9 @@ export const MillsNewsComponent: React.FC<MillsNewsComponentProps> = (
           {item.portalImage && (
             <Image alt="Logo do portal de notícias" src={item.portalImage} width={100} height={100}/>
           )}
-          <h1 className="text-lg font-semibold tablet:mt-0 mt-4">
+          <h3 className="text-lg font-semibold tablet:mt-0 mt-4">
             {item.title}
-          </h1>
+          </h3>
           <h6 className="text-xs font-normal italic tablet:text-sm">
             {formatDayText(item.data)}
           </h6>

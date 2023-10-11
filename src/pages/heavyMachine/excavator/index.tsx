@@ -13,6 +13,7 @@ import { InformationWithButton } from "@/components/shared/InformationWithButton
 import useScreenWidth from "@/services/hooks/useScreenWidth";
 import { ImageCMS } from "@/types";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 import { Fragment, useEffect, useState } from "react";
 
 const Excavator = () => {
@@ -22,6 +23,17 @@ const Excavator = () => {
   const [secondAbout, setSecondAbout] = useState<any>();
   const [sharedContent, setSharedContent] = useState<any>();
   const [thirdImage, setThirdImage] = useState<string>("");
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [
+    pageContent,
+    textContent,
+    firstAbout,
+    secondAbout,
+    sharedContent,
+    thirdImage,
+  ]);
 
   const { isMobile } = useScreenWidth();
 
@@ -44,7 +56,7 @@ const Excavator = () => {
       }
     });
 
-    setSharedContent(shared)
+    setSharedContent(shared);
     setPageContent(content);
     setTextContent(contentText);
   };

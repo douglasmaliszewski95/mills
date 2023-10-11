@@ -13,21 +13,32 @@ import { Advantages } from "@/components/Category/Advantages/Advantages";
 import { GeneratorCarrousel } from "@/components/Category/GeneratorCarrousel/GeneratorCarrousel";
 import { Applications } from "@/components/Category/Applications/Applications";
 import { ExpertRecommendation } from "@/components/shared/ExpertRecommendation/ExpertRecommendation";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
 import { getCMSContent, getCMSText } from "@/components/Generators/content";
 import { ImageCMS } from "@/types";
+import { updateParagraphs } from "@/utils/texts";
 
 const Generators = () => {
   const [content, setContent] = useState<GeneratorsContent>();
   const [contentText, setContentText] = useState<GeneratorsTextContent | any>();
   const { isMobile } = useScreenWidth();
 
-  const getContent = async () => {
-    const contentAux: any = await getCMSContent("gerador_energia");
-    const contentShared: any = await getCMSContent("shared");
+  useEffect(() => {
+    updateParagraphs();
+  }, [content, contentText]);
 
-    const contentTextAux = await getCMSText("gerador_energia");
-    const contentTextShared = await getCMSText("shared");
+  const getContent = async () => {
+    const [
+      contentAux,
+      contentShared,
+      contentTextAux,
+      contentTextShared
+    ]: any = await Promise.all([
+      getCMSContent("gerador_energia"),
+      getCMSContent("shared"),  
+      getCMSText("gerador_energia"),
+      getCMSText("shared")
+    ]);    
 
     const responsiveContent = isMobile
       ? transformContentToMobile(contentAux)
@@ -147,9 +158,10 @@ const Generators = () => {
           cards={advantagesCards}
         />
         <GeneratorCarrousel
-          title="Tipos de gerador de energia a diesel"
-          description="Os geradores de energia a diesel podem ser classificados de acordo com a capacidade. Aqui, na Mills, estão disponíveis para locação diversos modelos, sendo todos apropriados para diversas aplicações, desde a geração emergencial até a geração contínua para localidades remotas"
-          products={contentText?.products ?? []}
+          title={contentText?.models_text?.[0]?.fields?.title}
+          description={contentText?.models_text?.[0]?.fields?.subtitle?.[0]}
+          products={contentText?.models_text?.[0]?.fields?.text_field ?? []}
+          link={contentText?.models_text?.[0]?.fields?.hrefButton}
         />
         <ExpertRecommendation />
         <MachinesAndPlatforms />

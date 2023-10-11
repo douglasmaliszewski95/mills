@@ -15,7 +15,8 @@ import { AboutWithButton } from "@/components/InstitutionalComponents/AboutWithB
 import { MillsUnityComponent } from "@/components/InstitutionalComponents/MillsUnityComponent/MillsUnityComponent";
 import { StoresProducts } from "@/components/InstitutionalComponents/StoresProducts/StoresProducts";
 import { cardProps } from "@/components/InstitutionalComponents/StoresProducts/types";
-import { MachinesAndPlatforms } from "@/components/Home/MachinesAndPlatforms/MachinesAndPlatforms";
+import { MachinesAndPlatforms } from "@/components/shared/MachinesAndPlatforms/MachinesAndPlatforms";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function MillsStores() {
   const router = useRouter();
@@ -27,23 +28,23 @@ export default function MillsStores() {
   const [existStore, setExistStore] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { isMobile } = useScreenWidth();
+  const { isMobile } = useScreenWidth(); 
 
   const getPageContent = async () => {
     if (storeName) {
       const content = await getCMSContent(
-        `mapa_atuacao_${storeName?.toString().replace("-", "_")}`
+        `mapa_atuacao_${storeName?.toString().replaceAll('-', '_')}`
       );
       const contentText = await getCMSText(
-        `mapa_atuacao_${storeName?.toString().replace("-", "_")}`
+        `mapa_atuacao_${storeName?.toString().replaceAll('-', '_')}`
       );
-
       if (isEmpty(content)) setExistStore(false);
       setPageContent(content);
       setTextContent(contentText);
       setIsLoading(false);
     }
   };
+  
 
   const formatStoreProducts = () => {
     let formattedData: cardProps[] = [];
@@ -77,6 +78,10 @@ export default function MillsStores() {
     getPageContent();
   }, [storeName]);
 
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, textContent]);
+
   const spinnigLoading = () => {
     return (
       <div
@@ -109,7 +114,7 @@ export default function MillsStores() {
     <>
       {existStore ? (
         <Fragment>
-          <Header menu={undefined} />
+          <Header />
           {pageContent && (
             <main>
               <Banner
@@ -119,18 +124,23 @@ export default function MillsStores() {
                     ? pageContent?.top_banner_filial[0]?.mobileObj?.fields
                     : pageContent?.top_banner_filial[0]?.fields
                 )}
-                subTitle={`Mapa de Atuação > Aluguel de plataformas elevatórias e máquinas pesadas em ${storeSingleName
-                  ?.charAt(0)
-                  .toUpperCase()}${storeSingleName?.slice(1)}`}
+                
+                  linkList={[{
+                    href: '/mapa-de-atuacao',
+                    name: 'Mapa de Atuação',
+                  }, {
+                    href: `/mapa-de-atuacao/${storeName}`,
+                    name: `Aluguel de plataformas elevatórias e máquinas pesadas em ${storeSingleName
+                      ?.charAt(0)
+                      .toUpperCase()}${storeSingleName?.slice(1)}`,
+                  },]}
               />
 
               <MillsUnityComponent
                 address={textContent?.rent_text[0]?.fields?.text_field[0]}
-                email=""
+                email={textContent?.rent_text[0]?.fields?.text_field[2]}
                 phoneNumber={textContent?.rent_text[0]?.fields?.text_field[1]}
-                title={`Unidade Mills em ${storeSingleName
-                  ?.charAt(0)
-                  .toUpperCase()}${storeSingleName?.slice(1)}`}
+                title={textContent?.rent_text[0]?.fields?.title}
                 src={getImageSrc(
                   isMobile
                     ? pageContent?.rent_filial[0]?.mobileObj?.fields

@@ -3,9 +3,13 @@ import { BenefitsProps } from "./types";
 import { useCallback, useEffect, useState } from "react";
 import { getImage } from "@/services/hooks/getImage";
 import { getText } from "@/services/hooks/getText";
+import { DnaTop } from "@/assets/DnaTop";
+import useScreenWidth from "@/services/hooks/useScreenWidth";
+import dnaTop from "@/assets/dna-top-green.svg";
 
 export const Benefits: React.FC<BenefitsProps> = (props) => {
-  const { theme } = props;
+  const { isDesktop } = useScreenWidth();
+  const { theme, headerText } = props;
   const [images, setImages] = useState<any>();
   const [texts, setTexts] = useState<any>();
 
@@ -22,18 +26,28 @@ export const Benefits: React.FC<BenefitsProps> = (props) => {
     }
 
     setImages(filterImages);
-    if (texts?.icon_segments?.length > 1) setTexts(theme === "rentalHeavy" ? texts?.heavy_machinery_segments[0] : texts?.icon_segments[0] );
+    if (texts?.icon_segments?.length >= 1)
+      setTexts(
+        theme === "rentalHeavy"
+          ? texts?.heavy_machinery_segments[0]
+          : texts?.icon_segments[0]
+      );
   }, []);
 
   useEffect(() => {
     getContent();
   }, []);
   return (
-    <section className="flex justify-center text-green-800">
+    <section className="flex justify-center text-green-800 relative">
+      {isDesktop && theme === "rentalHeavy" && (
+        <div className="absolute mt-[10px] right-3 tablet:right-0">
+          <DnaTop width="616" color="#004042" />
+        </div>
+      )}
       <div className="flex justify-between container tablet:flex-col">
         <div className="flex flex-col py-16 tablet:pt-4 pb-8 tablet:px-4">
           <h3 className="font-semibold w-[610px] text-2xl tablet:text-base tablet:w-full">
-            {texts?.fields.title}
+            {headerText ? headerText : texts?.fields.title}
           </h3>
           <div className="flex flex-wrap gap-2 mt-16 tablet:mt-5">
             {images?.map((image: any, index: any) => {

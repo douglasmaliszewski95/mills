@@ -55,12 +55,15 @@ export const LeftImgWithRightText: React.FC<LeftImgWithRightTextProps> = ({
             {paragraphText}
           </p>
           {buttonProps && (
-            <Button
-              variant={variant === "green" ? "inverted" : "default"}
-              className="max-w-[265px]"
-            >
-              {buttonProps?.text}
-            </Button>
+            <a href={buttonProps?.link ?? "#"} className="max-w-[265px] w-full">
+              <Button
+                variant={variant === "green" ? "inverted" : "default"}
+                size="large"
+                className="max-w-[265px] w-full"
+              >
+                {buttonProps?.text}
+              </Button>
+            </a>
           )}
         </div>
       </div>

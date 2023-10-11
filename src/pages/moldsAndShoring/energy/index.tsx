@@ -13,6 +13,7 @@ import { ImageCMS } from "@/types";
 import { formatArrInOrder } from "@/utils/formatArrInOrder";
 import { Item } from "@/components/Category/AboutRental/types";
 import { getImageSrc } from "@/utils/images";
+import { updateParagraphs } from "@/utils/texts";
 
 export default function Energy() {
   const [pageContent, setPageContent] = useState({
@@ -205,6 +206,10 @@ export default function Energy() {
   useEffect(() => {
     getContent();
   }, []);
+
+  useEffect(() => {
+    updateParagraphs();
+  }, [pageContent, contentText, shared]);
 
   return (
     <>
